@@ -4,3 +4,4 @@ unpackage/
 work/
 .DS_Store
 *.log
+.trae-html-share-packages/
