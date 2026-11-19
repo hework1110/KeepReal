@@ -1315,7 +1315,7 @@ function defaultState(){
   return {
     version: 2,
     plan: null,
-    onboard: {step:1, goal:null, freq:null, template:null},
+    onboard: {goal:'muscle', freq:3, template:null},
     session: null,
     prs: {},
     history: [],
@@ -1348,7 +1348,7 @@ let libQuery = '';
 function normalizeState(p){
   const d = defaultState();
   const st = Object.assign(d, p || {});
-  st.onboard = Object.assign({step:1, goal:null, freq:null, template:null}, p && p.onboard || {});
+  st.onboard = Object.assign({goal:'muscle', freq:3, template:null}, p && p.onboard || {});
   st.body = Object.assign({weights:[], measures:[], cardio:[]}, p && p.body || {});
   st.profile = Object.assign({name:'训练者 01'}, p && p.profile || {});
   st.ui = Object.assign(d.ui, p && p.ui || {});
@@ -3095,75 +3095,37 @@ function viewSummary(){
    8. 初次引导
    ============================================================ */
 
-function obHead(step){
-  return '<header class="ob-head">' +
-    '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
-    '<div class="ob-progress">' + [1,2,3].map(i => '<i class="' + (i <= step ? 'on' : '') + '"></i>').join('') + '</div>' +
-  '</header>';
-}
-
 function viewOnboarding(){
-  const ob = S.onboard;
-  const step = ob.step || 1;
-  let body = '', foot = '';
-  if(step === 1){
-    body = '<div class="ob-body">' +
-      '<div class="ob-step-num">STEP 01 / 03 · 目标</div>' +
-      '<h1 class="ob-title">先定一个<br><em>说得清的目标</em></h1>' +
-      '<p class="ob-sub">计划、动作和组次都围绕它来。之后可以在「计划」里随时更换模板。</p>' +
-      '<div class="opt-list">' + GOALS.map(g =>
-        '<button class="opt ' + (ob.goal === g.id ? 'is-on' : '') + '" data-action="ob-goal" data-value="' + g.id + '">' +
-          '<span class="opt__icon">' + icon(g.icon) + '</span>' +
-          '<span class="opt__text"><span class="opt__title">' + g.name + '</span><span class="opt__desc">' + g.desc + '</span></span>' +
-          '<span class="opt__radio"></span>' +
-        '</button>'
-      ).join('') + '</div>' +
-      '<p class="ob-privacy">' + icon('lock') + '无需账号 · 训练数据只存在这台设备</p>' +
-    '</div>';
-    foot = '<div class="ob-foot"><button class="btn btn--primary" data-action="ob-next" ' + (!ob.goal ? 'disabled' : '') + '>下一步' + icon('arrow-right') + '</button></div>';
-  }else if(step === 2){
-    body = '<div class="ob-body">' +
-      '<div class="ob-step-num">STEP 02 / 03 · 频率</div>' +
-      '<h1 class="ob-title">一周能练<br><em>几次</em></h1>' +
-      '<p class="ob-sub">按真实可执行的频率选。少练一次但坚持半年，比计划表排满更重要。</p>' +
-      '<div class="freq-grid">' + FREQS.map(f =>
-        '<button class="freq ' + (ob.freq === f.n ? 'is-on' : '') + '" data-action="ob-freq" data-value="' + f.n + '">' +
-          '<span class="freq__n">' + f.n + '<span>次</span></span>' +
-          '<span class="freq__label">' + f.label + '</span>' +
-          '<span class="freq__hint">' + f.hint + '</span>' +
-        '</button>'
-      ).join('') + '</div>' +
-    '</div>';
-    foot = '<div class="ob-foot"><button class="btn btn--ghost" data-action="ob-back" style="width:96px;flex:none">上一步</button>' +
-      '<button class="btn btn--primary" data-action="ob-next" ' + (!ob.freq ? 'disabled' : '') + '>下一步' + icon('arrow-right') + '</button></div>';
-  }else{
-    body = '<div class="ob-body">' +
-      '<div class="ob-step-num">STEP 03 / 03 · 模板</div>' +
-      '<h1 class="ob-title">选一套<br><em>训练模板</em></h1>' +
-      '<p class="ob-sub">四套都能复制进你的计划再改。热身与腹部收尾会自动排进每个训练日。</p>' +
-      '<div class="opt-list" style="gap:8px">' + TEMPLATES.map(t => {
-        const m = templateMeta(t);
-        return '<button class="tpl ' + (ob.template === t.id ? 'is-on' : '') + '" data-action="ob-template" data-value="' + t.id + '">' +
-          '<span class="tpl__row"><span class="tpl__name">' + t.name + '</span>' +
-            (ob.freq && t.recFor.indexOf(ob.freq) >= 0 ? '<span class="tpl__badge">适合 ' + ob.freq + ' 练</span>' : '') +
-            '<span class="opt__radio"></span></span>' +
-          '<span class="tpl__sub">' + t.sub + '</span>' +
-          '<span class="tpl__meta"><span>' + t.days.length + ' 个训练日</span><span>' + m.exCount + ' 个动作</span><span>' + m.sets + ' 组</span></span>' +
-          '<span class="tpl__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
-        '</button>';
-      }).join('') + '</div>' +
-    '</div>';
-    foot = '<div class="ob-foot"><button class="btn btn--ghost" data-action="ob-back" style="width:96px;flex:none">上一步</button>' +
-      '<button class="btn btn--primary" data-action="ob-generate" ' + (!ob.template ? 'disabled' : '') + '>生成我的计划' + icon('arrow-right') + '</button></div>';
-  }
-  return '<div class="screen view-anim">' + obHead(step) +
-    '<div class="screen__body"><div style="padding:0 16px">' + body + '</div></div>' +
-    foot + '</div>';
+  return '<div class="screen view-anim">' +
+    '<header class="ob-head">' +
+      '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
+    '</header>' +
+    '<div class="screen__body"><div style="padding:0 16px">' +
+      '<div class="ob-body">' +
+        '<h1 class="ob-title">选一套<br><em>训练模板</em></h1>' +
+        '<p class="ob-sub">点选即生成计划。四套都能稍后在「计划」里增删动作、调整顺序和组次；热身与腹部收尾会自动排进每个训练日。</p>' +
+        '<div class="opt-list" style="gap:8px">' + TEMPLATES.map(t => {
+          const m = templateMeta(t);
+          return '<button class="tpl" data-action="ob-template" data-value="' + t.id + '">' +
+            '<span class="tpl__row"><span class="tpl__name">' + t.name + '</span>' +
+              '<span class="tpl__badge">适合 ' + t.recFor.join('-') + ' 练</span>' +
+              '<span class="opt__radio"></span></span>' +
+            '<span class="tpl__sub">' + t.sub + '</span>' +
+            '<span class="tpl__meta"><span>' + t.days.length + ' 个训练日</span><span>' + m.exCount + ' 个动作</span><span>' + m.sets + ' 组</span></span>' +
+            '<span class="tpl__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
+          '</button>';
+        }).join('') + '</div>' +
+        '<p class="ob-privacy">' + icon('lock') + '无需账号 · 训练数据只存在这台设备</p>' +
+      '</div>' +
+    '</div></div>' +
+  '</div>';
 }
 
-function startGenerate(){
+function startGenerate(templateId){
   const ob = S.onboard;
-  if(!ob.goal || !ob.freq || !ob.template) return;
+  const id = templateId || ob.template;
+  if(!id) return;
+  ob.template = id;
   const gen = $('#gen');
   const msg = $('#gen-msg');
   const steps = ['读取动作库…', '排入热身与腹部收尾…', '生成本周训练日…'];
@@ -3176,7 +3138,7 @@ function startGenerate(){
   }, 360);
   setTimeout(() => {
     clearInterval(timer);
-    S.plan = buildPlan(ob.template, ob.goal, ob.freq);
+    S.plan = buildPlan(id, ob.goal || 'muscle', ob.freq || 3);
     S.prs = {};
     Object.keys(EX_LIB).forEach(n => { if(EX_LIB[n].pr) S.prs[n] = EX_LIB[n].pr; });
     seedDemo(S.plan);
@@ -3607,12 +3569,7 @@ function handleAction(a, el){
     case 'back': pop(); break;
 
     /* 引导 */
-    case 'ob-goal': S.onboard.goal = ds.value; save(); render({keep:true}); break;
-    case 'ob-freq': S.onboard.freq = +ds.value; save(); render({keep:true}); break;
-    case 'ob-template': S.onboard.template = ds.value; save(); render({keep:true}); break;
-    case 'ob-back': S.onboard.step = Math.max(1, (S.onboard.step || 1) - 1); save(); render(); break;
-    case 'ob-next': S.onboard.step = Math.min(3, (S.onboard.step || 1) + 1); save(); render(); break;
-    case 'ob-generate': startGenerate(); break;
+    case 'ob-template': startGenerate(ds.value); break;
 
     /* 今天 / 训练 */
     case 'select-day': S.selectedDay = Math.min(6, +ds.day || 0); save(); render({keep:true}); break;
@@ -4176,6 +4133,13 @@ function onDragEnd(){
 
 /* ---------- 启动 ---------- */
 function boot(){
+  try{
+    if(/[?&]reset=1(?:&|$)/.test(location.search)){
+      localStorage.removeItem(KEY);
+      localStorage.removeItem(LEGACY_KEY);
+      if(history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
+    }
+  }catch(e){}
   S = loadState();
   ensurePlanFresh();
   if(S.plan && S.view === 'onboarding') S.view = 'main';

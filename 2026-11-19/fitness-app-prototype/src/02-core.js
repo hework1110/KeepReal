@@ -92,7 +92,7 @@ function defaultState(){
   return {
     version: 2,
     plan: null,
-    onboard: {step:1, goal:null, freq:null, template:null},
+    onboard: {goal:'muscle', freq:3, template:null},
     session: null,
     prs: {},
     history: [],
@@ -125,7 +125,7 @@ let libQuery = '';
 function normalizeState(p){
   const d = defaultState();
   const st = Object.assign(d, p || {});
-  st.onboard = Object.assign({step:1, goal:null, freq:null, template:null}, p && p.onboard || {});
+  st.onboard = Object.assign({goal:'muscle', freq:3, template:null}, p && p.onboard || {});
   st.body = Object.assign({weights:[], measures:[], cardio:[]}, p && p.body || {});
   st.profile = Object.assign({name:'训练者 01'}, p && p.profile || {});
   st.ui = Object.assign(d.ui, p && p.ui || {});

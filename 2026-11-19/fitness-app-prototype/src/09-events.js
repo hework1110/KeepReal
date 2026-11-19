@@ -413,12 +413,7 @@ function handleAction(a, el){
     case 'back': pop(); break;
 
     /* 引导 */
-    case 'ob-goal': S.onboard.goal = ds.value; save(); render({keep:true}); break;
-    case 'ob-freq': S.onboard.freq = +ds.value; save(); render({keep:true}); break;
-    case 'ob-template': S.onboard.template = ds.value; save(); render({keep:true}); break;
-    case 'ob-back': S.onboard.step = Math.max(1, (S.onboard.step || 1) - 1); save(); render(); break;
-    case 'ob-next': S.onboard.step = Math.min(3, (S.onboard.step || 1) + 1); save(); render(); break;
-    case 'ob-generate': startGenerate(); break;
+    case 'ob-template': startGenerate(ds.value); break;
 
     /* 今天 / 训练 */
     case 'select-day': S.selectedDay = Math.min(6, +ds.day || 0); save(); render({keep:true}); break;
@@ -982,6 +977,13 @@ function onDragEnd(){
 
 /* ---------- 启动 ---------- */
 function boot(){
+  try{
+    if(/[?&]reset=1(?:&|$)/.test(location.search)){
+      localStorage.removeItem(KEY);
+      localStorage.removeItem(LEGACY_KEY);
+      if(history.replaceState) history.replaceState(null, '', location.pathname + location.hash);
+    }
+  }catch(e){}
   S = loadState();
   ensurePlanFresh();
   if(S.plan && S.view === 'onboarding') S.view = 'main';
