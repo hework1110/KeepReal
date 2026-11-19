@@ -257,6 +257,10 @@
   .tpl-ex:last-child{border-bottom:0}
   .tpl-ex span:first-child{color:var(--sub)}
   .tpl-ex span:last-child{font-family:var(--font-mono);font-size:9px;color:var(--dim);white-space:nowrap}
+  .tpl-edit-day{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+  .tpl-edit-day:first-of-type{border-top:0;padding-top:0}
+  .tpl-edit-day__head{display:flex;align-items:center;gap:8px}
+  .tpl-edit-day__head .tpl-day-name{flex:1;min-width:0}
 
   /* ---------- 进步 ---------- */
   .hero-metric{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:var(--r4);background:linear-gradient(158deg,#151B16,#0C100D 72%);position:relative;overflow:hidden}

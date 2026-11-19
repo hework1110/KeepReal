@@ -100,7 +100,7 @@ function sheetHtml(){
   let title = '', sub = '', body = '', foot = '', danger = '';
 
   if(k === 'ex-config'){
-    const day = getDayById(S.plan, SHEET.ctx.dayId);
+    const day = SHEET.ctx.tpl ? tplDraftDay(SHEET.ctx.dayId) : getDayById(S.plan, SHEET.ctx.dayId);
     const e = day && day.exercises[SHEET.ctx.idx];
     if(!e){ SHEET = null; return ''; }
     const hold = isHold(e.ex);
@@ -256,6 +256,8 @@ function currentMain(){
     if(sub.name === 'customEx') return viewCustomEx();
     if(sub.name === 'templates') return viewTemplates();
     if(sub.name === 'template') return viewTemplateDetail(sub.id);
+    if(sub.name === 'tplEdit') return viewTplEdit();
+    if(sub.name === 'tplpicker') return viewTplPicker(sub.dayId);
   }
   if(S.ui.tab === 'plan') return viewPlan();
   if(S.ui.tab === 'progress') return viewProgress();
@@ -304,7 +306,7 @@ function refreshResults(){
   const box = $('#lib-results');
   const top = topOfStack();
   if(!box || !top) return;
-  const mode = top.name === 'picker' ? 'pick' : 'browse';
+  const mode = top.name === 'picker' ? 'pick' : (top.name === 'tplpicker' ? 'tplpick' : 'browse');
   box.innerHTML = libResultsHtml(mode, top.dayId);
 }
 
@@ -323,11 +325,12 @@ function addExercise(dayId, name){
 }
 
 function doCopyTemplate(id){
-  const tpl = templateById(id);
+  const tpl = customTemplateById(id) || TEMPLATES.find(t => t.id === id);
+  if(!tpl) return;
   const goal = S.plan ? S.plan.goal : (S.onboard.goal || 'muscle');
   const freq = S.plan ? S.plan.freq : (S.onboard.freq || 3);
   const start = S.plan ? S.plan.startDate : todayISO();
-  S.plan = buildPlan(id, goal, freq, start);
+  S.plan = buildPlan(tpl, goal, freq, start);
   S.session = null;
   S.selectedDay = 0;
   S.view = 'main';
@@ -336,6 +339,65 @@ function doCopyTemplate(id){
   save();
   render();
   toast('已复制「' + tpl.name + '」，可以开始调整');
+}
+
+/* ---------- 自定义模板 ---------- */
+function startNewTemplate(){
+  TPL_DRAFT = {id:uid('tpl'), name:'', days:[emptyTplDay(1)]};
+  libQuery = '';
+  NAV.stack.push({name:'tplEdit'});
+  render();
+}
+function startEditTemplate(id){
+  const t = customTemplateById(id);
+  if(!t) return;
+  TPL_DRAFT = JSON.parse(JSON.stringify(t));
+  libQuery = '';
+  NAV.stack.push({name:'tplEdit'});
+  render();
+}
+function syncTplDraft(){
+  if(!TPL_DRAFT) return;
+  const nameEl = $('#tpl-name');
+  if(nameEl) TPL_DRAFT.name = nameEl.value;
+  $$('.tpl-day-name').forEach(el => {
+    const day = tplDraftDay(el.dataset.dayId);
+    if(day) day.name = el.value;
+  });
+}
+function addTplExercise(dayId, name){
+  const day = tplDraftDay(dayId);
+  if(!day) return false;
+  if(day.exercises.some(e => e.ex === name)){ toast('这个动作已经在训练日里'); return false; }
+  const info = exInfo(name);
+  let cfg;
+  if(info.hold) cfg = {ex:name, sets:3, repsMin:45, repsMax:45, rest:60};
+  else if(info.pattern === '核心') cfg = {ex:name, sets:3, repsMin:12, repsMax:15, rest:60};
+  else cfg = {ex:name, sets:3, repsMin:8, repsMax:12, rest:90};
+  day.exercises.push(cfg);
+  return true;
+}
+function saveTplDraft(){
+  if(!TPL_DRAFT) return;
+  syncTplDraft();
+  const name = (TPL_DRAFT.name || '').trim();
+  if(!name){ toast('请填写模板名称'); return; }
+  if(!TPL_DRAFT.days.length){ toast('至少添加一个训练日'); return; }
+  for(let i=0;i<TPL_DRAFT.days.length;i++){
+    const day = TPL_DRAFT.days[i];
+    day.name = (day.name || '').trim() || ('Day ' + (i + 1));
+    if(!day.exercises.length){ toast('「' + day.name + '」至少添加一个动作'); return; }
+  }
+  TPL_DRAFT.name = name;
+  const clean = JSON.parse(JSON.stringify(TPL_DRAFT));
+  const idx = S.templates.findIndex(t => t.id === clean.id);
+  if(idx >= 0) S.templates[idx] = clean;
+  else S.templates.push(clean);
+  save();
+  TPL_DRAFT = null;
+  NAV.stack = [{name:'templates'}];
+  render();
+  toast('模板已保存');
 }
 
 function syncCustomDraft(){
@@ -566,8 +628,56 @@ function handleAction(a, el){
     /* 模板 */
     case 'open-templates': push('templates'); break;
     case 'open-template': push('template', {id:ds.id}); break;
+    case 'open-my-template': push('template', {id:ds.id}); break;
+    case 'new-template': startNewTemplate(); break;
+    case 'tpl-edit': startEditTemplate(ds.id); break;
+    case 'tpl-delete': {
+      const t = customTemplateById(ds.id);
+      if(!t) return;
+      openConfirm({
+        title: '删除「' + t.name + '」？',
+        desc: '只会删除这套自定义模板，已复制出的计划和训练历史不受影响。',
+        okText: '删除模板',
+        danger: true,
+        onOk: () => {
+          S.templates = S.templates.filter(x => x.id !== ds.id);
+          save();
+          NAV.stack = [{name:'templates'}];
+          render();
+          toast('模板已删除');
+        }
+      });
+      break;
+    }
+    case 'tpl-add-day':
+      if(!TPL_DRAFT) return;
+      TPL_DRAFT.days.push(emptyTplDay(TPL_DRAFT.days.length + 1));
+      render({keep:true});
+      break;
+    case 'tpl-del-day': {
+      if(!TPL_DRAFT) return;
+      if(TPL_DRAFT.days.length <= 1){ toast('至少保留一个训练日'); return; }
+      TPL_DRAFT.days = TPL_DRAFT.days.filter(d => d.id !== ds.dayId);
+      render({keep:true});
+      break;
+    }
+    case 'tpl-open-picker': libQuery = ''; push('tplpicker', {dayId:ds.dayId}); break;
+    case 'tpl-picker-add':
+      if(addTplExercise(ds.dayId, ds.ex)){ refreshResults(); toast('已加入训练日'); }
+      break;
+    case 'tpl-picker-done': NAV.stack.pop(); render({keep:true}); break;
+    case 'tpl-config-ex': openSheet('ex-config', {tpl:true, dayId:ds.dayId, idx:+ds.idx}); break;
+    case 'tpl-del-ex': {
+      const day = tplDraftDay(ds.dayId);
+      if(!day) return;
+      day.exercises.splice(+ds.idx, 1);
+      render({keep:true});
+      toast('动作已删除');
+      break;
+    }
+    case 'tpl-save': saveTplDraft(); break;
     case 'copy-template': {
-      const t = TEMPLATES.find(x => x.id === ds.id);
+      const t = customTemplateById(ds.id) || TEMPLATES.find(x => x.id === ds.id);
       if(!t) return;
       openConfirm({
         title: '复制「' + t.name + '」？',
@@ -635,7 +745,7 @@ function handleAction(a, el){
       break;
     case 'sheet-step': {
       if(!SHEET || SHEET.kind !== 'ex-config') return;
-      const day = getDayById(S.plan, SHEET.ctx.dayId);
+      const day = SHEET.ctx.tpl ? tplDraftDay(SHEET.ctx.dayId) : getDayById(S.plan, SHEET.ctx.dayId);
       const e = day && day.exercises[SHEET.ctx.idx];
       if(!e) return;
       const f = ds.field, d = +ds.dir;
@@ -650,17 +760,17 @@ function handleAction(a, el){
           e.repsMax = Math.max(e.repsMin, Math.min(30, e.repsMax + d));
         }
       }else if(f === 'rest') e.rest = Math.max(15, Math.min(300, e.rest + d * 15));
-      save();
+      if(!SHEET.ctx.tpl) save();
       renderSheet();
       break;
     }
     case 'sheet-del-ex': {
       if(!SHEET) return;
-      const day = getDayById(S.plan, SHEET.ctx.dayId);
+      const day = SHEET.ctx.tpl ? tplDraftDay(SHEET.ctx.dayId) : getDayById(S.plan, SHEET.ctx.dayId);
       if(!day) return;
-      if(day.exercises.length <= 1){ toast('每个训练日至少保留一个动作'); return; }
+      if(!SHEET.ctx.tpl && day.exercises.length <= 1){ toast('每个训练日至少保留一个动作'); return; }
       day.exercises.splice(SHEET.ctx.idx, 1);
-      save();
+      if(!SHEET.ctx.tpl) save();
       closeSheet();
       render({keep:true});
       toast('动作已从训练日移除');
@@ -755,6 +865,11 @@ function onInput(e){
     return;
   }
   if(t.id === 'custom-name'){ CUSTOM_DRAFT.name = t.value; }
+  if(t.id === 'tpl-name' && TPL_DRAFT){ TPL_DRAFT.name = t.value; }
+  if(t.classList && t.classList.contains('tpl-day-name')){
+    const day = tplDraftDay(t.dataset.dayId);
+    if(day) day.name = t.value;
+  }
 }
 
 /* ---------- 定时器 ---------- */
@@ -856,11 +971,12 @@ function onDragEnd(){
   document.body.classList.remove('is-drag-sorting');
   d.rows.forEach(r => { r.style.transform = ''; });
   if(d.newIdx === d.idx) return;
-  const day = getDayById(S.plan, d.list.dataset.dayId);
+  const tplDayId = d.list.dataset.tplDayId;
+  const day = tplDayId ? tplDraftDay(tplDayId) : getDayById(S.plan, d.list.dataset.dayId);
   if(!day) return;
   const moved = day.exercises.splice(d.idx, 1)[0];
   day.exercises.splice(d.newIdx, 0, moved);
-  save();
+  if(!tplDayId) save();
   render({keep:true});
 }
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
+<html lang="zh-CN">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
@@ -796,6 +797,10 @@
   .tpl-ex:last-child{border-bottom:0}
   .tpl-ex span:first-child{color:var(--sub)}
   .tpl-ex span:last-child{font-family:var(--font-mono);font-size:9px;color:var(--dim);white-space:nowrap}
+  .tpl-edit-day{margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}
+  .tpl-edit-day:first-of-type{border-top:0;padding-top:0}
+  .tpl-edit-day__head{display:flex;align-items:center;gap:8px}
+  .tpl-edit-day__head .tpl-day-name{flex:1;min-width:0}
 
   /* ---------- 进步 ---------- */
   .hero-metric{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:var(--r4);background:linear-gradient(158deg,#151B16,#0C100D 72%);position:relative;overflow:hidden}
@@ -987,43 +992,43 @@
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
   <defs>
-    <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M4 9v6"></path><path d="M7.5 7v10"></path><path d="M16.5 7v10"></path><path d="M20 9v6"></path><path d="M7.5 12h9"></path></symbol>
-    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"></polygon></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"></path></symbol>
-    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></symbol>
-    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></symbol>
-    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></symbol>
-    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"></path></symbol>
-    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"></path></symbol>
-    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"></path></symbol>
-    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"></path><path d="M12 5v14"></path></symbol>
-    <symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"></line><line x1="12" x2="15" y1="14" y2="11"></line><circle cx="12" cy="14" r="8"></circle></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></symbol>
-    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></symbol>
-    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></symbol>
-    <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></symbol>
-    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"></path></symbol>
-    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></symbol>
-    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"></path><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"></path><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"></path></symbol>
-    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></symbol>
-    <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"></rect><path d="M16 2v4"></path><path d="M8 2v4"></path><path d="M3 10h18"></path></symbol>
-    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></symbol>
-    <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></symbol>
-    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></symbol>
-    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"></path><path d="m5 12 7-7 7 7"></path></symbol>
-    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"></path><path d="m19 12-7 7-7-7"></path></symbol>
-    <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"></line><line x1="4" x2="4" y1="10" y2="3"></line><line x1="12" x2="12" y1="21" y2="12"></line><line x1="12" x2="12" y1="8" y2="3"></line><line x1="20" x2="20" y1="21" y2="16"></line><line x1="20" x2="20" y1="12" y2="3"></line><line x1="2" x2="6" y1="14" y2="14"></line><line x1="10" x2="14" y1="8" y2="8"></line><line x1="18" x2="22" y1="16" y2="16"></line></symbol>
-    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></symbol>
-    <symbol id="i-calculator" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"></rect><line x1="8" x2="16" y1="6" y2="6"></line><line x1="16" x2="16" y1="14" y2="18"></line><path d="M16 10h.01"></path><path d="M12 10h.01"></path><path d="M8 10h.01"></path><path d="M12 14h.01"></path><path d="M8 14h.01"></path><path d="M12 18h.01"></path><path d="M8 18h.01"></path></symbol>
+    <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M4 9v6"/><path d="M7.5 7v10"/><path d="M16.5 7v10"/><path d="M20 9v6"/><path d="M7.5 12h9"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+    <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-calculator" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></symbol>
   </defs>
 </svg>
 <div class="stage">
   <div class="phone" id="phone">
-    <div id="app"><div class="screen view-anim"><header class="sub-head"><button class="icon-btn" data-action="back" aria-label="返回"><svg class="icon " aria-hidden="true"><use href="#i-arrow-left"></use></svg></button><div class="sub-head__mid"><div class="sub-head__name">模板库</div><div class="sub-head__meta">四套内置模板 · 预览后复制</div></div><span class="text-btn"></span></header><div class="screen__body" style="position: relative;"><p class="pg-sub" style="margin-top:2px">模板决定训练日的动作与组次。复制成自己的计划后，可以在「计划」里自由增删动作、调整顺序和休息。</p><div class="section-head"><h2>内置模板</h2><span>4 套</span></div><div><button class="tpl-card" data-action="open-template" data-id="fb"><span class="tpl-card__row"><span class="tpl-card__name">全身新手版</span><span class="tpl-card__days">2 天</span></span><span class="tpl-card__sub">全身 A / B 交替 · 每次覆盖主要肌群</span><span class="tpl-card__meta"><span>11 个动作</span><span>35 组 / 轮</span><span>建议 2-3 练</span></span><span class="tpl-card__tags"><span class="tag">新手友好</span><span class="tag">全身</span></span></button><button class="tpl-card" data-action="open-template" data-id="ul"><span class="tpl-card__row"><span class="tpl-card__name">上下肢分化</span><span class="tpl-card__days">2 天</span></span><span class="tpl-card__sub">上肢 / 下肢交替 · 单次更聚焦</span><span class="tpl-card__meta"><span>12 个动作</span><span>40 组 / 轮</span><span>建议 4 练</span></span><span class="tpl-card__tags"><span class="tag">进阶</span><span class="tag">四分化</span></span></button><button class="tpl-card" data-action="open-template" data-id="ppl"><span class="tpl-card__row"><span class="tpl-card__name">推拉腿</span><span class="tpl-card__days">3 天</span></span><span class="tpl-card__sub">推 / 拉 / 腿循环 · 容量充足</span><span class="tpl-card__meta"><span>16 个动作</span><span>53 组 / 轮</span><span>建议 5 练</span></span><span class="tpl-card__tags"><span class="tag">进阶</span><span class="tag">高容量</span></span></button><button class="tpl-card" data-action="open-template" data-id="fb3"><span class="tpl-card__row"><span class="tpl-card__name">三练全身</span><span class="tpl-card__days">3 天</span></span><span class="tpl-card__sub">全身 A / B / C 轮换 · 力量与容量兼顾</span><span class="tpl-card__meta"><span>17 个动作</span><span>57 组 / 轮</span><span>建议 3 练</span></span><span class="tpl-card__tags"><span class="tag">均衡</span><span class="tag">全身</span></span></button></div><div class="notice"><svg class="icon " aria-hidden="true"><use href="#i-info"></use></svg><span>复制模板只替换训练日安排，不清空训练历史、PR 和身体数据。</span></div></div></div></div>
-    <div class="gen" id="gen" hidden="">
+    <div id="app"></div>
+    <div class="gen" id="gen" hidden>
       <div class="gen__ring"></div>
       <div class="gen__text">
         <div class="gen__title">正在生成你的训练计划</div>
@@ -1270,7 +1275,12 @@ function shortDate(iso){
 }
 function todayISO(){ return isoOf(new Date()); }
 function goalName(id){ const g = GOALS.find(x => x.id === id); return g ? g.name : ''; }
-function templateById(id){ return TEMPLATES.find(t => t.id === id) || TEMPLATES[0]; }
+function templateById(id){
+  return customTemplateById(id) || TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
+}
+function customTemplateById(id){
+  return (S.templates || []).find(t => t.id === id) || null;
+}
 function roundStep(w, step){
   step = step || 1;
   return Math.round(w / step) * step;
@@ -1313,6 +1323,7 @@ function defaultState(){
     body: {weights:[], measures:[], cardio:[]},
     profile: {name:'训练者 01'},
     customEx: [],
+    templates: [],
     demo: false,
     view: 'onboarding',
     selectedDay: 0,
@@ -1344,6 +1355,11 @@ function normalizeState(p){
   if(!st.plan || !Array.isArray(st.plan.days) || !st.plan.days.length) st.plan = null;
   if(!Array.isArray(st.history)) st.history = [];
   if(!Array.isArray(st.customEx)) st.customEx = [];
+  if(!Array.isArray(st.templates)) st.templates = [];
+  st.templates.forEach(t => {
+    if(!Array.isArray(t.days)) t.days = [];
+    t.days.forEach(d => { if(!Array.isArray(d.exercises)) d.exercises = []; });
+  });
   if(!st.body.weights) st.body.weights = [];
   if(!st.body.measures) st.body.measures = [];
   if(!st.body.cardio) st.body.cardio = [];
@@ -1474,7 +1490,7 @@ function planDaysFromTemplate(tpl){
     id: 'd' + (i + 1),
     srcId: legacy[i] || (tpl.id + '-' + (i + 1)),
     name: d.name,
-    focus: d.focus,
+    focus: d.focus || '自定义训练日',
     exercises: d.exercises.map(e => ({ex:e.ex, sets:e.sets, repsMin:e.repsMin, repsMax:e.repsMax, rest:e.rest})),
     abs: ABS_PAIRS[i % ABS_PAIRS.length].slice()
   }));
@@ -1501,10 +1517,11 @@ function buildSchedule(days, freq){
 }
 
 function buildPlan(templateId, goal, freq, startDate){
-  const tpl = templateById(templateId);
+  const tpl = typeof templateId === 'string' ? templateById(templateId) : templateId;
   const days = planDaysFromTemplate(tpl);
   return {
-    templateId, goal, freq,
+    templateId: tpl.id,
+    goal, freq,
     name: tpl.name,
     createdAt: Date.now(),
     startDate: startDate || todayISO(),
@@ -1946,7 +1963,7 @@ function viewToday(){
         '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
         '<span class="plan-pill"><i></i>' + goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练</span>' +
       '</div>' +
-      '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + tpl.name + '</span></div>' +
+      '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + esc(plan.name || tpl.name) + '</span></div>' +
       '<div class="home-title-row"><h1 class="home-title">' + (sel === 0 ? '今天' : day.dow) + '</h1><span class="home-day-idx">DAY ' + pad(sel + 1) + ' / 07</span></div>' +
       weekStrip(plan, sel) +
     '</header>' +
@@ -1982,7 +1999,7 @@ function viewMe(){
       '<div class="pg-head"><div><div class="pg-eyebrow">PROFILE / 本机</div><h1 class="pg-title">我的</h1></div></div>' +
       '<div class="me-hero">' +
         '<div class="me-avatar">K</div>' +
-        '<div><div class="me-name" data-action="edit-name" title="点击改名">' + esc(S.profile.name) + '</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + tpl.name : '还没有训练计划') + '</div></div>' +
+        '<div><div class="me-name" data-action="edit-name" title="点击改名">' + esc(S.profile.name) + '</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + esc(plan.name || tpl.name) : '还没有训练计划') + '</div></div>' +
       '</div>' +
       '<div class="stat-grid" style="margin-top:18px">' +
         '<div><span>累计训练</span><b>' + trainCount + '<small>次</small></b></div>' +
@@ -1998,8 +2015,8 @@ function viewMe(){
         '</button>' +
         '<button class="menu-row" data-action="open-templates">' +
           '<span class="menu-row__icon">' + icon('copy') + '</span>' +
-          '<span class="menu-row__main"><span class="menu-row__title">模板库</span><span class="menu-row__sub">四套内置模板 · 可复制再改</span></span>' +
-          '<span class="menu-row__right">' + templateById(plan ? plan.templateId : 'fb').name + icon('chevron-right') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">模板库</span><span class="menu-row__sub">内置模板 + 我的模板 · 可复制再改</span></span>' +
+          '<span class="menu-row__right">' + esc(plan ? (plan.name || templateById(plan.templateId).name) : '四套内置模板') + icon('chevron-right') + '</span>' +
         '</button>' +
         '<button class="menu-row" data-action="open-library">' +
           '<span class="menu-row__icon">' + icon('dumbbell') + '</span>' +
@@ -2033,6 +2050,14 @@ function viewMe(){
    ============================================================ */
 
 let CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
+let TPL_DRAFT = null;
+
+function emptyTplDay(n){
+  return {id:uid('td'), name:'Day ' + (n || 1), exercises:[]};
+}
+function tplDraftDay(id){
+  return TPL_DRAFT ? TPL_DRAFT.days.find(d => d.id === id) : null;
+}
 
 function allExNames(){
   return Object.keys(EX_LIB).concat((S.customEx || []).map(c => c.name));
@@ -2046,14 +2071,15 @@ function libRow(name, mode, dayId){
   const info = exInfo(name);
   const pr = bestWeightOf(name);
   const last = lastLift(name);
-  const already = mode === 'pick' && getDayById(S.plan, dayId) &&
-    getDayById(S.plan, dayId).exercises.some(e => e.ex === name);
-  const right = mode === 'pick' ?
-    '<button class="lib-add ' + (already ? 'is-added' : '') + '" data-action="picker-add" data-ex="' + esc(name) + '" data-day-id="' + dayId + '" aria-label="' + (already ? '已添加' : '添加 ' + name) + '">' +
+  const pick = mode === 'pick' || mode === 'tplpick';
+  const host = mode === 'pick' ? getDayById(S.plan, dayId) : (mode === 'tplpick' ? tplDraftDay(dayId) : null);
+  const already = pick && host && host.exercises.some(e => e.ex === name);
+  const right = pick ?
+    '<button class="lib-add ' + (already ? 'is-added' : '') + '" data-action="' + (mode === 'pick' ? 'picker-add' : 'tpl-picker-add') + '" data-ex="' + esc(name) + '" data-day-id="' + dayId + '" aria-label="' + (already ? '已添加' : '添加 ' + name) + '">' +
       icon(already ? 'check' : 'plus') + '</button>' :
     '<div class="lib-row__pr">' + (info.bw ? '自重' : (pr ? fmtNum(pr) + ' kg' : '—')) + '<s>' + (info.bw ? (info.hold ? '计时' : '次数') : 'PR') + '</s></div>' + icon('chevron-right');
   return '<div class="lib-row">' +
-    '<div class="lib-row__main" ' + (mode === 'pick' ? '' : 'data-action="lib-info" data-ex="' + esc(name) + '" style="cursor:pointer"') + '>' +
+    '<div class="lib-row__main" ' + (pick ? '' : 'data-action="lib-info" data-ex="' + esc(name) + '" style="cursor:pointer"') + '>' +
       '<div class="lib-row__name">' + esc(name) +
         (info.unilateral ? '<span class="mini-tag">单侧</span>' : '') +
         (info.custom ? '<span class="mini-tag mini-tag--acid">自定义</span>' : '') +
@@ -2080,7 +2106,7 @@ function libResultsHtml(mode, dayId){
   if(!names.length){
     return '<div class="empty" style="margin-top:14px"><b>没有匹配的动作</b>换个关键词，或清空筛选试试。</div>';
   }
-  if(mode === 'pick'){
+  if(mode === 'pick' || mode === 'tplpick'){
     const groups = {};
     names.forEach(n => {
       const p = exInfo(n).pattern;
@@ -2090,7 +2116,7 @@ function libResultsHtml(mode, dayId){
     return order.filter(p => groups[p]).map(p =>
       '<div class="lib-group">' +
         '<div class="lib-group__head"><h3>' + p + '</h3><span>' + groups[p].length + ' 个</span></div>' +
-        groups[p].map(n => libRow(n, 'pick', dayId)).join('') +
+        groups[p].map(n => libRow(n, mode, dayId)).join('') +
       '</div>'
     ).join('');
   }
@@ -2136,7 +2162,7 @@ function viewPlan(){
       '</div>' +
       '<div class="plan-hero">' +
         '<div class="plan-hero__top"><span class="tag tag--acid">' + goalName(plan.goal) + '</span><span class="hero__day">每周 ' + plan.freq + ' 练</span></div>' +
-        '<div class="plan-hero__name">' + tpl.name + '</div>' +
+        '<div class="plan-hero__name">' + esc(plan.name || tpl.name) + '</div>' +
         '<div class="plan-hero__meta">' + plan.days.length + ' 个训练日 · ' + totalEx + ' 个动作 · 由模板复制后可自由编辑</div>' +
         '<div class="plan-hero__stats">' +
           '<div class="plan-hero__stat"><b>' + plan.days.length + '</b><span>训练日</span></div>' +
@@ -2161,7 +2187,7 @@ function viewPlan(){
       '<div class="section-head"><h2>工具</h2><span>动作与模板</span></div>' +
       '<div class="tool-row">' +
         '<button class="tool-card" data-action="open-library">' + icon('dumbbell') + '<span><b>动作库</b><span>25 个核心动作 + 自定义</span></span></button>' +
-        '<button class="tool-card" data-action="open-templates">' + icon('copy') + '<span><b>模板库</b><span>4 套模板可预览复制</span></span></button>' +
+        '<button class="tool-card" data-action="open-templates">' + icon('copy') + '<span><b>模板库</b><span>内置 + 我的模板 · 可预览复制</span></span></button>' +
       '</div>' +
       '<div class="notice">' + icon('info') + '<span>复制模板会替换当前训练日安排，训练历史与身体数据不受影响。</span></div>' +
     '</div>'
@@ -2315,8 +2341,21 @@ function templateMeta(t){
   return {exCount, sets};
 }
 function viewTemplates(){
-  return subScreen('模板库', '四套内置模板 · 预览后复制',
+  const mine = S.templates || [];
+  return subScreen('模板库', '内置模板 + 我的模板',
     '<p class="pg-sub" style="margin-top:2px">模板决定训练日的动作与组次。复制成自己的计划后，可以在「计划」里自由增删动作、调整顺序和休息。</p>' +
+    '<div class="section-head"><h2>我的模板</h2><span>' + mine.length + ' 套</span></div>' +
+    (mine.length ?
+      '<div>' + mine.map(t => {
+        const m = templateMeta(t);
+        return '<button class="tpl-card" data-action="open-my-template" data-id="' + t.id + '">' +
+          '<span class="tpl-card__row"><span class="tpl-card__name">' + esc(t.name) + '</span><span class="tpl-card__days">' + t.days.length + ' 天</span></span>' +
+          '<span class="tpl-card__sub">' + esc(t.days.map(d => d.name).join(' / ') || '尚未添加训练日') + '</span>' +
+          '<span class="tpl-card__meta"><span>' + m.exCount + ' 个动作</span><span>' + m.sets + ' 组 / 轮</span></span>' +
+          '<span class="tpl-card__tags"><span class="tag tag--acid">我的模板</span></span>' +
+        '</button>';
+      }).join('') + '</div>' :
+      '<div class="empty"><b>还没有自定义模板</b>点右上角「新建模板」，从空白开始搭一套自己的训练日。</div>') +
     '<div class="section-head"><h2>内置模板</h2><span>' + TEMPLATES.length + ' 套</span></div>' +
     '<div>' + TEMPLATES.map(t => {
       const m = templateMeta(t);
@@ -2327,37 +2366,93 @@ function viewTemplates(){
         '<span class="tpl-card__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
       '</button>';
     }).join('') + '</div>' +
-    '<div class="notice">' + icon('info') + '<span>复制模板只替换训练日安排，不清空训练历史、PR 和身体数据。</span></div>'
+    '<div class="notice">' + icon('info') + '<span>复制模板只替换训练日安排，不清空训练历史、PR 和身体数据。</span></div>',
+    {right:'<button class="text-btn" data-action="new-template">新建模板</button>'}
   );
 }
 
 function viewTemplateDetail(id){
-  const t = TEMPLATES.find(x => x.id === id);
+  const custom = customTemplateById(id);
+  const t = custom || TEMPLATES.find(x => x.id === id);
   if(!t) return viewTemplates();
   const m = templateMeta(t);
   return subScreen(t.name, '模板预览 · ' + m.exCount + ' 个动作',
     '<div class="panel">' +
-      '<div class="panel__label">TEMPLATE / ' + t.id.toUpperCase() + '</div>' +
-      '<div class="panel__title">' + t.sub + '</div>' +
-      '<div class="panel__sub">' + t.desc + '</div>' +
-      '<div class="tpl-card__tags" style="margin-top:10px">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '<span class="tag">建议 ' + t.recFor.join('-') + ' 练</span></div>' +
+      '<div class="panel__label">TEMPLATE / ' + (custom ? '我的模板' : t.id.toUpperCase()) + '</div>' +
+      '<div class="panel__title">' + (custom ? '自定义训练日安排' : t.sub) + '</div>' +
+      '<div class="panel__sub">' + (custom ? '复制成计划后可以继续在「计划」里调整动作与组次。' : t.desc) + '</div>' +
+      '<div class="tpl-card__tags" style="margin-top:10px">' + (custom ? '<span class="tag tag--acid">我的模板</span>' : t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '<span class="tag">建议 ' + t.recFor.join('-') + ' 练</span>') + '</div>' +
     '</div>' +
     '<div class="section-head"><h2>训练日安排</h2><span>' + t.days.length + ' 天 / 轮</span></div>' +
     '<div class="panel" style="padding:2px 14px">' +
       t.days.map((d, i) => {
         const sets = d.exercises.reduce((a, e) => a + e.sets, 0);
         return '<div class="tpl-day">' +
-          '<div class="tpl-day__head"><div><div class="tpl-day__name">' + pad(i+1) + ' · ' + d.name + '</div><div class="tpl-day__focus">' + d.focus + '</div></div><div class="tpl-day__meta">' + sets + ' 组</div></div>' +
+          '<div class="tpl-day__head"><div><div class="tpl-day__name">' + pad(i+1) + ' · ' + esc(d.name) + '</div>' + (d.focus ? '<div class="tpl-day__focus">' + esc(d.focus) + '</div>' : '') + '</div><div class="tpl-day__meta">' + sets + ' 组</div></div>' +
           '<div style="margin-top:8px">' + d.exercises.map(e =>
-            '<div class="tpl-ex"><span>' + e.ex + '</span><span>' + e.sets + ' × ' + (isHold(e.ex) ? e.repsMax + '秒' : (e.repsMin === e.repsMax ? e.repsMin : e.repsMin + '-' + e.repsMax)) + ' · ' + e.rest + 's</span></div>'
+            '<div class="tpl-ex"><span>' + esc(e.ex) + '</span><span>' + e.sets + ' × ' + (isHold(e.ex) ? e.repsMax + '秒' : (e.repsMin === e.repsMax ? e.repsMin : e.repsMin + '-' + e.repsMax)) + ' · ' + e.rest + 's</span></div>'
           ).join('') + '</div>' +
           '<div class="tpl-day__focus" style="margin-top:8px">腹部收尾：' + ABS_PAIRS[i % ABS_PAIRS.length].join(' + ') + '</div>' +
         '</div>';
       }).join('') +
     '</div>' +
     '<div class="notice">' + icon('info') + '<span>复制后会按你当前的每周训练频率重新排入本周，已有训练历史保留。</span></div>',
-    {right:'<button class="text-btn" data-action="copy-template" data-id="' + t.id + '">复制</button>',
-     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'}
+    custom ?
+      {right:'<div style="display:flex;gap:2px"><button class="text-btn" data-action="tpl-edit" data-id="' + t.id + '">编辑</button><button class="text-btn" data-action="tpl-delete" data-id="' + t.id + '">删除</button></div>',
+       foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'} :
+      {right:'<button class="text-btn" data-action="copy-template" data-id="' + t.id + '">复制</button>',
+       foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'}
+  );
+}
+
+/* ---------- 自定义模板编辑 ---------- */
+function viewTplEdit(){
+  const d = TPL_DRAFT;
+  if(!d) return viewTemplates();
+  return subScreen('编辑模板 · ' + (d.name || '未命名'), '拖动排序 · 调整组次 · 保存后进入模板库',
+    '<div class="form-row" style="margin-top:2px"><label class="form-label">模板名称</label>' +
+      '<input class="form-input tpl-name" id="tpl-name" type="text" maxlength="20" placeholder="例如：我的推拉腿" value="' + esc(d.name) + '"></div>' +
+    d.days.map(day =>
+      '<div class="tpl-edit-day">' +
+        '<div class="tpl-edit-day__head">' +
+          '<input class="form-input tpl-day-name" data-day-id="' + day.id + '" type="text" maxlength="16" placeholder="训练日名称" value="' + esc(day.name) + '" aria-label="训练日名称">' +
+          '<button class="del-btn" data-action="tpl-del-day" data-day-id="' + day.id + '" aria-label="删除训练日">' + icon('trash') + '</button>' +
+        '</div>' +
+        '<div class="section-head" style="margin-top:2px"><h2>动作</h2><span>' + day.exercises.length + ' 个</span></div>' +
+        (day.exercises.length ?
+          '<div class="panel ex-edit-list" data-drag-list data-tpl-day-id="' + day.id + '" style="padding:2px 12px">' +
+            day.exercises.map((e, i) => {
+              const info = exInfo(e.ex);
+              return '<div class="ex-line ex-line--edit" data-drag-row>' +
+                '<span class="ex-line__idx ex-line__idx--handle" data-drag-handle aria-label="按住拖动排序">' + pad(i + 1) + '</span>' +
+                '<div class="ex-line__main"><div class="ex-line__name">' + esc(e.ex) + '</div><div class="ex-line__sub">' + e.sets + ' 组 · ' + repsText(e, e.ex) + (isHold(e.ex) ? '' : ' 次') + ' · ' + e.rest + 's · ' + esc(info.equip) + '</div></div>' +
+                '<div class="ex-line__tools">' +
+                  '<button class="lib-add" data-action="tpl-config-ex" data-day-id="' + day.id + '" data-idx="' + i + '" aria-label="调节">' + icon('sliders') + '</button>' +
+                  '<button class="del-btn" data-action="tpl-del-ex" data-day-id="' + day.id + '" data-idx="' + i + '" aria-label="删除动作">' + icon('trash') + '</button>' +
+                '</div>' +
+              '</div>';
+            }).join('') + '</div>' :
+          '<div class="empty" style="margin-top:4px"><b>这个训练日还没有动作</b>点下方按钮从动作库添加。</div>') +
+        '<button class="mini-btn" style="margin-top:8px" data-action="tpl-open-picker" data-day-id="' + day.id + '">' + icon('plus') + '添加动作</button>' +
+      '</div>'
+    ).join('') +
+    '<button class="btn btn--ghost" style="width:100%;margin-top:12px" data-action="tpl-add-day">' + icon('plus') + '添加训练日</button>' +
+    '<p class="warm-note">模板名称必填；每个训练日至少一个动作。保存后可在模板库中预览、复制或再次编辑。</p>',
+    {right:'<button class="text-btn" data-action="tpl-save">保存</button>',
+     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="tpl-save">' + icon('check') + '保存模板</button></div>'}
+  );
+}
+
+function viewTplPicker(dayId){
+  const day = tplDraftDay(dayId);
+  if(!day) return viewTplEdit();
+  return subScreen('添加动作 · ' + day.name, '从动作库选择 · 已添加 ' + day.exercises.length + ' 个',
+    '<div class="search">' + icon('search') + '<input id="lib-search" type="search" placeholder="搜索动作、肌群或器械" value="' + esc(libQuery) + '" autocomplete="off"></div>' +
+    libFilters() +
+    '<div id="lib-results">' + libResultsHtml('tplpick', dayId) + '</div>' +
+    '<p class="form-tip">新动作默认 3 组 × 8-12 次，组间休息 90 秒；添加后回模板编辑页调整。</p>',
+    {right:'<button class="text-btn" data-action="tpl-picker-done">完成</button>',
+     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="tpl-picker-done">完成添加</button></div>'}
   );
 }
 
@@ -3199,7 +3294,7 @@ function sheetHtml(){
   let title = '', sub = '', body = '', foot = '', danger = '';
 
   if(k === 'ex-config'){
-    const day = getDayById(S.plan, SHEET.ctx.dayId);
+    const day = SHEET.ctx.tpl ? tplDraftDay(SHEET.ctx.dayId) : getDayById(S.plan, SHEET.ctx.dayId);
     const e = day && day.exercises[SHEET.ctx.idx];
     if(!e){ SHEET = null; return ''; }
     const hold = isHold(e.ex);
@@ -3355,6 +3450,8 @@ function currentMain(){
     if(sub.name === 'customEx') return viewCustomEx();
     if(sub.name === 'templates') return viewTemplates();
     if(sub.name === 'template') return viewTemplateDetail(sub.id);
+    if(sub.name === 'tplEdit') return viewTplEdit();
+    if(sub.name === 'tplpicker') return viewTplPicker(sub.dayId);
   }
   if(S.ui.tab === 'plan') return viewPlan();
   if(S.ui.tab === 'progress') return viewProgress();
@@ -3403,7 +3500,7 @@ function refreshResults(){
   const box = $('#lib-results');
   const top = topOfStack();
   if(!box || !top) return;
-  const mode = top.name === 'picker' ? 'pick' : 'browse';
+  const mode = top.name === 'picker' ? 'pick' : (top.name === 'tplpicker' ? 'tplpick' : 'browse');
   box.innerHTML = libResultsHtml(mode, top.dayId);
 }
 
@@ -3422,11 +3519,12 @@ function addExercise(dayId, name){
 }
 
 function doCopyTemplate(id){
-  const tpl = templateById(id);
+  const tpl = customTemplateById(id) || TEMPLATES.find(t => t.id === id);
+  if(!tpl) return;
   const goal = S.plan ? S.plan.goal : (S.onboard.goal || 'muscle');
   const freq = S.plan ? S.plan.freq : (S.onboard.freq || 3);
   const start = S.plan ? S.plan.startDate : todayISO();
-  S.plan = buildPlan(id, goal, freq, start);
+  S.plan = buildPlan(tpl, goal, freq, start);
   S.session = null;
   S.selectedDay = 0;
   S.view = 'main';
@@ -3435,6 +3533,65 @@ function doCopyTemplate(id){
   save();
   render();
   toast('已复制「' + tpl.name + '」，可以开始调整');
+}
+
+/* ---------- 自定义模板 ---------- */
+function startNewTemplate(){
+  TPL_DRAFT = {id:uid('tpl'), name:'', days:[emptyTplDay(1)]};
+  libQuery = '';
+  NAV.stack.push({name:'tplEdit'});
+  render();
+}
+function startEditTemplate(id){
+  const t = customTemplateById(id);
+  if(!t) return;
+  TPL_DRAFT = JSON.parse(JSON.stringify(t));
+  libQuery = '';
+  NAV.stack.push({name:'tplEdit'});
+  render();
+}
+function syncTplDraft(){
+  if(!TPL_DRAFT) return;
+  const nameEl = $('#tpl-name');
+  if(nameEl) TPL_DRAFT.name = nameEl.value;
+  $$('.tpl-day-name').forEach(el => {
+    const day = tplDraftDay(el.dataset.dayId);
+    if(day) day.name = el.value;
+  });
+}
+function addTplExercise(dayId, name){
+  const day = tplDraftDay(dayId);
+  if(!day) return false;
+  if(day.exercises.some(e => e.ex === name)){ toast('这个动作已经在训练日里'); return false; }
+  const info = exInfo(name);
+  let cfg;
+  if(info.hold) cfg = {ex:name, sets:3, repsMin:45, repsMax:45, rest:60};
+  else if(info.pattern === '核心') cfg = {ex:name, sets:3, repsMin:12, repsMax:15, rest:60};
+  else cfg = {ex:name, sets:3, repsMin:8, repsMax:12, rest:90};
+  day.exercises.push(cfg);
+  return true;
+}
+function saveTplDraft(){
+  if(!TPL_DRAFT) return;
+  syncTplDraft();
+  const name = (TPL_DRAFT.name || '').trim();
+  if(!name){ toast('请填写模板名称'); return; }
+  if(!TPL_DRAFT.days.length){ toast('至少添加一个训练日'); return; }
+  for(let i=0;i<TPL_DRAFT.days.length;i++){
+    const day = TPL_DRAFT.days[i];
+    day.name = (day.name || '').trim() || ('Day ' + (i + 1));
+    if(!day.exercises.length){ toast('「' + day.name + '」至少添加一个动作'); return; }
+  }
+  TPL_DRAFT.name = name;
+  const clean = JSON.parse(JSON.stringify(TPL_DRAFT));
+  const idx = S.templates.findIndex(t => t.id === clean.id);
+  if(idx >= 0) S.templates[idx] = clean;
+  else S.templates.push(clean);
+  save();
+  TPL_DRAFT = null;
+  NAV.stack = [{name:'templates'}];
+  render();
+  toast('模板已保存');
 }
 
 function syncCustomDraft(){
@@ -3665,8 +3822,56 @@ function handleAction(a, el){
     /* 模板 */
     case 'open-templates': push('templates'); break;
     case 'open-template': push('template', {id:ds.id}); break;
+    case 'open-my-template': push('template', {id:ds.id}); break;
+    case 'new-template': startNewTemplate(); break;
+    case 'tpl-edit': startEditTemplate(ds.id); break;
+    case 'tpl-delete': {
+      const t = customTemplateById(ds.id);
+      if(!t) return;
+      openConfirm({
+        title: '删除「' + t.name + '」？',
+        desc: '只会删除这套自定义模板，已复制出的计划和训练历史不受影响。',
+        okText: '删除模板',
+        danger: true,
+        onOk: () => {
+          S.templates = S.templates.filter(x => x.id !== ds.id);
+          save();
+          NAV.stack = [{name:'templates'}];
+          render();
+          toast('模板已删除');
+        }
+      });
+      break;
+    }
+    case 'tpl-add-day':
+      if(!TPL_DRAFT) return;
+      TPL_DRAFT.days.push(emptyTplDay(TPL_DRAFT.days.length + 1));
+      render({keep:true});
+      break;
+    case 'tpl-del-day': {
+      if(!TPL_DRAFT) return;
+      if(TPL_DRAFT.days.length <= 1){ toast('至少保留一个训练日'); return; }
+      TPL_DRAFT.days = TPL_DRAFT.days.filter(d => d.id !== ds.dayId);
+      render({keep:true});
+      break;
+    }
+    case 'tpl-open-picker': libQuery = ''; push('tplpicker', {dayId:ds.dayId}); break;
+    case 'tpl-picker-add':
+      if(addTplExercise(ds.dayId, ds.ex)){ refreshResults(); toast('已加入训练日'); }
+      break;
+    case 'tpl-picker-done': NAV.stack.pop(); render({keep:true}); break;
+    case 'tpl-config-ex': openSheet('ex-config', {tpl:true, dayId:ds.dayId, idx:+ds.idx}); break;
+    case 'tpl-del-ex': {
+      const day = tplDraftDay(ds.dayId);
+      if(!day) return;
+      day.exercises.splice(+ds.idx, 1);
+      render({keep:true});
+      toast('动作已删除');
+      break;
+    }
+    case 'tpl-save': saveTplDraft(); break;
     case 'copy-template': {
-      const t = TEMPLATES.find(x => x.id === ds.id);
+      const t = customTemplateById(ds.id) || TEMPLATES.find(x => x.id === ds.id);
       if(!t) return;
       openConfirm({
         title: '复制「' + t.name + '」？',
@@ -3734,7 +3939,7 @@ function handleAction(a, el){
       break;
     case 'sheet-step': {
       if(!SHEET || SHEET.kind !== 'ex-config') return;
-      const day = getDayById(S.plan, SHEET.ctx.dayId);
+      const day = SHEET.ctx.tpl ? tplDraftDay(SHEET.ctx.dayId) : getDayById(S.plan, SHEET.ctx.dayId);
       const e = day && day.exercises[SHEET.ctx.idx];
       if(!e) return;
       const f = ds.field, d = +ds.dir;
@@ -3749,17 +3954,17 @@ function handleAction(a, el){
           e.repsMax = Math.max(e.repsMin, Math.min(30, e.repsMax + d));
         }
       }else if(f === 'rest') e.rest = Math.max(15, Math.min(300, e.rest + d * 15));
-      save();
+      if(!SHEET.ctx.tpl) save();
       renderSheet();
       break;
     }
     case 'sheet-del-ex': {
       if(!SHEET) return;
-      const day = getDayById(S.plan, SHEET.ctx.dayId);
+      const day = SHEET.ctx.tpl ? tplDraftDay(SHEET.ctx.dayId) : getDayById(S.plan, SHEET.ctx.dayId);
       if(!day) return;
-      if(day.exercises.length <= 1){ toast('每个训练日至少保留一个动作'); return; }
+      if(!SHEET.ctx.tpl && day.exercises.length <= 1){ toast('每个训练日至少保留一个动作'); return; }
       day.exercises.splice(SHEET.ctx.idx, 1);
-      save();
+      if(!SHEET.ctx.tpl) save();
       closeSheet();
       render({keep:true});
       toast('动作已从训练日移除');
@@ -3854,6 +4059,11 @@ function onInput(e){
     return;
   }
   if(t.id === 'custom-name'){ CUSTOM_DRAFT.name = t.value; }
+  if(t.id === 'tpl-name' && TPL_DRAFT){ TPL_DRAFT.name = t.value; }
+  if(t.classList && t.classList.contains('tpl-day-name')){
+    const day = tplDraftDay(t.dataset.dayId);
+    if(day) day.name = t.value;
+  }
 }
 
 /* ---------- 定时器 ---------- */
@@ -3955,11 +4165,12 @@ function onDragEnd(){
   document.body.classList.remove('is-drag-sorting');
   d.rows.forEach(r => { r.style.transform = ''; });
   if(d.newIdx === d.idx) return;
-  const day = getDayById(S.plan, d.list.dataset.dayId);
+  const tplDayId = d.list.dataset.tplDayId;
+  const day = tplDayId ? tplDraftDay(tplDayId) : getDayById(S.plan, d.list.dataset.dayId);
   if(!day) return;
   const moved = day.exercises.splice(d.idx, 1)[0];
   day.exercises.splice(d.newIdx, 0, moved);
-  save();
+  if(!tplDayId) save();
   render({keep:true});
 }
 
@@ -3999,6 +4210,5 @@ function boot(){
 
 boot();
 </script>
-
-
-</body></html>
+</body>
+</html>

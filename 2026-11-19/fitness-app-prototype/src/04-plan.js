@@ -3,6 +3,14 @@
    ============================================================ */
 
 let CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
+let TPL_DRAFT = null;
+
+function emptyTplDay(n){
+  return {id:uid('td'), name:'Day ' + (n || 1), exercises:[]};
+}
+function tplDraftDay(id){
+  return TPL_DRAFT ? TPL_DRAFT.days.find(d => d.id === id) : null;
+}
 
 function allExNames(){
   return Object.keys(EX_LIB).concat((S.customEx || []).map(c => c.name));
@@ -16,14 +24,15 @@ function libRow(name, mode, dayId){
   const info = exInfo(name);
   const pr = bestWeightOf(name);
   const last = lastLift(name);
-  const already = mode === 'pick' && getDayById(S.plan, dayId) &&
-    getDayById(S.plan, dayId).exercises.some(e => e.ex === name);
-  const right = mode === 'pick' ?
-    '<button class="lib-add ' + (already ? 'is-added' : '') + '" data-action="picker-add" data-ex="' + esc(name) + '" data-day-id="' + dayId + '" aria-label="' + (already ? '已添加' : '添加 ' + name) + '">' +
+  const pick = mode === 'pick' || mode === 'tplpick';
+  const host = mode === 'pick' ? getDayById(S.plan, dayId) : (mode === 'tplpick' ? tplDraftDay(dayId) : null);
+  const already = pick && host && host.exercises.some(e => e.ex === name);
+  const right = pick ?
+    '<button class="lib-add ' + (already ? 'is-added' : '') + '" data-action="' + (mode === 'pick' ? 'picker-add' : 'tpl-picker-add') + '" data-ex="' + esc(name) + '" data-day-id="' + dayId + '" aria-label="' + (already ? '已添加' : '添加 ' + name) + '">' +
       icon(already ? 'check' : 'plus') + '</button>' :
     '<div class="lib-row__pr">' + (info.bw ? '自重' : (pr ? fmtNum(pr) + ' kg' : '—')) + '<s>' + (info.bw ? (info.hold ? '计时' : '次数') : 'PR') + '</s></div>' + icon('chevron-right');
   return '<div class="lib-row">' +
-    '<div class="lib-row__main" ' + (mode === 'pick' ? '' : 'data-action="lib-info" data-ex="' + esc(name) + '" style="cursor:pointer"') + '>' +
+    '<div class="lib-row__main" ' + (pick ? '' : 'data-action="lib-info" data-ex="' + esc(name) + '" style="cursor:pointer"') + '>' +
       '<div class="lib-row__name">' + esc(name) +
         (info.unilateral ? '<span class="mini-tag">单侧</span>' : '') +
         (info.custom ? '<span class="mini-tag mini-tag--acid">自定义</span>' : '') +
@@ -50,7 +59,7 @@ function libResultsHtml(mode, dayId){
   if(!names.length){
     return '<div class="empty" style="margin-top:14px"><b>没有匹配的动作</b>换个关键词，或清空筛选试试。</div>';
   }
-  if(mode === 'pick'){
+  if(mode === 'pick' || mode === 'tplpick'){
     const groups = {};
     names.forEach(n => {
       const p = exInfo(n).pattern;
@@ -60,7 +69,7 @@ function libResultsHtml(mode, dayId){
     return order.filter(p => groups[p]).map(p =>
       '<div class="lib-group">' +
         '<div class="lib-group__head"><h3>' + p + '</h3><span>' + groups[p].length + ' 个</span></div>' +
-        groups[p].map(n => libRow(n, 'pick', dayId)).join('') +
+        groups[p].map(n => libRow(n, mode, dayId)).join('') +
       '</div>'
     ).join('');
   }
@@ -106,7 +115,7 @@ function viewPlan(){
       '</div>' +
       '<div class="plan-hero">' +
         '<div class="plan-hero__top"><span class="tag tag--acid">' + goalName(plan.goal) + '</span><span class="hero__day">每周 ' + plan.freq + ' 练</span></div>' +
-        '<div class="plan-hero__name">' + tpl.name + '</div>' +
+        '<div class="plan-hero__name">' + esc(plan.name || tpl.name) + '</div>' +
         '<div class="plan-hero__meta">' + plan.days.length + ' 个训练日 · ' + totalEx + ' 个动作 · 由模板复制后可自由编辑</div>' +
         '<div class="plan-hero__stats">' +
           '<div class="plan-hero__stat"><b>' + plan.days.length + '</b><span>训练日</span></div>' +
@@ -131,7 +140,7 @@ function viewPlan(){
       '<div class="section-head"><h2>工具</h2><span>动作与模板</span></div>' +
       '<div class="tool-row">' +
         '<button class="tool-card" data-action="open-library">' + icon('dumbbell') + '<span><b>动作库</b><span>25 个核心动作 + 自定义</span></span></button>' +
-        '<button class="tool-card" data-action="open-templates">' + icon('copy') + '<span><b>模板库</b><span>4 套模板可预览复制</span></span></button>' +
+        '<button class="tool-card" data-action="open-templates">' + icon('copy') + '<span><b>模板库</b><span>内置 + 我的模板 · 可预览复制</span></span></button>' +
       '</div>' +
       '<div class="notice">' + icon('info') + '<span>复制模板会替换当前训练日安排，训练历史与身体数据不受影响。</span></div>' +
     '</div>'
@@ -285,8 +294,21 @@ function templateMeta(t){
   return {exCount, sets};
 }
 function viewTemplates(){
-  return subScreen('模板库', '四套内置模板 · 预览后复制',
+  const mine = S.templates || [];
+  return subScreen('模板库', '内置模板 + 我的模板',
     '<p class="pg-sub" style="margin-top:2px">模板决定训练日的动作与组次。复制成自己的计划后，可以在「计划」里自由增删动作、调整顺序和休息。</p>' +
+    '<div class="section-head"><h2>我的模板</h2><span>' + mine.length + ' 套</span></div>' +
+    (mine.length ?
+      '<div>' + mine.map(t => {
+        const m = templateMeta(t);
+        return '<button class="tpl-card" data-action="open-my-template" data-id="' + t.id + '">' +
+          '<span class="tpl-card__row"><span class="tpl-card__name">' + esc(t.name) + '</span><span class="tpl-card__days">' + t.days.length + ' 天</span></span>' +
+          '<span class="tpl-card__sub">' + esc(t.days.map(d => d.name).join(' / ') || '尚未添加训练日') + '</span>' +
+          '<span class="tpl-card__meta"><span>' + m.exCount + ' 个动作</span><span>' + m.sets + ' 组 / 轮</span></span>' +
+          '<span class="tpl-card__tags"><span class="tag tag--acid">我的模板</span></span>' +
+        '</button>';
+      }).join('') + '</div>' :
+      '<div class="empty"><b>还没有自定义模板</b>点右上角「新建模板」，从空白开始搭一套自己的训练日。</div>') +
     '<div class="section-head"><h2>内置模板</h2><span>' + TEMPLATES.length + ' 套</span></div>' +
     '<div>' + TEMPLATES.map(t => {
       const m = templateMeta(t);
@@ -297,36 +319,92 @@ function viewTemplates(){
         '<span class="tpl-card__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
       '</button>';
     }).join('') + '</div>' +
-    '<div class="notice">' + icon('info') + '<span>复制模板只替换训练日安排，不清空训练历史、PR 和身体数据。</span></div>'
+    '<div class="notice">' + icon('info') + '<span>复制模板只替换训练日安排，不清空训练历史、PR 和身体数据。</span></div>',
+    {right:'<button class="text-btn" data-action="new-template">新建模板</button>'}
   );
 }
 
 function viewTemplateDetail(id){
-  const t = TEMPLATES.find(x => x.id === id);
+  const custom = customTemplateById(id);
+  const t = custom || TEMPLATES.find(x => x.id === id);
   if(!t) return viewTemplates();
   const m = templateMeta(t);
   return subScreen(t.name, '模板预览 · ' + m.exCount + ' 个动作',
     '<div class="panel">' +
-      '<div class="panel__label">TEMPLATE / ' + t.id.toUpperCase() + '</div>' +
-      '<div class="panel__title">' + t.sub + '</div>' +
-      '<div class="panel__sub">' + t.desc + '</div>' +
-      '<div class="tpl-card__tags" style="margin-top:10px">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '<span class="tag">建议 ' + t.recFor.join('-') + ' 练</span></div>' +
+      '<div class="panel__label">TEMPLATE / ' + (custom ? '我的模板' : t.id.toUpperCase()) + '</div>' +
+      '<div class="panel__title">' + (custom ? '自定义训练日安排' : t.sub) + '</div>' +
+      '<div class="panel__sub">' + (custom ? '复制成计划后可以继续在「计划」里调整动作与组次。' : t.desc) + '</div>' +
+      '<div class="tpl-card__tags" style="margin-top:10px">' + (custom ? '<span class="tag tag--acid">我的模板</span>' : t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '<span class="tag">建议 ' + t.recFor.join('-') + ' 练</span>') + '</div>' +
     '</div>' +
     '<div class="section-head"><h2>训练日安排</h2><span>' + t.days.length + ' 天 / 轮</span></div>' +
     '<div class="panel" style="padding:2px 14px">' +
       t.days.map((d, i) => {
         const sets = d.exercises.reduce((a, e) => a + e.sets, 0);
         return '<div class="tpl-day">' +
-          '<div class="tpl-day__head"><div><div class="tpl-day__name">' + pad(i+1) + ' · ' + d.name + '</div><div class="tpl-day__focus">' + d.focus + '</div></div><div class="tpl-day__meta">' + sets + ' 组</div></div>' +
+          '<div class="tpl-day__head"><div><div class="tpl-day__name">' + pad(i+1) + ' · ' + esc(d.name) + '</div>' + (d.focus ? '<div class="tpl-day__focus">' + esc(d.focus) + '</div>' : '') + '</div><div class="tpl-day__meta">' + sets + ' 组</div></div>' +
           '<div style="margin-top:8px">' + d.exercises.map(e =>
-            '<div class="tpl-ex"><span>' + e.ex + '</span><span>' + e.sets + ' × ' + (isHold(e.ex) ? e.repsMax + '秒' : (e.repsMin === e.repsMax ? e.repsMin : e.repsMin + '-' + e.repsMax)) + ' · ' + e.rest + 's</span></div>'
+            '<div class="tpl-ex"><span>' + esc(e.ex) + '</span><span>' + e.sets + ' × ' + (isHold(e.ex) ? e.repsMax + '秒' : (e.repsMin === e.repsMax ? e.repsMin : e.repsMin + '-' + e.repsMax)) + ' · ' + e.rest + 's</span></div>'
           ).join('') + '</div>' +
           '<div class="tpl-day__focus" style="margin-top:8px">腹部收尾：' + ABS_PAIRS[i % ABS_PAIRS.length].join(' + ') + '</div>' +
         '</div>';
       }).join('') +
     '</div>' +
     '<div class="notice">' + icon('info') + '<span>复制后会按你当前的每周训练频率重新排入本周，已有训练历史保留。</span></div>',
-    {right:'<button class="text-btn" data-action="copy-template" data-id="' + t.id + '">复制</button>',
-     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'}
+    custom ?
+      {right:'<div style="display:flex;gap:2px"><button class="text-btn" data-action="tpl-edit" data-id="' + t.id + '">编辑</button><button class="text-btn" data-action="tpl-delete" data-id="' + t.id + '">删除</button></div>',
+       foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'} :
+      {right:'<button class="text-btn" data-action="copy-template" data-id="' + t.id + '">复制</button>',
+       foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'}
+  );
+}
+
+/* ---------- 自定义模板编辑 ---------- */
+function viewTplEdit(){
+  const d = TPL_DRAFT;
+  if(!d) return viewTemplates();
+  return subScreen('编辑模板 · ' + (d.name || '未命名'), '拖动排序 · 调整组次 · 保存后进入模板库',
+    '<div class="form-row" style="margin-top:2px"><label class="form-label">模板名称</label>' +
+      '<input class="form-input tpl-name" id="tpl-name" type="text" maxlength="20" placeholder="例如：我的推拉腿" value="' + esc(d.name) + '"></div>' +
+    d.days.map(day =>
+      '<div class="tpl-edit-day">' +
+        '<div class="tpl-edit-day__head">' +
+          '<input class="form-input tpl-day-name" data-day-id="' + day.id + '" type="text" maxlength="16" placeholder="训练日名称" value="' + esc(day.name) + '" aria-label="训练日名称">' +
+          '<button class="del-btn" data-action="tpl-del-day" data-day-id="' + day.id + '" aria-label="删除训练日">' + icon('trash') + '</button>' +
+        '</div>' +
+        '<div class="section-head" style="margin-top:2px"><h2>动作</h2><span>' + day.exercises.length + ' 个</span></div>' +
+        (day.exercises.length ?
+          '<div class="panel ex-edit-list" data-drag-list data-tpl-day-id="' + day.id + '" style="padding:2px 12px">' +
+            day.exercises.map((e, i) => {
+              const info = exInfo(e.ex);
+              return '<div class="ex-line ex-line--edit" data-drag-row>' +
+                '<span class="ex-line__idx ex-line__idx--handle" data-drag-handle aria-label="按住拖动排序">' + pad(i + 1) + '</span>' +
+                '<div class="ex-line__main"><div class="ex-line__name">' + esc(e.ex) + '</div><div class="ex-line__sub">' + e.sets + ' 组 · ' + repsText(e, e.ex) + (isHold(e.ex) ? '' : ' 次') + ' · ' + e.rest + 's · ' + esc(info.equip) + '</div></div>' +
+                '<div class="ex-line__tools">' +
+                  '<button class="lib-add" data-action="tpl-config-ex" data-day-id="' + day.id + '" data-idx="' + i + '" aria-label="调节">' + icon('sliders') + '</button>' +
+                  '<button class="del-btn" data-action="tpl-del-ex" data-day-id="' + day.id + '" data-idx="' + i + '" aria-label="删除动作">' + icon('trash') + '</button>' +
+                '</div>' +
+              '</div>';
+            }).join('') + '</div>' :
+          '<div class="empty" style="margin-top:4px"><b>这个训练日还没有动作</b>点下方按钮从动作库添加。</div>') +
+        '<button class="mini-btn" style="margin-top:8px" data-action="tpl-open-picker" data-day-id="' + day.id + '">' + icon('plus') + '添加动作</button>' +
+      '</div>'
+    ).join('') +
+    '<button class="btn btn--ghost" style="width:100%;margin-top:12px" data-action="tpl-add-day">' + icon('plus') + '添加训练日</button>' +
+    '<p class="warm-note">模板名称必填；每个训练日至少一个动作。保存后可在模板库中预览、复制或再次编辑。</p>',
+    {right:'<button class="text-btn" data-action="tpl-save">保存</button>',
+     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="tpl-save">' + icon('check') + '保存模板</button></div>'}
+  );
+}
+
+function viewTplPicker(dayId){
+  const day = tplDraftDay(dayId);
+  if(!day) return viewTplEdit();
+  return subScreen('添加动作 · ' + day.name, '从动作库选择 · 已添加 ' + day.exercises.length + ' 个',
+    '<div class="search">' + icon('search') + '<input id="lib-search" type="search" placeholder="搜索动作、肌群或器械" value="' + esc(libQuery) + '" autocomplete="off"></div>' +
+    libFilters() +
+    '<div id="lib-results">' + libResultsHtml('tplpick', dayId) + '</div>' +
+    '<p class="form-tip">新动作默认 3 组 × 8-12 次，组间休息 90 秒；添加后回模板编辑页调整。</p>',
+    {right:'<button class="text-btn" data-action="tpl-picker-done">完成</button>',
+     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="tpl-picker-done">完成添加</button></div>'}
   );
 }

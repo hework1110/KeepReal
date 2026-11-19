@@ -185,7 +185,7 @@ function viewToday(){
         '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
         '<span class="plan-pill"><i></i>' + goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练</span>' +
       '</div>' +
-      '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + tpl.name + '</span></div>' +
+      '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + esc(plan.name || tpl.name) + '</span></div>' +
       '<div class="home-title-row"><h1 class="home-title">' + (sel === 0 ? '今天' : day.dow) + '</h1><span class="home-day-idx">DAY ' + pad(sel + 1) + ' / 07</span></div>' +
       weekStrip(plan, sel) +
     '</header>' +
@@ -221,7 +221,7 @@ function viewMe(){
       '<div class="pg-head"><div><div class="pg-eyebrow">PROFILE / 本机</div><h1 class="pg-title">我的</h1></div></div>' +
       '<div class="me-hero">' +
         '<div class="me-avatar">K</div>' +
-        '<div><div class="me-name" data-action="edit-name" title="点击改名">' + esc(S.profile.name) + '</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + tpl.name : '还没有训练计划') + '</div></div>' +
+        '<div><div class="me-name" data-action="edit-name" title="点击改名">' + esc(S.profile.name) + '</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + esc(plan.name || tpl.name) : '还没有训练计划') + '</div></div>' +
       '</div>' +
       '<div class="stat-grid" style="margin-top:18px">' +
         '<div><span>累计训练</span><b>' + trainCount + '<small>次</small></b></div>' +
@@ -237,8 +237,8 @@ function viewMe(){
         '</button>' +
         '<button class="menu-row" data-action="open-templates">' +
           '<span class="menu-row__icon">' + icon('copy') + '</span>' +
-          '<span class="menu-row__main"><span class="menu-row__title">模板库</span><span class="menu-row__sub">四套内置模板 · 可复制再改</span></span>' +
-          '<span class="menu-row__right">' + templateById(plan ? plan.templateId : 'fb').name + icon('chevron-right') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">模板库</span><span class="menu-row__sub">内置模板 + 我的模板 · 可复制再改</span></span>' +
+          '<span class="menu-row__right">' + esc(plan ? (plan.name || templateById(plan.templateId).name) : '四套内置模板') + icon('chevron-right') + '</span>' +
         '</button>' +
         '<button class="menu-row" data-action="open-library">' +
           '<span class="menu-row__icon">' + icon('dumbbell') + '</span>' +

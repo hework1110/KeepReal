@@ -52,7 +52,12 @@ function shortDate(iso){
 }
 function todayISO(){ return isoOf(new Date()); }
 function goalName(id){ const g = GOALS.find(x => x.id === id); return g ? g.name : ''; }
-function templateById(id){ return TEMPLATES.find(t => t.id === id) || TEMPLATES[0]; }
+function templateById(id){
+  return customTemplateById(id) || TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
+}
+function customTemplateById(id){
+  return (S.templates || []).find(t => t.id === id) || null;
+}
 function roundStep(w, step){
   step = step || 1;
   return Math.round(w / step) * step;
@@ -95,6 +100,7 @@ function defaultState(){
     body: {weights:[], measures:[], cardio:[]},
     profile: {name:'训练者 01'},
     customEx: [],
+    templates: [],
     demo: false,
     view: 'onboarding',
     selectedDay: 0,
@@ -126,6 +132,11 @@ function normalizeState(p){
   if(!st.plan || !Array.isArray(st.plan.days) || !st.plan.days.length) st.plan = null;
   if(!Array.isArray(st.history)) st.history = [];
   if(!Array.isArray(st.customEx)) st.customEx = [];
+  if(!Array.isArray(st.templates)) st.templates = [];
+  st.templates.forEach(t => {
+    if(!Array.isArray(t.days)) t.days = [];
+    t.days.forEach(d => { if(!Array.isArray(d.exercises)) d.exercises = []; });
+  });
   if(!st.body.weights) st.body.weights = [];
   if(!st.body.measures) st.body.measures = [];
   if(!st.body.cardio) st.body.cardio = [];
@@ -256,7 +267,7 @@ function planDaysFromTemplate(tpl){
     id: 'd' + (i + 1),
     srcId: legacy[i] || (tpl.id + '-' + (i + 1)),
     name: d.name,
-    focus: d.focus,
+    focus: d.focus || '自定义训练日',
     exercises: d.exercises.map(e => ({ex:e.ex, sets:e.sets, repsMin:e.repsMin, repsMax:e.repsMax, rest:e.rest})),
     abs: ABS_PAIRS[i % ABS_PAIRS.length].slice()
   }));
@@ -283,10 +294,11 @@ function buildSchedule(days, freq){
 }
 
 function buildPlan(templateId, goal, freq, startDate){
-  const tpl = templateById(templateId);
+  const tpl = typeof templateId === 'string' ? templateById(templateId) : templateId;
   const days = planDaysFromTemplate(tpl);
   return {
-    templateId, goal, freq,
+    templateId: tpl.id,
+    goal, freq,
     name: tpl.name,
     createdAt: Date.now(),
     startDate: startDate || todayISO(),
