@@ -622,20 +622,23 @@
   }
   .chip:hover{border-color:var(--line-2);color:var(--text)}
   .chip.is-on{border-color:var(--acid);color:var(--acid);background:var(--acid-soft)}
-  .ex-scroll{position:relative;margin-top:2px}
-  .ex-scroll__list{padding-right:40px}
+  .ex-scroll{position:relative;margin-top:2px;padding-right:38px}
+  .ex-scroll__list{padding-right:10px}
   .ex-scroll__mask{
-    position:absolute;top:0;right:0;bottom:0;width:54px;pointer-events:none;
+    position:absolute;top:0;right:38px;bottom:0;width:46px;pointer-events:none;z-index:2;
     background:linear-gradient(90deg,rgba(8,10,9,0) 0%,var(--bg) 78%);
     opacity:0;transition:opacity .18s;
   }
   .ex-scroll__more{
-    position:absolute;right:9px;top:50%;transform:translateY(-50%);
-    width:22px;height:22px;display:grid;place-items:center;border-radius:999px;
-    background:var(--bg);color:var(--dim);font-size:14px;letter-spacing:1px;
-    pointer-events:none;opacity:0;transition:opacity .18s;
+    position:absolute;right:0;top:50%;transform:translateY(-50%);z-index:3;
+    width:28px;height:28px;display:grid;place-items:center;border-radius:999px;
+    border:1px solid var(--line);background:var(--bg);color:var(--sub);
+    font-family:inherit;font-size:14px;line-height:1;letter-spacing:1px;
+    cursor:pointer;opacity:0;pointer-events:none;transition:opacity .18s,color .16s,border-color .16s;
   }
-  .ex-scroll.is-more .ex-scroll__mask,.ex-scroll.is-more .ex-scroll__more{opacity:1}
+  .ex-scroll__more:hover{color:var(--acid);border-color:var(--acid)}
+  .ex-scroll.is-more .ex-scroll__mask{opacity:1}
+  .ex-scroll.is-more .ex-scroll__more{opacity:1;pointer-events:auto}
   .chip--add{display:inline-flex;align-items:center;justify-content:center;width:28px;padding:0}
   .chip--add .icon{width:13px;height:13px}
   .chip--input{width:86px;padding:0 9px;border-color:var(--acid);color:var(--text);font-family:var(--font-cn);outline:none;cursor:text}
@@ -961,6 +964,15 @@
   }
   .sheet__danger:hover{background:rgba(255,106,77,.1)}
   .sheet__danger .icon{width:13px;height:13px}
+  .ex-pick{max-height:min(52vh,340px);overflow-y:auto;overscroll-behavior:contain;margin-top:10px;border-top:1px solid var(--line)}
+  .ex-pick::-webkit-scrollbar{display:none}
+  .ex-pick__row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;height:46px;
+    padding:0 2px;border:0;border-bottom:1px solid var(--line);background:transparent;
+    color:var(--text);font-family:inherit;font-size:12.5px;text-align:left;cursor:pointer;
+  }
+  .ex-pick__row:hover,.ex-pick__row.is-on{color:var(--acid)}
+  .ex-pick__now{font-size:9.5px;color:var(--acid);border:1px solid var(--acid);border-radius:999px;padding:2px 7px}
 
   .stepper{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
   .stepper:last-child{border-bottom:0}
@@ -2768,7 +2780,7 @@ function viewProgress(){
             '<button class="chip ' + (n === sel ? 'is-on' : '') + '" data-action="progress-ex" data-ex="' + esc(n) + '">' + esc(n) + '</button>'
           ).join('') + '</div>' +
           '<div class="ex-scroll__mask" aria-hidden="true"></div>' +
-          '<span class="ex-scroll__more" aria-hidden="true">…</span>' +
+          '<button class="ex-scroll__more" data-action="progress-more" aria-label="查看全部动作">…</button>' +
         '</div>' : '') +
       (sel ?
         '<div class="chart-card" style="margin-top:10px">' +
@@ -3407,6 +3419,15 @@ function sheetHtml(){
         '<input class="form-input" id="sheet-speed" type="number" step="0.1" min="0" max="40" inputmode="decimal" placeholder="' + (type === '划船机' ? '可留空' : '5.5') + '"></div>' +
       '<p class="form-tip">跑步和单车的坡度可以留空；速度按器械显示填写，不填也能保存。</p>';
     foot = '<div class="sheet__foot"><button class="btn btn--ghost" data-action="sheet-close">取消</button><button class="btn btn--primary" data-action="sheet-save">保存记录</button></div>';
+  }else if(k === 'progress-ex'){
+    const names = SHEET.ctx.names || [];
+    title = '选择动作';
+    sub = '当前时间范围内有记录的动作 · 共 ' + names.length + ' 项';
+    body = '<div class="ex-pick">' + names.map(n =>
+        '<button class="ex-pick__row ' + (n === S.ui.progressEx ? 'is-on' : '') + '" data-action="sheet-pick-ex" data-value="' + esc(n) + '">' +
+          '<span>' + esc(n) + '</span>' +
+          (n === S.ui.progressEx ? '<span class="ex-pick__now">当前</span>' : '') +
+        '</button>').join('') + '</div>';
   }
 
   return '<div class="sheet-backdrop" data-action="sheet-close"></div>' +
@@ -3455,6 +3476,14 @@ function syncExScroll(box){
   if(!list) return;
   box.classList.toggle('is-more', list.scrollWidth - list.clientWidth - list.scrollLeft > 4);
 }
+/* 渲染后把横向 chip 列表滚到当前选中项 */
+function scrollExChipToSel(box){
+  const list = box && $('.ex-scroll__list', box);
+  const on = list && $('.chip.is-on', list);
+  if(!list || !on) return;
+  const target = on.offsetLeft - (list.clientWidth - on.offsetWidth) / 2;
+  list.scrollLeft = Math.max(0, Math.min(target, list.scrollWidth - list.clientWidth));
+}
 
 function render(opts){
   const keep = !!(opts && opts.keep);
@@ -3468,7 +3497,7 @@ function render(opts){
   else if(S.view === 'summary') html = viewSummary();
   else html = currentMain();
   app.innerHTML = html;
-  $$('.ex-scroll', app).forEach(syncExScroll);
+  $$('.ex-scroll', app).forEach(box => { scrollExChipToSel(box); syncExScroll(box); });
   if(keep){
     requestAnimationFrame(() => {
       const b = $('.screen__body');
@@ -3928,6 +3957,17 @@ function handleAction(a, el){
 
     /* 进步 */
     case 'progress-ex': S.ui.progressEx = ds.ex; save(); render({keep:true}); break;
+    case 'progress-more': {
+      const opt = PROGRESS_RANGES.find(o => o.id === S.ui.progressRange) || PROGRESS_RANGES.find(o => o.id === '1w');
+      openSheet('progress-ex', {names: historyExNames(opt.days)});
+      break;
+    }
+    case 'sheet-pick-ex':
+      S.ui.progressEx = ds.value;
+      save();
+      closeSheet();
+      render({keep:true});
+      break;
     case 'pr-all': S.ui.prAll = !S.ui.prAll; save(); render({keep:true}); break;
 
     /* 身体 */

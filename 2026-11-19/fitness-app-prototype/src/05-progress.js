@@ -275,7 +275,7 @@ function viewProgress(){
             '<button class="chip ' + (n === sel ? 'is-on' : '') + '" data-action="progress-ex" data-ex="' + esc(n) + '">' + esc(n) + '</button>'
           ).join('') + '</div>' +
           '<div class="ex-scroll__mask" aria-hidden="true"></div>' +
-          '<span class="ex-scroll__more" aria-hidden="true">…</span>' +
+          '<button class="ex-scroll__more" data-action="progress-more" aria-label="查看全部动作">…</button>' +
         '</div>' : '') +
       (sel ?
         '<div class="chart-card" style="margin-top:10px">' +

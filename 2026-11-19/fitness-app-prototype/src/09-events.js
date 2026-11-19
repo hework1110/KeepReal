@@ -182,6 +182,15 @@ function sheetHtml(){
         '<input class="form-input" id="sheet-speed" type="number" step="0.1" min="0" max="40" inputmode="decimal" placeholder="' + (type === '划船机' ? '可留空' : '5.5') + '"></div>' +
       '<p class="form-tip">跑步和单车的坡度可以留空；速度按器械显示填写，不填也能保存。</p>';
     foot = '<div class="sheet__foot"><button class="btn btn--ghost" data-action="sheet-close">取消</button><button class="btn btn--primary" data-action="sheet-save">保存记录</button></div>';
+  }else if(k === 'progress-ex'){
+    const names = SHEET.ctx.names || [];
+    title = '选择动作';
+    sub = '当前时间范围内有记录的动作 · 共 ' + names.length + ' 项';
+    body = '<div class="ex-pick">' + names.map(n =>
+        '<button class="ex-pick__row ' + (n === S.ui.progressEx ? 'is-on' : '') + '" data-action="sheet-pick-ex" data-value="' + esc(n) + '">' +
+          '<span>' + esc(n) + '</span>' +
+          (n === S.ui.progressEx ? '<span class="ex-pick__now">当前</span>' : '') +
+        '</button>').join('') + '</div>';
   }
 
   return '<div class="sheet-backdrop" data-action="sheet-close"></div>' +
@@ -230,6 +239,14 @@ function syncExScroll(box){
   if(!list) return;
   box.classList.toggle('is-more', list.scrollWidth - list.clientWidth - list.scrollLeft > 4);
 }
+/* 渲染后把横向 chip 列表滚到当前选中项 */
+function scrollExChipToSel(box){
+  const list = box && $('.ex-scroll__list', box);
+  const on = list && $('.chip.is-on', list);
+  if(!list || !on) return;
+  const target = on.offsetLeft - (list.clientWidth - on.offsetWidth) / 2;
+  list.scrollLeft = Math.max(0, Math.min(target, list.scrollWidth - list.clientWidth));
+}
 
 function render(opts){
   const keep = !!(opts && opts.keep);
@@ -243,7 +260,7 @@ function render(opts){
   else if(S.view === 'summary') html = viewSummary();
   else html = currentMain();
   app.innerHTML = html;
-  $$('.ex-scroll', app).forEach(syncExScroll);
+  $$('.ex-scroll', app).forEach(box => { scrollExChipToSel(box); syncExScroll(box); });
   if(keep){
     requestAnimationFrame(() => {
       const b = $('.screen__body');
@@ -703,6 +720,17 @@ function handleAction(a, el){
 
     /* 进步 */
     case 'progress-ex': S.ui.progressEx = ds.ex; save(); render({keep:true}); break;
+    case 'progress-more': {
+      const opt = PROGRESS_RANGES.find(o => o.id === S.ui.progressRange) || PROGRESS_RANGES.find(o => o.id === '1w');
+      openSheet('progress-ex', {names: historyExNames(opt.days)});
+      break;
+    }
+    case 'sheet-pick-ex':
+      S.ui.progressEx = ds.value;
+      save();
+      closeSheet();
+      render({keep:true});
+      break;
     case 'pr-all': S.ui.prAll = !S.ui.prAll; save(); render({keep:true}); break;
 
     /* 身体 */
