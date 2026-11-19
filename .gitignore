@@ -158,3 +158,8 @@ vite.config.ts.timestamp-*
 
 # 原型中间产物（截图、本地验证脚本等）
 work/
+
+# 构建产物与本地环境
+unpackage/
+.DS_Store
+.trae-html-share-packages/
