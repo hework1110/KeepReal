@@ -1,0 +1,70 @@
+{
+  "pages": [
+    {
+      "path": "pages/today/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/plan/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/progress/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/body/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/me/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationStyle": "custom",
+    "backgroundColor": "#080A09",
+    "backgroundColorTop": "#080A09",
+    "backgroundColorBottom": "#080A09",
+    "navigationBarBackgroundColor": "#080A09",
+    "navigationBarTextStyle": "white"
+  },
+  "tabBar": {
+    "color": "#65716A",
+    "selectedColor": "#C7FF3A",
+    "backgroundColor": "#0E1210",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/today/index",
+        "text": "今天"
+      },
+      {
+        "pagePath": "pages/plan/index",
+        "text": "计划"
+      },
+      {
+        "pagePath": "pages/progress/index",
+        "text": "进步"
+      },
+      {
+        "pagePath": "pages/body/index",
+        "text": "身体"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "我的"
+      }
+    ]
+  }
+}
