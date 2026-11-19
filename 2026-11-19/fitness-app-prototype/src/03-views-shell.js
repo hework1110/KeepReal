@@ -221,7 +221,7 @@ function viewMe(){
       '<div class="pg-head"><div><div class="pg-eyebrow">PROFILE / 本机</div><h1 class="pg-title">我的</h1></div></div>' +
       '<div class="me-hero">' +
         '<div class="me-avatar">K</div>' +
-        '<div><div class="me-name">训练者 01</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + tpl.name : '还没有训练计划') + '</div></div>' +
+        '<div><div class="me-name" data-action="edit-name" title="点击改名">' + esc(S.profile.name) + '</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + tpl.name : '还没有训练计划') + '</div></div>' +
       '</div>' +
       '<div class="stat-grid" style="margin-top:18px">' +
         '<div><span>累计训练</span><b>' + trainCount + '<small>次</small></b></div>' +

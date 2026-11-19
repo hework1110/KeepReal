@@ -17,6 +17,41 @@ function toast(msg, ms){
   }, ms || 2400);
 }
 
+/* 我的页：点击称呼就地改名 */
+function startNameEdit(){
+  const el = document.querySelector('.me-name');
+  if(!el || el.querySelector('input')) return;
+  const old = S.profile.name;
+  const input = document.createElement('input');
+  input.className = 'me-name-input';
+  input.type = 'text';
+  input.maxLength = 12;
+  input.value = old;
+  input.setAttribute('aria-label', '训练者名称');
+  el.textContent = '';
+  el.appendChild(input);
+  input.focus();
+  input.select();
+  let done = false;
+  const commit = () => {
+    if(done) return;
+    done = true;
+    const v = input.value.trim();
+    if(v && v !== old){ S.profile.name = v; save(); }
+    el.textContent = S.profile.name;
+  };
+  const cancel = () => {
+    if(done) return;
+    done = true;
+    el.textContent = old;
+  };
+  input.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); input.blur(); }
+    else if(e.key === 'Escape'){ e.preventDefault(); cancel(); }
+  });
+  input.addEventListener('blur', () => { if(!done) commit(); });
+}
+
 function openConfirm(o){
   MODAL = o;
   const root = $('#modal-root');
@@ -111,7 +146,9 @@ function sheetHtml(){
         '<input class="form-input" id="sheet-date" type="date" value="' + todayISO() + '" max="' + todayISO() + '"></div>' +
       '<div class="form-row"><label class="form-label">体重 <span>kg</span></label>' +
         '<input class="form-input" id="sheet-kg" type="number" step="0.1" min="20" max="300" inputmode="decimal" placeholder="例如 72.4" value="' + (last ? fmtNum(last.kg) : '') + '"></div>' +
-      '<p class="form-tip">同一天重复记录会覆盖当天数值；曲线里的绿色线是 7 日移动平均。</p>';
+      '<div class="form-row"><label class="form-label">体脂率 <span>% · 选填</span></label>' +
+        '<input class="form-input" id="sheet-bf" type="number" step="0.1" min="3" max="60" inputmode="decimal" placeholder="例如 18.2，可留空"></div>' +
+      '<p class="form-tip">体重和体脂至少填一项；同一天重复记录会覆盖当天数值，曲线里的绿色线是 7 日移动平均。</p>';
     foot = '<div class="sheet__foot"><button class="btn btn--ghost" data-action="sheet-close">取消</button><button class="btn btn--primary" data-action="sheet-save">保存记录</button></div>';
   }else if(k === 'add-measure'){
     const m = measuresAsc().length ? measuresAsc()[measuresAsc().length - 1] : {};
@@ -485,19 +522,6 @@ function handleAction(a, el){
       break;
     }
     case 'open-picker': libQuery = ''; push('picker', {dayId:ds.dayId}); break;
-    case 'move-ex': {
-      const top = topOfStack();
-      const day = top && getDayById(S.plan, top.dayId);
-      if(!day) return;
-      const i = +ds.idx, j = i + (+ds.dir);
-      if(j < 0 || j >= day.exercises.length) return;
-      const tmp = day.exercises[i];
-      day.exercises[i] = day.exercises[j];
-      day.exercises[j] = tmp;
-      save();
-      render({keep:true});
-      break;
-    }
     case 'config-ex': {
       const top = topOfStack();
       if(top) openSheet('ex-config', {dayId:top.dayId, idx:+ds.idx});
@@ -560,6 +584,7 @@ function handleAction(a, el){
     case 'pr-all': S.ui.prAll = !S.ui.prAll; save(); render({keep:true}); break;
 
     /* 身体 */
+    case 'edit-name': startNameEdit(); break;
     case 'add-weight': openSheet('add-weight'); break;
     case 'add-measure': openSheet('add-measure'); break;
     case 'add-cardio': openSheet('add-cardio'); break;
@@ -654,15 +679,23 @@ function handleAction(a, el){
       const kind = SHEET.kind;
       if(kind === 'add-weight'){
         const date = ($('#sheet-date') || {}).value || todayISO();
-        const kg = parseFloat(($('#sheet-kg') || {}).value);
-        if(!(kg >= 20 && kg <= 300)){ toast('请输入 20-300 kg 之间的体重'); return; }
+        const kgRaw = (($('#sheet-kg') || {}).value || '').trim();
+        const bfRaw = (($('#sheet-bf') || {}).value || '').trim();
+        if(!kgRaw && !bfRaw){ toast('请至少填写体重或体脂率'); return; }
+        const kg = parseFloat(kgRaw);
+        const bf = parseFloat(bfRaw);
+        if(kgRaw && !(kg >= 20 && kg <= 300)){ toast('请输入 20-300 kg 之间的体重'); return; }
+        if(bfRaw && !(bf >= 3 && bf <= 60)){ toast('请输入 3-60% 之间的体脂率'); return; }
+        const patch = {};
+        if(kgRaw) patch.kg = Math.round(kg * 10) / 10;
+        if(bfRaw) patch.bf = Math.round(bf * 10) / 10;
         const same = S.body.weights.find(w => w.date === date);
-        if(same) same.kg = Math.round(kg * 10) / 10;
-        else S.body.weights.push({id:uid('w'), date, kg:Math.round(kg * 10) / 10});
+        if(same) Object.assign(same, patch);
+        else S.body.weights.push(Object.assign({id:uid('w'), date, kg:0}, patch));
         save();
         closeSheet();
         render({keep:true});
-        toast(same ? '当天体重已更新' : '体重已记录');
+        toast(same ? '当天记录已更新' : '记录已保存');
       }else if(kind === 'add-measure'){
         const date = ($('#sheet-date') || {}).value || todayISO();
         const vals = {};
@@ -754,6 +787,83 @@ function tick(){
   }
 }
 
+/* ---------- 拖动排序（计划编辑） ---------- */
+let DRAG = null;
+
+function startDrag(e, handle){
+  if(DRAG) return;
+  if(e.pointerType === 'mouse' && e.button !== 0) return;
+  const row = handle.closest('[data-drag-row]');
+  const list = row && row.closest('[data-drag-list]');
+  if(!row || !list) return;
+  const rows = Array.prototype.slice.call(list.querySelectorAll('[data-drag-row]'));
+  const idx = rows.indexOf(row);
+  if(idx < 0) return;
+  e.preventDefault();
+  const rect = row.getBoundingClientRect();
+  DRAG = {
+    row, list, rows, idx, newIdx: idx, handle, pointerId: e.pointerId,
+    startY: e.clientY, center: rect.top + rect.height / 2,
+    rowH: rect.height,
+    tops: rows.map(r => r.getBoundingClientRect().top),
+    heights: rows.map(r => r.offsetHeight)
+  };
+  row.classList.add('is-dragging');
+  list.classList.add('is-sorting');
+  document.body.classList.add('is-drag-sorting');
+  row.style.transform = 'translate3d(0,0,0) scale(1.01)';
+  try{ handle.setPointerCapture(e.pointerId); }catch(_){}
+  document.addEventListener('pointermove', onDragMove, {passive:false});
+  document.addEventListener('pointerup', onDragEnd);
+  document.addEventListener('pointercancel', onDragEnd);
+  window.addEventListener('wheel', blockDragWheel, {passive:false});
+}
+
+function blockDragWheel(e){ e.preventDefault(); }
+
+function onDragMove(e){
+  if(!DRAG || e.pointerId !== DRAG.pointerId) return;
+  e.preventDefault();
+  const dy = e.clientY - DRAG.startY;
+  DRAG.row.style.transform = 'translate3d(0,' + dy + 'px,0) scale(1.01)';
+  const center = DRAG.center + dy;
+  let idx = 0;
+  DRAG.rows.forEach((r, i) => {
+    if(i === DRAG.idx) return;
+    if(DRAG.tops[i] + DRAG.heights[i] / 2 < center) idx++;
+  });
+  DRAG.newIdx = idx;
+  DRAG.rows.forEach((r, i) => {
+    if(i === DRAG.idx) return;
+    let shift = 0;
+    if(idx < DRAG.idx && i >= idx && i < DRAG.idx) shift = DRAG.rowH;
+    else if(idx > DRAG.idx && i > DRAG.idx && i <= idx) shift = -DRAG.rowH;
+    r.style.transform = shift ? 'translate3d(0,' + shift + 'px,0)' : '';
+  });
+}
+
+function onDragEnd(){
+  if(!DRAG) return;
+  const d = DRAG;
+  DRAG = null;
+  document.removeEventListener('pointermove', onDragMove);
+  document.removeEventListener('pointerup', onDragEnd);
+  document.removeEventListener('pointercancel', onDragEnd);
+  window.removeEventListener('wheel', blockDragWheel);
+  try{ d.handle.releasePointerCapture(d.pointerId); }catch(_){}
+  d.row.classList.remove('is-dragging');
+  d.list.classList.remove('is-sorting');
+  document.body.classList.remove('is-drag-sorting');
+  d.rows.forEach(r => { r.style.transform = ''; });
+  if(d.newIdx === d.idx) return;
+  const day = getDayById(S.plan, d.list.dataset.dayId);
+  if(!day) return;
+  const moved = day.exercises.splice(d.idx, 1)[0];
+  day.exercises.splice(d.newIdx, 0, moved);
+  save();
+  render({keep:true});
+}
+
 /* ---------- 启动 ---------- */
 function boot(){
   S = loadState();
@@ -774,6 +884,10 @@ function boot(){
     handleAction(el.dataset.action, el);
   });
   document.addEventListener('input', onInput);
+  document.addEventListener('pointerdown', e => {
+    const handle = e.target.closest && e.target.closest('[data-drag-handle]');
+    if(handle) startDrag(e, handle);
+  });
   document.addEventListener('keydown', e => {
     if(e.key === 'Escape'){
       if(SHEET){ closeSheet(); render({keep:true}); }

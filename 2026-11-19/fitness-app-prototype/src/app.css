@@ -159,6 +159,21 @@
   .ex-line__sub{font-size:9.5px;color:var(--dim);margin-top:3px;line-height:1.45}
   .ex-line__right{flex:none;text-align:right;font-family:var(--font-mono);font-size:10px;color:var(--sub);line-height:1.5}
   .ex-line__right s{display:block;color:#4E5A52;font-size:9px;text-decoration:none}
+  .ex-line__tools{flex:none;display:flex;gap:4px;align-items:center}
+  /* 计划编辑：按住序号拖动排序 */
+  .ex-edit-list.is-sorting{user-select:none}
+  .ex-line--edit{position:relative;transition:transform .16s cubic-bezier(.2,.8,.2,1),box-shadow .16s,background .16s}
+  .ex-line--edit .ex-line__idx--handle{
+    width:26px;margin-left:-4px;align-self:stretch;display:flex;align-items:flex-start;justify-content:center;
+    padding-top:12px;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  }
+  .ex-line--edit .ex-line__idx--handle:active{cursor:grabbing}
+  .ex-line--edit.is-dragging{
+    transition:none;z-index:6;border-radius:var(--r2);border-bottom-color:transparent;
+    background:#141A16;box-shadow:0 14px 30px rgba(0,0,0,.6),0 0 0 1px var(--acid-line);
+  }
+  .ex-line--edit.is-dragging .ex-line__idx--handle{cursor:grabbing;color:var(--acid)}
+  body.is-drag-sorting{user-select:none;-webkit-user-select:none;cursor:grabbing}
   .mini-tag{
     display:inline-flex;align-items:center;height:16px;padding:0 4px;border-radius:2px;
     font-family:var(--font-mono);font-size:8px;letter-spacing:.04em;color:var(--dim);
@@ -325,7 +340,12 @@
     display:grid;place-items:center;font-family:var(--font-display);font-size:27px;font-weight:700;
     box-shadow:0 0 0 1px rgba(199,255,58,.25),0 10px 30px rgba(199,255,58,.08);
   }
-  .me-name{font-size:19px;font-weight:700}
+  .me-name{font-size:19px;font-weight:700;cursor:text;border-bottom:1px dashed transparent;transition:border-color .16s}
+  .me-name:hover{border-bottom-color:var(--line-3)}
+  .me-name-input{
+    width:100%;min-width:120px;font-family:inherit;font-size:19px;font-weight:700;color:var(--text);
+    background:transparent;border:0;border-bottom:1px solid var(--acid);outline:none;padding:0 0 2px;
+  }
   .me-sub{font-family:var(--font-mono);font-size:9.5px;color:var(--dim);margin-top:4px;letter-spacing:.03em}
   .menu{display:flex;flex-direction:column}
   .menu-row{

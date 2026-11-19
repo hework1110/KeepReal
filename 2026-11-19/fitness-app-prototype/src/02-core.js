@@ -93,6 +93,7 @@ function defaultState(){
     history: [],
     lastSummary: null,
     body: {weights:[], measures:[], cardio:[]},
+    profile: {name:'训练者 01'},
     customEx: [],
     demo: false,
     view: 'onboarding',
@@ -120,6 +121,7 @@ function normalizeState(p){
   const st = Object.assign(d, p || {});
   st.onboard = Object.assign({step:1, goal:null, freq:null, template:null}, p && p.onboard || {});
   st.body = Object.assign({weights:[], measures:[], cardio:[]}, p && p.body || {});
+  st.profile = Object.assign({name:'训练者 01'}, p && p.profile || {});
   st.ui = Object.assign(d.ui, p && p.ui || {});
   if(!st.plan || !Array.isArray(st.plan.days) || !st.plan.days.length) st.plan = null;
   if(!Array.isArray(st.history)) st.history = [];

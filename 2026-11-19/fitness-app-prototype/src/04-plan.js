@@ -201,17 +201,15 @@ function viewPlanEdit(dayId){
   if(!day) return viewPlan();
   const abs = (day.abs || []).map(a => Object.assign({ex:a}, ABS_POOL[a]));
   return subScreen('编辑 · ' + day.name, '调整顺序与组次 · 修改即时保存',
-    '<div class="notice" style="margin-top:2px">' + icon('info') + '<span>点右侧箭头调整顺序，点「调节」改组数、次数区间和休息；训练日的热身会根据动作自动更新。</span></div>' +
+    '<div class="notice" style="margin-top:2px">' + icon('info') + '<span>按住左侧序号上下拖动调整顺序，点「调节」改组数、次数区间和休息；训练日的热身会根据动作自动更新。</span></div>' +
     '<div class="section-head"><h2>训练动作</h2><span>' + day.exercises.length + ' 个</span></div>' +
-    '<div class="panel" style="padding:2px 12px">' +
+    '<div class="panel ex-edit-list" data-drag-list data-day-id="' + day.id + '" style="padding:2px 12px">' +
       day.exercises.map((e, i) => {
         const info = exInfo(e.ex);
-        return '<div class="ex-line">' +
-          '<span class="ex-line__idx">' + pad(i + 1) + '</span>' +
+        return '<div class="ex-line ex-line--edit" data-drag-row>' +
+          '<span class="ex-line__idx ex-line__idx--handle" data-drag-handle aria-label="按住拖动排序">' + pad(i + 1) + '</span>' +
           '<div class="ex-line__main"><div class="ex-line__name">' + esc(e.ex) + '</div><div class="ex-line__sub">' + e.sets + ' 组 · ' + repsText(e, e.ex) + (isHold(e.ex) ? '' : ' 次') + ' · ' + e.rest + 's · ' + esc(info.equip) + '</div></div>' +
-          '<div style="display:flex;gap:4px;flex:none">' +
-            '<button class="lib-add" data-action="move-ex" data-dir="-1" data-idx="' + i + '" ' + (i === 0 ? 'disabled style="opacity:.25;pointer-events:none"' : '') + ' aria-label="上移">' + icon('arrow-up') + '</button>' +
-            '<button class="lib-add" data-action="move-ex" data-dir="1" data-idx="' + i + '" ' + (i === day.exercises.length - 1 ? 'disabled style="opacity:.25;pointer-events:none"' : '') + ' aria-label="下移">' + icon('arrow-down') + '</button>' +
+          '<div class="ex-line__tools">' +
             '<button class="lib-add" data-action="config-ex" data-idx="' + i + '" aria-label="调节">' + icon('sliders') + '</button>' +
           '</div>' +
         '</div>';

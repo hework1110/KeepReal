@@ -32,6 +32,18 @@ function svgBars(bars, opts){
     g += '<text class="axis" x="' + (L-5) + '" y="' + (yy+3).toFixed(1) + '" text-anchor="end">' + (v ? fmtK(v) : '0') + '</text>';
   });
   let body = '';
+  /* 长途数据按月份标注横轴，避免每个柱都挤一个日期 */
+  let monthIdx = null;
+  if(o.monthAxis){
+    monthIdx = [];
+    for(let i=1;i<bars.length;i++){
+      if(parseISO(bars[i].start).getMonth() !== parseISO(bars[i-1].start).getMonth()) monthIdx.push(i);
+    }
+    if(monthIdx.length > 6){
+      const step = Math.ceil(monthIdx.length / 6);
+      monthIdx = monthIdx.filter((v, k) => k % step === 0 || k === monthIdx.length - 1);
+    }
+  }
   bars.forEach((b, i) => {
     const x = L + slot * i + (slot - bw) / 2;
     const top = y(b.value);
@@ -41,9 +53,10 @@ function svgBars(bars, opts){
     if(hot && b.value > 0){
       body += '<text class="axis axis--strong" x="' + (x + bw/2).toFixed(1) + '" y="' + (top - 5).toFixed(1) + '" text-anchor="middle">' + fmtK(b.value) + '</text>';
     }
-    const show = n <= 5 ? true : (i % 3 === 0 || i === n - 1);
+    const show = monthIdx ? monthIdx.indexOf(i) >= 0 : (n <= 5 ? true : (i % 3 === 0 || i === n - 1));
     if(show){
-      body += '<text class="axis" x="' + (L + slot * i + slot/2).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle">' + b.label + '</text>';
+      const label = monthIdx ? (parseISO(b.start).getMonth() + 1) + '月' : b.label;
+      body += '<text class="axis" x="' + (L + slot * i + slot/2).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle">' + label + '</text>';
     }
   });
   return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (o.label || '柱状图') + '">' + g + body + '</svg>';
@@ -95,9 +108,20 @@ function svgSeries(series, labels, opts){
   return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (o.label || '趋势图') + '">' + g + body + '</svg>';
 }
 
-function weeklyBuckets(days){
-  const n = days === 28 ? 4 : 13;
+function weeklyBuckets(range){
   const thisMon = mondayOf(new Date());
+  let n;
+  if(range === 'all'){
+    let earliest = null;
+    S.history.forEach(h => {
+      const d = parseISO(h.date);
+      if(!earliest || d < earliest) earliest = d;
+    });
+    n = earliest ? Math.max(4, Math.round((thisMon - mondayOf(earliest)) / 604800000) + 1) : 4;
+    n = Math.min(260, n);
+  }else{
+    n = range === '3m' ? 13 : 4;
+  }
   const buckets = [];
   for(let i=n-1;i>=0;i--){
     const mon = addDays(thisMon, -7*i);
@@ -152,12 +176,15 @@ function exSeries(name, days){
 
 function viewProgress(){
   if(!S.plan) return viewOnboarding();
-  const days = S.ui.progressRange === '3m' ? 90 : 28;
-  const buckets = weeklyBuckets(days);
+  const range = S.ui.progressRange || '4w';
+  const days = range === '4w' ? 28 : range === '3m' ? 90 : Infinity;
+  const buckets = weeklyBuckets(range);
   const thisWeek = buckets[buckets.length - 1].value;
   const lastWeek = buckets[buckets.length - 2] ? buckets[buckets.length - 2].value : 0;
-  const avg4 = buckets.slice(-4).reduce((a, b) => a + b.value, 0) / Math.min(4, buckets.length);
-  const sessions = S.history.filter(h => daysBetween(h.date, todayISO()) <= days).length;
+  const avg = range === 'all'
+    ? buckets.reduce((a, b) => a + b.value, 0) / Math.max(1, buckets.length)
+    : buckets.slice(-4).reduce((a, b) => a + b.value, 0) / Math.min(4, buckets.length);
+  const sessions = range === 'all' ? S.history.length : S.history.filter(h => daysBetween(h.date, todayISO()) <= days).length;
   const delta = lastWeek ? Math.round((thisWeek - lastWeek) / lastWeek * 100) : 0;
 
   const prs = prRows();
@@ -171,7 +198,8 @@ function viewProgress(){
   const first = series.length ? series[0].value : 0;
   const exDelta = last && first ? Math.round((last - first) / first * 100) : 0;
 
-  const rangeLabel = S.ui.progressRange === '3m' ? '近 3 个月' : '近 4 周';
+  const rangeLabel = range === '3m' ? '近 3 个月' : (range === 'all' ? '全部' : '近 4 周');
+  const avgLabel = range === 'all' ? buckets.length + ' 周均值' : (range === '3m' ? '13 周均值' : '4 周均值');
   const hasHistory = S.history.length > 0;
 
   return shellTab('progress',
@@ -179,21 +207,22 @@ function viewProgress(){
       '<div class="pg-head"><div><div class="pg-eyebrow">PROGRESS / 趋势</div><h1 class="pg-title">进步</h1>' +
         '<p class="pg-sub">训练容量、个人纪录和单动作趋势都来自本机日志。</p></div></div>' +
       '<div class="seg" style="margin-top:16px">' +
-        '<button class="' + (S.ui.progressRange === '4w' ? 'is-on' : '') + '" data-action="range" data-value="4w">近 4 周</button>' +
-        '<button class="' + (S.ui.progressRange === '3m' ? 'is-on' : '') + '" data-action="range" data-value="3m">近 3 个月</button>' +
+        '<button class="' + (range === '4w' ? 'is-on' : '') + '" data-action="range" data-value="4w">近 4 周</button>' +
+        '<button class="' + (range === '3m' ? 'is-on' : '') + '" data-action="range" data-value="3m">近 3 个月</button>' +
+        '<button class="' + (range === 'all' ? 'is-on' : '') + '" data-action="range" data-value="all">全部</button>' +
       '</div>' +
       '<div class="hero-metric">' +
         '<div class="hero-metric__label">本周训练容量 · ' + rangeLabel + '</div>' +
         '<div class="hero-metric__num">' + fmtVol(thisWeek) + '<small>KG</small></div>' +
         '<div class="hero-metric__meta">' +
           '<span>较上周 <b>' + (delta >= 0 ? '+' : '') + delta + '%</b></span>' +
-          '<span>' + (S.ui.progressRange === '3m' ? '13 周均值' : '4 周均值') + ' <b>' + fmtVol(avg4) + '</b></span>' +
+          '<span>' + avgLabel + ' <b>' + fmtVol(avg) + '</b></span>' +
           '<span>训练 <b>' + sessions + '</b> 次</span>' +
         '</div>' +
       '</div>' +
       '<div class="chart-card">' +
-        '<div class="chart-card__head"><h3>周训练容量</h3><span>' + (S.ui.progressRange === '3m' ? '13 周' : '4 周') + ' · KG</span></div>' +
-        (hasHistory ? '<div class="chart">' + svgBars(buckets, {label:'周训练容量'}) + '</div>' :
+        '<div class="chart-card__head"><h3>周训练容量</h3><span>' + (range === 'all' ? buckets.length + ' 周' : (range === '3m' ? '13 周' : '4 周')) + ' · KG</span></div>' +
+        (hasHistory ? '<div class="chart">' + svgBars(buckets, {label:'周训练容量', monthAxis: range === 'all'}) + '</div>' :
           '<div class="chart-empty">完成第一次训练后，这里开始累计周容量。</div>') +
         '<div class="chart-legend"><span><i></i>每周总容量</span><span>按周一至周日统计</span></div>' +
       '</div>' +
