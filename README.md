@@ -18,9 +18,13 @@ KeepReal 是一款离线健身记录 App，面向想自己安排训练计划的�
 
 ```
 2026-11-19/fitness-app-prototype/
-├── outputs/    # 可运行的原型（index.html、app.js、styles.css）
-└── work/       # 构建与验证的中间产物（截图、脚本等），已被 .gitignore 排除
+├── src/        # 源码（分模块的 HTML 骨架、CSS、JS 与 SVG sprite）
+├── scripts/    # 构建脚本，把 src/ 拼装成自包含单文件
+├── outputs/    # 可运行成品（index.html，双击即可离线运行）
+└── work/       # 构建与验证的中间产物（截图、本地验证脚本），已被 .gitignore 排除
 ```
+
+修改 `src/` 后执行 `node scripts/build.js`，即可重新生成 `outputs/index.html`。
 
 ## 后续计划
 
