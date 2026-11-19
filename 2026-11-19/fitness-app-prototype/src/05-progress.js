@@ -2,6 +2,14 @@
    5. 进步 · 图表与统计
    ============================================================ */
 
+const PROGRESS_RANGES = [
+  {id:'all', label:'全部', days:Infinity},
+  {id:'1y', label:'近一年', days:365},
+  {id:'6m', label:'近半年', days:183},
+  {id:'3m', label:'近三个月', days:90},
+  {id:'1w', label:'近一周', days:7}
+];
+
 function mondayOf(d){
   const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const w = (x.getDay() + 6) % 7;
@@ -108,7 +116,20 @@ function svgSeries(series, labels, opts){
   return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (o.label || '趋势图') + '">' + g + body + '</svg>';
 }
 
-function weeklyBuckets(range){
+function progressBuckets(range){
+  /* 近一周按天分组，更长的区间按周分组 */
+  if(range === '1w'){
+    const buckets = [];
+    for(let i=6;i>=0;i--){
+      const iso = isoOf(addDays(new Date(), -i));
+      buckets.push({label:shortDate(iso), value:0, start:iso});
+    }
+    S.history.forEach(h => {
+      const idx = buckets.findIndex(b => b.start === h.date);
+      if(idx >= 0) buckets[idx].value += (+h.volume || 0);
+    });
+    return {buckets, daily:true};
+  }
   const thisMon = mondayOf(new Date());
   let n;
   if(range === 'all'){
@@ -120,24 +141,25 @@ function weeklyBuckets(range){
     n = earliest ? Math.max(4, Math.round((thisMon - mondayOf(earliest)) / 604800000) + 1) : 4;
     n = Math.min(260, n);
   }else{
-    n = range === '3m' ? 13 : 4;
+    n = range === '1y' ? 53 : range === '6m' ? 27 : 13;
   }
   const buckets = [];
   for(let i=n-1;i>=0;i--){
     const mon = addDays(thisMon, -7*i);
     buckets.push({label:shortDate(isoOf(mon)), value:0, start:isoOf(mon)});
   }
-  const today = todayISO();
   S.history.forEach(h => {
     const diff = Math.round((thisMon - mondayOf(parseISO(h.date))) / 604800000);
     if(diff >= 0 && diff < n) buckets[n - 1 - diff].value += (+h.volume || 0);
   });
-  return buckets;
+  return {buckets, daily:false};
 }
 
-function prRows(){
+function prRows(days){
   const map = {};
+  const today = todayISO();
   S.history.forEach(h => {
+    if(daysBetween(h.date, today) > days) return;
     (h.lifts || []).forEach(l => {
       if(!(l.weight > 0) || !(l.reps > 0)) return;
       const cur = map[l.ex] || (map[l.ex] = {ex:l.ex, weight:0, reps:0, e1rm:0, date:h.date});
@@ -152,12 +174,16 @@ function prRows(){
     .sort((a, b) => b.e1rm - a.e1rm);
 }
 
-function historyExNames(){
+function historyExNames(days){
   const seen = {};
   const out = [];
-  S.history.forEach(h => (h.lifts || []).forEach(l => {
-    if(l.weight > 0 && !seen[l.ex]){ seen[l.ex] = 1; out.push(l.ex); }
-  }));
+  const today = todayISO();
+  S.history.forEach(h => {
+    if(daysBetween(h.date, today) > days) return;
+    (h.lifts || []).forEach(l => {
+      if(l.weight > 0 && !seen[l.ex]){ seen[l.ex] = 1; out.push(l.ex); }
+    });
+  });
   return out;
 }
 
@@ -176,20 +202,26 @@ function exSeries(name, days){
 
 function viewProgress(){
   if(!S.plan) return viewOnboarding();
-  const range = S.ui.progressRange || '4w';
-  const days = range === '4w' ? 28 : range === '3m' ? 90 : Infinity;
-  const buckets = weeklyBuckets(range);
-  const thisWeek = buckets[buckets.length - 1].value;
-  const lastWeek = buckets[buckets.length - 2] ? buckets[buckets.length - 2].value : 0;
-  const avg = range === 'all'
-    ? buckets.reduce((a, b) => a + b.value, 0) / Math.max(1, buckets.length)
-    : buckets.slice(-4).reduce((a, b) => a + b.value, 0) / Math.min(4, buckets.length);
-  const sessions = range === 'all' ? S.history.length : S.history.filter(h => daysBetween(h.date, todayISO()) <= days).length;
-  const delta = lastWeek ? Math.round((thisWeek - lastWeek) / lastWeek * 100) : 0;
+  const opt = PROGRESS_RANGES.find(o => o.id === S.ui.progressRange) || PROGRESS_RANGES.find(o => o.id === '1w');
+  const range = opt.id;
+  const days = opt.days;
+  const rangeLabel = opt.label;
+  const pack = progressBuckets(range);
+  const buckets = pack.buckets;
+  const daily = pack.daily;
+  const total = buckets.reduce((a, b) => a + b.value, 0);
+  const latest = buckets[buckets.length - 1].value;
+  const prev = buckets[buckets.length - 2] ? buckets[buckets.length - 2].value : 0;
+  const delta = prev ? Math.round((latest - prev) / prev * 100) : 0;
+  const avg = total / Math.max(1, buckets.length);
+  const sessions = S.history.filter(h => daysBetween(h.date, todayISO()) <= days).length;
+  const rangeHasData = sessions > 0;
+  const longAxis = range === 'all' || range === '1y' || range === '6m';
+  const unit = daily ? '天' : '周';
 
-  const prs = prRows();
+  const prs = prRows(days);
   const shown = S.ui.prAll ? prs : prs.slice(0, 8);
-  const names = historyExNames();
+  const names = historyExNames(days);
   let sel = S.ui.progressEx;
   if(names.indexOf(sel) < 0) sel = names.indexOf('杠铃深蹲') >= 0 ? '杠铃深蹲' : names[0];
   S.ui.progressEx = sel || null;
@@ -197,36 +229,33 @@ function viewProgress(){
   const last = series.length ? series[series.length - 1].value : 0;
   const first = series.length ? series[0].value : 0;
   const exDelta = last && first ? Math.round((last - first) / first * 100) : 0;
-
-  const rangeLabel = range === '3m' ? '近 3 个月' : (range === 'all' ? '全部' : '近 4 周');
-  const avgLabel = range === 'all' ? buckets.length + ' 周均值' : (range === '3m' ? '13 周均值' : '4 周均值');
   const hasHistory = S.history.length > 0;
 
   return shellTab('progress',
     '<div class="pg">' +
       '<div class="pg-head"><div><div class="pg-eyebrow">PROGRESS / 趋势</div><h1 class="pg-title">进步</h1>' +
         '<p class="pg-sub">训练容量、个人纪录和单动作趋势都来自本机日志。</p></div></div>' +
-      '<div class="seg" style="margin-top:16px">' +
-        '<button class="' + (range === '4w' ? 'is-on' : '') + '" data-action="range" data-value="4w">近 4 周</button>' +
-        '<button class="' + (range === '3m' ? 'is-on' : '') + '" data-action="range" data-value="3m">近 3 个月</button>' +
-        '<button class="' + (range === 'all' ? 'is-on' : '') + '" data-action="range" data-value="all">全部</button>' +
+      '<div class="range-select">' +
+        '<select id="progress-range" aria-label="时间范围">' +
+          PROGRESS_RANGES.map(o => '<option value="' + o.id + '"' + (o.id === range ? ' selected' : '') + '>' + o.label + '</option>').join('') +
+        '</select>' + icon('chevron-down') +
       '</div>' +
       '<div class="hero-metric">' +
-        '<div class="hero-metric__label">本周训练容量 · ' + rangeLabel + '</div>' +
-        '<div class="hero-metric__num">' + fmtVol(thisWeek) + '<small>KG</small></div>' +
+        '<div class="hero-metric__label">训练容量 · ' + rangeLabel + '</div>' +
+        '<div class="hero-metric__num">' + fmtVol(total) + '<small>KG</small></div>' +
         '<div class="hero-metric__meta">' +
-          '<span>较上周 <b>' + (delta >= 0 ? '+' : '') + delta + '%</b></span>' +
-          '<span>' + avgLabel + ' <b>' + fmtVol(avg) + '</b></span>' +
+          '<span>较上一' + (daily ? '日' : '周') + ' <b>' + (delta >= 0 ? '+' : '') + delta + '%</b></span>' +
+          '<span>' + buckets.length + ' ' + unit + '均值 <b>' + fmtVol(avg) + '</b></span>' +
           '<span>训练 <b>' + sessions + '</b> 次</span>' +
         '</div>' +
       '</div>' +
       '<div class="chart-card">' +
-        '<div class="chart-card__head"><h3>周训练容量</h3><span>' + (range === 'all' ? buckets.length + ' 周' : (range === '3m' ? '13 周' : '4 周')) + ' · KG</span></div>' +
-        (hasHistory ? '<div class="chart">' + svgBars(buckets, {label:'周训练容量', monthAxis: range === 'all'}) + '</div>' :
-          '<div class="chart-empty">完成第一次训练后，这里开始累计周容量。</div>') +
-        '<div class="chart-legend"><span><i></i>每周总容量</span><span>按周一至周日统计</span></div>' +
+        '<div class="chart-card__head"><h3>' + (daily ? '每日训练容量' : '周训练容量') + '</h3><span>' + buckets.length + ' ' + unit + ' · KG</span></div>' +
+        (rangeHasData ? '<div class="chart">' + svgBars(buckets, {label:(daily ? '每日训练容量' : '周训练容量'), monthAxis:longAxis}) + '</div>' :
+          '<div class="chart-empty">所选时间范围内还没有训练记录。</div>') +
+        '<div class="chart-legend"><span><i></i>' + (daily ? '每日总容量' : '每周总容量') + '</span><span>' + (daily ? '按自然日统计' : '按周一至周日统计') + '</span></div>' +
       '</div>' +
-      '<div class="section-head"><h2>PR 榜</h2><span>最好重量 · 预估 1RM</span></div>' +
+      '<div class="section-head"><h2>PR 榜</h2><span>区间最好重量 · 预估 1RM</span></div>' +
       (prs.length ?
         '<div class="panel" style="padding:2px 14px">' +
           shown.map((r, i) =>
@@ -238,12 +267,16 @@ function viewProgress(){
           ).join('') +
         '</div>' +
         (prs.length > 8 ? '<button class="text-btn" style="display:block;margin:10px auto 0" data-action="pr-all">' + (S.ui.prAll ? '收起' : '查看全部 ' + prs.length + ' 项') + '</button>' : '') :
-        '<div class="empty"><b>还没有 PR</b>完成带重量的训练组后，这里会记录最好重量和预估 1RM。</div>') +
+        '<div class="empty"><b>当前时间范围没有 PR</b>换个更长的时间范围，或完成带重量的训练组。</div>') +
       '<div class="section-head"><h2>单动作趋势</h2><span>预估 1RM · ' + rangeLabel + '</span></div>' +
       (names.length ?
-        '<div class="chips" style="margin-top:2px">' + names.map(n =>
-          '<button class="chip ' + (n === sel ? 'is-on' : '') + '" data-action="progress-ex" data-ex="' + esc(n) + '">' + esc(n) + '</button>'
-        ).join('') + '</div>' : '') +
+        '<div class="ex-scroll" data-ex-scroll>' +
+          '<div class="chips ex-scroll__list" data-ex-scroll-list>' + names.map(n =>
+            '<button class="chip ' + (n === sel ? 'is-on' : '') + '" data-action="progress-ex" data-ex="' + esc(n) + '">' + esc(n) + '</button>'
+          ).join('') + '</div>' +
+          '<div class="ex-scroll__mask" aria-hidden="true"></div>' +
+          '<span class="ex-scroll__more" aria-hidden="true">…</span>' +
+        '</div>' : '') +
       (sel ?
         '<div class="chart-card" style="margin-top:10px">' +
           '<div class="chart-card__head"><h3>' + esc(sel) + '</h3><span>' + (series.length ? series.length + ' 次训练' : '暂无数据') + '</span></div>' +
@@ -253,7 +286,9 @@ function viewProgress(){
           (series.length ?
             '<div class="chart-legend"><span><i></i>预估 1RM</span><span>最新 <b style="color:var(--acid)">' + fmtNum(last) + ' kg</b></span><span>' + (exDelta >= 0 ? '+' : '') + exDelta + '%</span></div>' : '') +
         '</div>' :
-        '<div class="empty"><b>还没有单动作数据</b>完成训练后可以在这里选动作查看曲线。</div>') +
+        (rangeHasData ?
+          '<div class="empty"><b>还没有单动作数据</b>完成带重量的训练组后，这里会出现可选动作。</div>' :
+          '<div class="empty"><b>当前时间范围没有训练数据</b>换个时间范围试试。</div>')) +
       (!hasHistory ? '<div class="notice">' + icon('info') + '<span>当前没有训练历史。去「今天」完成一次训练，进步页会自动更新；如果你的第一批数据还在，会自动迁移到这里。</span></div>' : '') +
     '</div>'
   );

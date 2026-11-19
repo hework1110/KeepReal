@@ -4,6 +4,10 @@
 
 let CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
 let TPL_DRAFT = null;
+let FILTER_ADD = null;
+
+function allGroups(){ return GROUPS.concat(S.ui.customGroups || []); }
+function allEquips(){ return EQUIPS.concat(S.ui.customEquips || []); }
 
 function emptyTplDay(n){
   return {id:uid('td'), name:'Day ' + (n || 1), exercises:[]};
@@ -87,13 +91,21 @@ function libResultsHtml(mode, dayId){
   ).join('');
 }
 
+function filterAddChip(kind, label){
+  if(FILTER_ADD === kind){
+    return '<input class="chip chip--input" id="filter-new-' + kind + '" type="text" maxlength="8" placeholder="' + label + '名称" autocomplete="off" aria-label="新增' + label + '">';
+  }
+  return '<button class="chip chip--add" data-action="lib-add-' + kind + '" aria-label="新增' + label + '">' + icon('plus') + '</button>';
+}
 function libFilters(){
   return '<div class="filter-row">' +
     '<div class="chips">' +
-      ['全部'].concat(GROUPS).map(g => '<button class="chip ' + (S.ui.libGroup === g ? 'is-on' : '') + '" data-action="lib-group" data-value="' + g + '">' + g + '</button>').join('') +
+      ['全部'].concat(allGroups()).map(g => '<button class="chip ' + (S.ui.libGroup === g ? 'is-on' : '') + '" data-action="lib-group" data-value="' + esc(g) + '">' + esc(g) + '</button>').join('') +
+      filterAddChip('group', '部位') +
     '</div>' +
     '<div class="chips">' +
-      ['全部'].concat(EQUIPS).map(e => '<button class="chip ' + (S.ui.libEquip === e ? 'is-on' : '') + '" data-action="lib-equip" data-value="' + e + '">' + e + '</button>').join('') +
+      ['全部'].concat(allEquips()).map(e => '<button class="chip ' + (S.ui.libEquip === e ? 'is-on' : '') + '" data-action="lib-equip" data-value="' + esc(e) + '">' + esc(e) + '</button>').join('') +
+      filterAddChip('equip', '器械') +
     '</div>' +
   '</div>';
 }
@@ -275,10 +287,10 @@ function viewCustomEx(){
     '<div class="form-row"><label class="form-label">动作名称</label>' +
       '<input class="form-input" id="custom-name" type="text" maxlength="20" placeholder="例如：史密斯上斜卧推" value="' + esc(d.name) + '" style="font-family:var(--font-cn);font-size:14px"></div>' +
     '<div class="form-row"><label class="form-label">主要肌群</label><div class="chip-group">' +
-      GROUPS.map(g => '<button class="chip ' + (d.group === g ? 'is-on' : '') + '" data-action="custom-group" data-value="' + g + '">' + g + '</button>').join('') +
+      allGroups().map(g => '<button class="chip ' + (d.group === g ? 'is-on' : '') + '" data-action="custom-group" data-value="' + esc(g) + '">' + esc(g) + '</button>').join('') +
     '</div></div>' +
     '<div class="form-row"><label class="form-label">器械</label><div class="chip-group">' +
-      EQUIPS.map(e => '<button class="chip ' + (d.equip === e ? 'is-on' : '') + '" data-action="custom-equip" data-value="' + e + '">' + e + '</button>').join('') +
+      allEquips().map(e => '<button class="chip ' + (d.equip === e ? 'is-on' : '') + '" data-action="custom-equip" data-value="' + esc(e) + '">' + esc(e) + '</button>').join('') +
     '</div></div>' +
     '<div class="switch-row"><div><div class="stepper__label">是否单侧</div><span class="stepper__hint">单侧动作会标记「单侧」，重量按单边记录</span></div>' +
       '<button class="switch ' + (d.unilateral ? 'is-on' : '') + '" data-action="custom-unilateral" aria-label="是否单侧"></button></div>' +

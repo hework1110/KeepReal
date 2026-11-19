@@ -183,7 +183,6 @@ function viewToday(){
     '<header class="home-head">' +
       '<div class="topbar">' +
         '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
-        '<span class="plan-pill"><i></i>' + goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练</span>' +
       '</div>' +
       '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + esc(plan.name || tpl.name) + '</span></div>' +
       '<div class="home-title-row"><h1 class="home-title">' + (sel === 0 ? '今天' : day.dow) + '</h1><span class="home-day-idx">DAY ' + pad(sel + 1) + ' / 07</span></div>' +

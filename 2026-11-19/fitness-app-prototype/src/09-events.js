@@ -223,6 +223,14 @@ function getScroll(){
   const b = $('.screen__body');
   return b ? b.scrollTop : 0;
 }
+/* 进步页动作 chips：横向滚动时右侧省略号提示还有更多 */
+function syncExScroll(box){
+  if(!box) return;
+  const list = $('.ex-scroll__list', box);
+  if(!list) return;
+  box.classList.toggle('is-more', list.scrollWidth - list.clientWidth - list.scrollLeft > 4);
+}
+
 function render(opts){
   const keep = !!(opts && opts.keep);
   const prev = keep ? getScroll() : 0;
@@ -235,6 +243,7 @@ function render(opts){
   else if(S.view === 'summary') html = viewSummary();
   else html = currentMain();
   app.innerHTML = html;
+  $$('.ex-scroll', app).forEach(syncExScroll);
   if(keep){
     requestAnimationFrame(() => {
       const b = $('.screen__body');
@@ -590,8 +599,17 @@ function handleAction(a, el){
 
     /* 动作库 / 自定义 */
     case 'open-library': libQuery = ''; push('library'); break;
-    case 'lib-group': S.ui.libGroup = ds.value; save(); render({keep:true}); break;
-    case 'lib-equip': S.ui.libEquip = ds.value; save(); render({keep:true}); break;
+    case 'lib-group': FILTER_ADD = null; S.ui.libGroup = ds.value; save(); render({keep:true}); break;
+    case 'lib-equip': FILTER_ADD = null; S.ui.libEquip = ds.value; save(); render({keep:true}); break;
+    case 'lib-add-group':
+    case 'lib-add-equip': {
+      const kind = ds.action === 'lib-add-group' ? 'group' : 'equip';
+      if(FILTER_ADD === kind) return;
+      FILTER_ADD = kind;
+      render({keep:true});
+      focusFilterAdd();
+      break;
+    }
     case 'lib-info': openSheet('ex-info', {name:ds.ex}); break;
     case 'new-custom':
       CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
@@ -684,7 +702,6 @@ function handleAction(a, el){
     }
 
     /* 进步 */
-    case 'range': S.ui.progressRange = ds.value; save(); render({keep:true}); break;
     case 'progress-ex': S.ui.progressEx = ds.ex; save(); render({keep:true}); break;
     case 'pr-all': S.ui.prAll = !S.ui.prAll; save(); render({keep:true}); break;
 
@@ -900,6 +917,35 @@ function tick(){
 /* ---------- 拖动排序（计划编辑） ---------- */
 let DRAG = null;
 
+/* ---------- 自定义筛选 ---------- */
+function focusFilterAdd(){
+  setTimeout(() => {
+    const el = FILTER_ADD ? $('#filter-new-' + FILTER_ADD) : null;
+    if(el) el.focus();
+  }, 0);
+}
+function commitFilterAdd(){
+  const kind = FILTER_ADD;
+  if(!kind) return;
+  const el = $('#filter-new-' + kind);
+  FILTER_ADD = null;
+  if(!el) return;
+  const val = el.value.trim();
+  const isGroup = kind === 'group';
+  const label = isGroup ? '部位' : '器械';
+  if(!val){ toast('请输入' + label + '名称'); render({keep:true}); return; }
+  if(['全部'].concat(isGroup ? allGroups() : allEquips()).some(x => x === val)){
+    toast('「' + val + '」已存在');
+    render({keep:true});
+    return;
+  }
+  if(isGroup){ S.ui.customGroups.push(val); S.ui.libGroup = val; }
+  else { S.ui.customEquips.push(val); S.ui.libEquip = val; }
+  save();
+  render({keep:true});
+  toast('已添加「' + val + '」');
+}
+
 function startDrag(e, handle){
   if(DRAG) return;
   if(e.pointerType === 'mouse' && e.button !== 0) return;
@@ -1002,16 +1048,41 @@ function boot(){
     handleAction(el.dataset.action, el);
   });
   document.addEventListener('input', onInput);
+  document.addEventListener('change', e => {
+    if(e.target && e.target.id === 'progress-range'){
+      S.ui.progressRange = e.target.value;
+      save();
+      render({keep:true});
+    }
+  });
+  document.addEventListener('scroll', e => {
+    const list = e.target;
+    if(list && list.classList && list.classList.contains('ex-scroll__list')){
+      syncExScroll(list.closest('.ex-scroll'));
+    }
+  }, true);
   document.addEventListener('pointerdown', e => {
     const handle = e.target.closest && e.target.closest('[data-drag-handle]');
     if(handle) startDrag(e, handle);
   });
   document.addEventListener('keydown', e => {
+    const t = e.target;
+    if(t && t.id && t.id.indexOf('filter-new-') === 0){
+      if(e.key === 'Enter'){ e.preventDefault(); commitFilterAdd(); return; }
+      if(e.key === 'Escape'){ e.preventDefault(); FILTER_ADD = null; render({keep:true}); return; }
+    }
     if(e.key === 'Escape'){
       if(SHEET){ closeSheet(); render({keep:true}); }
       else if(MODAL) closeModal();
     }
   });
+  document.addEventListener('blur', e => {
+    const t = e.target;
+    if(!(t && t.id && t.id.indexOf('filter-new-') === 0)) return;
+    const next = e.relatedTarget;
+    if(next && next.closest && next.closest('.filter-row')) return;
+    commitFilterAdd();
+  }, true);
   render();
   setInterval(tick, 500);
 }

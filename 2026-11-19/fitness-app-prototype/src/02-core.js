@@ -105,8 +105,9 @@ function defaultState(){
     view: 'onboarding',
     selectedDay: 0,
     ui: {
-      tab: 'today', planDay: null, progressRange: '4w', progressEx: null,
-      prAll: false, libGroup: '全部', libEquip: '全部'
+      tab: 'today', planDay: null, progressRange: '1w', progressEx: null,
+      prAll: false, libGroup: '全部', libEquip: '全部',
+      customGroups: [], customEquips: []
     }
   };
 }
@@ -129,6 +130,8 @@ function normalizeState(p){
   st.body = Object.assign({weights:[], measures:[], cardio:[]}, p && p.body || {});
   st.profile = Object.assign({name:'训练者 01'}, p && p.profile || {});
   st.ui = Object.assign(d.ui, p && p.ui || {});
+  if(!Array.isArray(st.ui.customGroups)) st.ui.customGroups = [];
+  if(!Array.isArray(st.ui.customEquips)) st.ui.customEquips = [];
   if(!st.plan || !Array.isArray(st.plan.days) || !st.plan.days.length) st.plan = null;
   if(!Array.isArray(st.history)) st.history = [];
   if(!Array.isArray(st.customEx)) st.customEx = [];
