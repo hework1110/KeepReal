@@ -152,3 +152,95 @@ body {
 .kr-row-value--acid {
   color: var(--kr-acid);
 }
+
+/* 通用按钮 / 标签 / 小节标题 */
+.kr-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 50px;
+  border-radius: var(--kr-radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+}
+
+.kr-btn--primary {
+  background: var(--kr-acid);
+  color: #0A0D05;
+}
+
+.kr-btn--ghost {
+  border: 1px solid var(--kr-line-strong);
+  color: var(--kr-text-sub);
+  background: transparent;
+}
+
+.kr-btn--sm {
+  height: 42px;
+  font-size: 13px;
+}
+
+.kr-btn--disabled {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.kr-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 7px;
+  border: 1px solid var(--kr-line-strong);
+  border-radius: var(--kr-radius-sm);
+  font-family: var(--kr-font-mono);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--kr-text-sub);
+}
+
+.kr-tag--acid {
+  border-color: var(--kr-acid-line);
+  background: var(--kr-acid-soft);
+  color: var(--kr-acid);
+}
+
+.kr-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 24px 0 8px;
+}
+
+.kr-section-head__title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.kr-section-head__meta {
+  font-family: var(--kr-font-mono);
+  font-size: 10px;
+  color: var(--kr-text-dim);
+}
+
+.kr-mono {
+  font-family: var(--kr-font-mono);
+}
+
+.kr-icon-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--kr-line);
+  border-radius: var(--kr-radius-md);
+  color: var(--kr-text-sub);
+  font-size: 18px;
+  cursor: pointer;
+}
+

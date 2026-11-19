@@ -29,6 +29,25 @@
       "style": {
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/onboarding/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/workout/index",
+      "style": {
+        "navigationStyle": "custom",
+        "disableScroll": false
+      }
+    },
+    {
+      "path": "pages/summary/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
     }
   ],
   "globalStyle": {
