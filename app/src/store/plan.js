@@ -2,6 +2,7 @@
 
 import { ABS_PAIRS, ABS_POOL, DAY_CN, isHold, templateById } from '../data/catalog'
 import { addDays, isoOf, todayISO } from '../utils/format'
+import { uid } from '../utils/id'
 
 const OFFSETS = {
   2: [0, 3],
@@ -10,22 +11,36 @@ const OFFSETS = {
   5: [0, 1, 3, 4, 6]
 }
 
+// 把模板展开成可编辑的训练日：带上腹部收尾与轮换顺序。
 export function planDaysFromTemplate(tpl) {
-  const days = tpl.days.map((day, idx) => {
+  const days = (tpl.days || []).map((day, idx) => {
     const pair = ABS_PAIRS[idx % ABS_PAIRS.length]
     return {
       id: tpl.id + '_d' + idx,
       name: day.name,
-      focus: day.focus,
-      exercises: day.exercises.map((row) => ({ ...row })),
+      focus: day.focus || '自定义训练日',
+      exercises: (day.exercises || []).map((row) => ({ ...row })),
       abs: pair.slice(),
       absDetail: pair.map((name) => ({ ex: name, ...ABS_POOL[name] }))
     }
   })
-  const rotation = []
-  const count = days.length === 2 ? 4 : days.length
-  for (let i = 0; i < count; i++) rotation.push(days[i % days.length].id)
-  return { days, rotation }
+  return { days, rotation: days.map((day) => day.id) }
+}
+
+export function emptyPlanDay(index) {
+  const pair = ABS_PAIRS[index % ABS_PAIRS.length]
+  return {
+    id: uid('d'),
+    name: '训练日 ' + (index + 1),
+    focus: '自定义训练日',
+    exercises: [],
+    abs: pair.slice(),
+    absDetail: pair.map((name) => ({ ex: name, ...ABS_POOL[name] }))
+  }
+}
+
+export function defaultExerciseCfg(name) {
+  return { ex: name, sets: 3, repsMin: 8, repsMax: 12, rest: 90 }
 }
 
 export function buildSchedule(days, freq) {
@@ -56,8 +71,7 @@ export function buildSchedule(days, freq) {
   return out
 }
 
-export function buildPlan(templateId, goal, freq) {
-  const tpl = templateById(templateId)
+export function buildPlanFromTemplate(tpl, goal, freq) {
   const expanded = planDaysFromTemplate(tpl)
   return {
     templateId: tpl.id,
@@ -69,6 +83,64 @@ export function buildPlan(templateId, goal, freq) {
     rotation: expanded.rotation,
     schedule: buildSchedule(expanded.days, freq || 3)
   }
+}
+
+export function buildPlan(templateId, goal, freq) {
+  return buildPlanFromTemplate(templateById(templateId), goal, freq)
+}
+
+export function rebuildSchedule(plan) {
+  plan.schedule = buildSchedule(plan.days, plan.freq)
+  plan.rotation = plan.days.map((day) => day.id)
+}
+
+/* ---------- 训练日编辑 ---------- */
+
+export function addExerciseToDay(plan, dayId, name) {
+  const day = getDayById(plan, dayId)
+  if (!day || !name) return false
+  if (day.exercises.some((row) => row.ex === name)) return false
+  day.exercises.push(defaultExerciseCfg(name))
+  return true
+}
+
+export function removeExerciseFromDay(plan, dayId, index) {
+  const day = getDayById(plan, dayId)
+  if (!day || index < 0 || index >= day.exercises.length) return false
+  day.exercises.splice(index, 1)
+  return true
+}
+
+export function moveExercise(plan, dayId, from, to) {
+  const day = getDayById(plan, dayId)
+  if (!day || from === to || from < 0 || to < 0) return false
+  if (from >= day.exercises.length || to >= day.exercises.length) return false
+  const [row] = day.exercises.splice(from, 1)
+  day.exercises.splice(to, 0, row)
+  return true
+}
+
+export function updateExercise(plan, dayId, index, patch) {
+  const day = getDayById(plan, dayId)
+  if (!day || !day.exercises[index]) return false
+  Object.assign(day.exercises[index], patch)
+  return true
+}
+
+export function addPlanDay(plan) {
+  const day = emptyPlanDay(plan.days.length)
+  plan.days.push(day)
+  rebuildSchedule(plan)
+  return day
+}
+
+export function removePlanDay(plan, dayId) {
+  if (!plan || plan.days.length <= 1) return false
+  const index = plan.days.findIndex((day) => day.id === dayId)
+  if (index < 0) return false
+  plan.days.splice(index, 1)
+  rebuildSchedule(plan)
+  return true
 }
 
 export function getDayById(plan, dayId) {

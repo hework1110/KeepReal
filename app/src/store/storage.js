@@ -1,9 +1,20 @@
 // 本地数据层：统一封装 uni 的同步存储，页面不直接调用 uni.getStorageSync。
 // version 字段用于后续结构升级时的迁移判断。
-// 数据模型对齐 2026-11-19 原型的训练主链路。
 
 export const STORAGE_KEY = 'keepreal.app'
-export const SCHEMA_VERSION = 2
+export const SCHEMA_VERSION = 3
+
+function emptyUi() {
+  return {
+    customGroups: [], // 自定义部位
+    customEquips: [], // 自定义器械
+    libGroup: '全部',
+    libEquip: '全部',
+    progressRange: '1w',
+    progressEx: null,
+    prAll: false
+  }
+}
 
 export function createEmptyStore() {
   return {
@@ -15,10 +26,13 @@ export function createEmptyStore() {
       prs: {} // 动作名 -> 最大重量
     },
     body: {
-      weights: [], // { date, value }
-      bodyFats: [], // { date, value }
-      cardio: [] // { date, type, minutes, note }
-    }
+      weights: [], // { id, date, kg, bf }  bf 选填
+      measures: [], // { id, date, chest, waist, hip, arm, leg }
+      cardio: [] // { id, date, type, minutes, incline, speed }
+    },
+    templates: [], // 自定义模板 { id, name, createdAt, days:[{id,name,focus,exercises}] }
+    customEx: [], // { name, group, equip, unilateral }
+    ui: emptyUi()
   }
 }
 
@@ -32,7 +46,8 @@ function normalizePlan(raw) {
   const days = raw.days.filter(isObject).map((day) => ({
     ...day,
     exercises: Array.isArray(day.exercises) ? day.exercises.filter(isObject) : [],
-    abs: Array.isArray(day.abs) ? day.abs : []
+    abs: Array.isArray(day.abs) ? day.abs : [],
+    absDetail: Array.isArray(day.absDetail) ? day.absDetail : []
   }))
   return {
     ...raw,
@@ -55,13 +70,53 @@ function normalizeDraft(raw) {
   }
 }
 
-// 把任意读取结果收敛成合法结构，缺字段时用空壳补齐。
+function normalizeTemplates(raw) {
+  if (!Array.isArray(raw)) return []
+  return raw.filter(isObject).map((tpl) => ({
+    id: typeof tpl.id === 'string' && tpl.id ? tpl.id : 'tpl_' + Math.random().toString(36).slice(2, 8),
+    name: typeof tpl.name === 'string' ? tpl.name : '我的模板',
+    createdAt: tpl.createdAt || '',
+    days: Array.isArray(tpl.days)
+      ? tpl.days.filter(isObject).map((day, index) => ({
+          id: typeof day.id === 'string' && day.id ? day.id : 'td_' + index,
+          name: typeof day.name === 'string' && day.name ? day.name : '训练日 ' + (index + 1),
+          focus: typeof day.focus === 'string' ? day.focus : '自定义训练日',
+          exercises: Array.isArray(day.exercises) ? day.exercises.filter(isObject) : []
+        }))
+      : []
+  }))
+}
+
+function normalizeWeights(body) {
+  const weights = Array.isArray(body.weights) ? body.weights : []
+  const fats = Array.isArray(body.bodyFats) ? body.bodyFats : []
+  const out = []
+  weights.filter(isObject).forEach((row, index) => {
+    out.push({
+      id: row.id || 'w_' + index,
+      date: row.date || '',
+      kg: +row.kg > 0 ? +row.kg : +row.value > 0 ? +row.value : 0,
+      bf: +row.bf > 0 ? +row.bf : 0
+    })
+  })
+  // v2 的体脂单独存放，迁移时并到同一天或补一条纯体脂记录。
+  fats.filter(isObject).forEach((row, index) => {
+    const value = +row.value > 0 ? +row.value : +row.bf > 0 ? +row.bf : 0
+    if (!value) return
+    const same = out.find((item) => item.date === row.date)
+    if (same) same.bf = value
+    else out.push({ id: row.id || 'bf_' + index, date: row.date || '', kg: 0, bf: value })
+  })
+  return out
+}
+
 function normalize(raw) {
   const base = createEmptyStore()
   if (!isObject(raw)) return base
 
   const records = isObject(raw.records) ? raw.records : {}
   const body = isObject(raw.body) ? raw.body : {}
+  const ui = isObject(raw.ui) ? raw.ui : {}
 
   return {
     version: SCHEMA_VERSION,
@@ -72,9 +127,19 @@ function normalize(raw) {
       prs: isObject(records.prs) ? { ...records.prs } : {}
     },
     body: {
-      weights: Array.isArray(body.weights) ? body.weights : [],
-      bodyFats: Array.isArray(body.bodyFats) ? body.bodyFats : [],
-      cardio: Array.isArray(body.cardio) ? body.cardio : []
+      weights: normalizeWeights(body),
+      measures: Array.isArray(body.measures) ? body.measures.filter(isObject) : [],
+      cardio: Array.isArray(body.cardio) ? body.cardio.filter(isObject) : []
+    },
+    templates: normalizeTemplates(raw.templates),
+    customEx: Array.isArray(raw.customEx)
+      ? raw.customEx.filter((item) => isObject(item) && typeof item.name === 'string' && item.name)
+      : [],
+    ui: {
+      ...emptyUi(),
+      ...ui,
+      customGroups: Array.isArray(ui.customGroups) ? ui.customGroups : [],
+      customEquips: Array.isArray(ui.customEquips) ? ui.customEquips : []
     }
   }
 }

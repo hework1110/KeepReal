@@ -290,13 +290,79 @@ export const ABS_PAIRS = [
   ['绳索卷腹', '平板支撑']
 ]
 
+/* 动作模式 / 肌群 / 器械，用于动作库筛选与自定义动作。 */
+export const PATTERNS = ['蹲', '髋铰链', '水平推', '垂直推', '水平拉', '垂直拉', '手臂', '腿后与小腿', '核心']
+export const GROUPS = ['胸', '背', '肩', '手臂', '腿', '臀', '核心']
+export const EQUIPS = ['杠铃', '哑铃', '器械', '绳索', '自重']
+export const CARDIO_TYPES = ['爬坡走', '快走', '跑步', '单车', '椭圆机', '划船机']
+export const CARDIO_NO_INCLINE = ['跑步', '单车']
+export const MEASURES = [
+  { key: 'chest', name: '胸围' },
+  { key: 'waist', name: '腰围' },
+  { key: 'hip', name: '臀围' },
+  { key: 'arm', name: '臂围' },
+  { key: 'leg', name: '腿围' }
+]
+
+/* 热身池：练腿偏髋膝踝，上肢偏肩肘。 */
+export const WARM_POOL = {
+  cardio: { name: '轻有氧热身', detail: '单车或划船 4 分钟，心率上来、微微出汗', tag: '全身' },
+  hip: { name: '髋部环绕', detail: '双手叉腰，前后各 8 次，把髋关节活动开', tag: '髋膝踝' },
+  squat: { name: '自重深蹲', detail: '15 次，幅度做满，膝盖顺着脚尖方向', tag: '髋膝踝' },
+  bridge: { name: '臀桥激活', detail: '15 次，顶峰夹紧臀部 2 秒', tag: '髋膝踝' },
+  ankle: { name: '踝关节背屈', detail: '每侧 10 次，脚跟不离地，膝盖向前压', tag: '髋膝踝' },
+  shoulder: { name: '肩部环绕', detail: '前后各 10 次，小幅度开始逐渐加大', tag: '肩肘' },
+  band: { name: '弹力带外旋', detail: '每侧 12 次，肘贴身体，只转小臂', tag: '肩肘' },
+  scap: { name: '肩胛俯卧撑', detail: '10 次，手臂伸直，只让肩胛骨前后移动', tag: '肩肘' },
+  catcow: { name: '猫牛式', detail: '8 次，配合呼吸活动整条脊柱', tag: '全身' }
+}
+
 const FALLBACK_EX = {
   pattern: '自定义', group: '核心', muscle: '未标注', equip: '自重', type: 'bodyweight',
   bw: true, base: 0, step: 0, pr: 0, cue: '保持动作控制，做满全程幅度。'
 }
 
+/* 自定义动作注册表：由 store 在启动与增删时写入，exInfo 统一解析。 */
+let CUSTOM_EX = []
+
+export function registerCustomExercises(list) {
+  CUSTOM_EX = Array.isArray(list) ? list.filter((item) => item && item.name) : []
+}
+
+function customInfo(item) {
+  const equip = item.equip || '哑铃'
+  const typeMap = { 杠铃: 'barbell', 绳索: 'cable', 器械: 'machine', 自重: 'bodyweight' }
+  const bw = equip === '自重'
+  return {
+    pattern: '自定义',
+    group: item.group || '核心',
+    muscle: item.muscle || item.group || '未标注',
+    equip,
+    type: typeMap[equip] || 'dumbbell',
+    unilateral: !!item.unilateral,
+    bw,
+    hold: false,
+    base: bw ? 0 : equip === '杠铃' ? 20 : 10,
+    step: equip === '杠铃' ? 2.5 : 1,
+    pr: 0,
+    cue: '自定义动作 · 保持动作控制，做满全程幅度。',
+    custom: true
+  }
+}
+
 export function exInfo(name) {
-  return EX_LIB[name] || FALLBACK_EX
+  if (EX_LIB[name]) return EX_LIB[name]
+  const hit = CUSTOM_EX.find((item) => item.name === name)
+  if (hit) return customInfo(hit)
+  return FALLBACK_EX
+}
+
+export function allExerciseNames() {
+  return Object.keys(EX_LIB).concat(CUSTOM_EX.map((item) => item.name))
+}
+
+export function isCustomExercise(name) {
+  return !!CUSTOM_EX.find((item) => item.name === name)
 }
 
 export function isBW(name) {
@@ -309,4 +375,17 @@ export function isHold(name) {
 
 export function templateById(id) {
   return TEMPLATES.find((tpl) => tpl.id === id) || TEMPLATES[0]
+}
+
+// 根据当天动作模式推导热身项，热身不计入训练容量。
+export function warmupFor(day) {
+  const pats = (day.exercises || []).map((row) => exInfo(row.ex).pattern)
+  const lower = pats.some((p) => p === '蹲' || p === '髋铰链' || p === '腿后与小腿')
+  const upper = pats.some((p) => ['水平推', '垂直推', '水平拉', '垂直拉', '手臂'].indexOf(p) >= 0)
+  let keys
+  if (lower && upper) keys = ['cardio', 'hip', 'squat', 'bridge', 'shoulder', 'scap']
+  else if (lower) keys = ['cardio', 'hip', 'squat', 'bridge', 'ankle']
+  else if (upper) keys = ['cardio', 'shoulder', 'band', 'scap', 'catcow']
+  else keys = ['cardio', 'catcow']
+  return keys.map((key, index) => ({ id: index, ...WARM_POOL[key] }))
 }

@@ -48,6 +48,43 @@
       "style": {
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/plan/day",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/plan/edit",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/library/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/templates/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/templates/detail",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/templates/edit",
+      "style": {
+        "navigationStyle": "custom",
+        "disableScroll": false
+      }
     }
   ],
   "globalStyle": {

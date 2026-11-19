@@ -4,9 +4,7 @@ import { PLATES, exInfo, isBW, isHold } from '../data/catalog'
 import { exercisesOfDay, getDayById } from './plan'
 import { fmtNum, todayISO } from '../utils/format'
 
-export function uid(prefix) {
-  return prefix + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 7)
-}
+export { uid } from '../utils/id'
 
 // 最近一次练过该动作的历史（从新到旧）。
 export function lastLift(store, name) {
