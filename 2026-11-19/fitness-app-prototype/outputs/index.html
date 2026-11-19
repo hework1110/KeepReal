@@ -538,27 +538,434 @@
     body{padding:14px 0}
     .phone{height:calc(100dvh - 76px);max-height:844px}
   }
+
+/* ============================================================
+     第二批：底部导航 / 计划 / 动作库 / 进步 / 身体 / 我的
+     ============================================================ */
+
+  .screen--tab .screen__body{padding-bottom:calc(94px + env(safe-area-inset-bottom))}
+  .tabbar{
+    position:absolute;left:0;right:0;bottom:0;z-index:60;
+    display:grid;grid-template-columns:repeat(5,1fr);
+    padding:6px 6px calc(5px + env(safe-area-inset-bottom));
+    background:linear-gradient(180deg,rgba(8,10,9,.55),rgba(8,10,9,.96) 34%);
+    border-top:1px solid var(--line);backdrop-filter:blur(16px);
+  }
+  .tabbar__item{
+    position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;
+    padding:7px 0 3px;background:none;border:0;color:#6B776F;
+    font-family:inherit;font-size:9.5px;letter-spacing:.04em;cursor:pointer;
+    transition:color .16s;
+  }
+  .tabbar__item .icon{width:19px;height:19px;transition:transform .16s}
+  .tabbar__item:hover{color:var(--sub)}
+  .tabbar__item.is-on{color:var(--acid)}
+  .tabbar__item.is-on .icon{transform:translateY(-1px)}
+  .tabbar__item.is-on:after{
+    content:"";position:absolute;bottom:-5px;width:14px;height:2px;border-radius:1px;background:var(--acid);
+  }
+
+  /* ---------- 页面通用 ---------- */
+  .pg{padding-top:calc(24px + env(safe-area-inset-top))}
+  .pg-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .pg-eyebrow{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.18em;color:var(--acid)}
+  .pg-title{font-family:var(--font-display);font-size:38px;line-height:1;font-weight:600;letter-spacing:-.01em;margin-top:7px}
+  .pg-sub{font-size:11.5px;line-height:1.65;color:var(--dim);margin-top:9px;max-width:270px}
+  .pg-tools{display:flex;gap:6px;flex:none}
+  .pg-tool{
+    display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 9px;
+    border:1px solid var(--line-2);border-radius:var(--r1);background:transparent;color:var(--sub);
+    font-family:inherit;font-size:10.5px;cursor:pointer;white-space:nowrap;
+  }
+  .pg-tool:hover{color:var(--text);border-color:var(--line-3);background:rgba(255,255,255,.03)}
+  .pg-tool .icon{width:13px;height:13px}
+
+  .sub-head{display:flex;align-items:center;gap:10px;padding:calc(16px + env(safe-area-inset-top)) 16px 10px;flex:none}
+  .sub-head .icon-btn{width:36px;height:36px;border-color:var(--line)}
+  .sub-head__mid{flex:1;min-width:0;text-align:center}
+  .sub-head__name{font-size:13.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .sub-head__meta{font-family:var(--font-mono);font-size:9.5px;color:var(--dim);letter-spacing:.04em;margin-top:2px}
+  .sub-head .text-btn{flex:none;min-width:36px;text-align:right;color:var(--acid)}
+
+  .panel{
+    border:1px solid var(--line);border-radius:var(--r3);padding:14px;
+    background:linear-gradient(160deg,#121713 0%,#0B0F0C 74%);
+  }
+  .panel + .panel{margin-top:8px}
+  .panel__label{font-family:var(--font-mono);font-size:9px;letter-spacing:.15em;color:var(--dim)}
+  .panel__title{font-size:14px;font-weight:700;margin-top:5px}
+  .panel__sub{font-size:11px;line-height:1.6;color:var(--dim);margin-top:5px}
+
+  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+  .stat-grid > div{border:1px solid var(--line);border-radius:var(--r2);background:#0C100E;padding:10px}
+  .stat-grid span{font-size:9.5px;color:var(--dim);letter-spacing:.04em}
+  .stat-grid b{display:block;font-family:var(--font-display);font-size:21px;font-weight:600;margin-top:4px;font-variant-numeric:tabular-nums;line-height:1}
+  .stat-grid b small{font-family:var(--font-cn);font-size:9.5px;font-weight:400;color:var(--dim);margin-left:2px}
+
+  .seg{display:flex;gap:2px;border:1px solid var(--line);border-radius:var(--r1);background:#0A0E0B;padding:2px}
+  .seg button{
+    flex:1;height:29px;border:0;border-radius:3px;background:transparent;color:var(--dim);
+    font-family:inherit;font-size:11px;cursor:pointer;transition:background .16s,color .16s;
+  }
+  .seg button.is-on{background:var(--acid);color:#0A0D05;font-weight:700}
+  .seg--ghost button.is-on{background:#28312A;color:var(--acid)}
+
+  .chips{display:flex;gap:5px;overflow-x:auto;padding:1px 0;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex:none;height:28px;padding:0 9px;border:1px solid var(--line);border-radius:var(--r1);
+    background:#0C100E;color:var(--sub);font-family:inherit;font-size:10.5px;cursor:pointer;
+    transition:border-color .16s,color .16s,background .16s;white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--line-2);color:var(--text)}
+  .chip.is-on{border-color:var(--acid);color:var(--acid);background:var(--acid-soft)}
+
+  .search{position:relative;margin-top:14px}
+  .search .icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:var(--dim)}
+  .search input{
+    width:100%;height:42px;background:#0B0F0C;border:1px solid var(--line);border-radius:var(--r2);
+    padding:0 12px 0 35px;color:var(--text);font-family:inherit;font-size:12.5px;
+    transition:border-color .16s,box-shadow .16s;
+  }
+  .search input::placeholder{color:#4F5B52}
+  .search input:focus{outline:none;border-color:var(--acid);box-shadow:0 0 0 2px rgba(199,255,58,.12)}
+  .filter-row{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+
+  .empty{
+    padding:24px 18px;text-align:center;border:1px dashed #2C352E;border-radius:var(--r2);
+    color:var(--dim);font-size:11px;line-height:1.8;background:rgba(255,255,255,.008);
+  }
+  .empty b{display:block;color:var(--sub);font-size:12px;margin-bottom:4px}
+  .empty .btn{margin-top:12px}
+
+  /* ---------- 计划 ---------- */
+  .plan-hero{
+    position:relative;margin-top:18px;padding:16px;border:1px solid var(--line);border-radius:var(--r4);overflow:hidden;
+    background:linear-gradient(152deg,#171E18 0%,#0C100D 72%);
+  }
+  .plan-hero:after{
+    content:"";position:absolute;right:-36px;top:-42px;width:150px;height:150px;border-radius:50%;
+    border:1px solid rgba(199,255,58,.12);
+  }
+  .plan-hero__top{position:relative;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .plan-hero__name{position:relative;font-size:24px;font-weight:700;line-height:1.2;margin-top:12px}
+  .plan-hero__meta{position:relative;font-family:var(--font-mono);font-size:10px;color:var(--dim);margin-top:6px;letter-spacing:.02em}
+  .plan-hero__stats{position:relative;display:flex;gap:0;margin-top:14px;border-top:1px solid var(--line);padding-top:12px}
+  .plan-hero__stat{flex:1;border-left:1px solid var(--line);padding-left:12px}
+  .plan-hero__stat:first-child{border-left:0;padding-left:0}
+  .plan-hero__stat b{display:block;font-family:var(--font-display);font-size:22px;font-weight:600;line-height:1}
+  .plan-hero__stat span{font-size:9.5px;color:var(--dim)}
+  .plan-hero__actions{position:relative;display:flex;gap:6px;margin-top:14px}
+  .plan-hero__actions .mini-btn{flex:1;height:34px}
+
+  .day-row{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:12px 0;
+    border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font-family:inherit;cursor:pointer;
+  }
+  .day-row:last-child{border-bottom:0}
+  .day-row:hover .day-row__name{color:var(--acid)}
+  .day-row__idx{font-family:var(--font-mono);font-size:10.5px;color:var(--dim);width:22px;flex:none}
+  .day-row__main{flex:1;min-width:0}
+  .day-row__name{font-size:13.5px;font-weight:600;transition:color .16s}
+  .day-row__sub{display:block;font-size:10.5px;color:var(--dim);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .day-row__meta{flex:none;text-align:right;font-family:var(--font-mono);font-size:9.5px;color:var(--sub);line-height:1.5}
+  .day-row .icon{width:13px;height:13px;color:#4E5A52;flex:none}
+  .tool-row{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+  .tool-card{
+    display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:var(--r2);
+    background:#0C100E;color:inherit;font-family:inherit;text-align:left;cursor:pointer;transition:border-color .16s,background .16s;
+  }
+  .tool-card:hover{border-color:var(--line-2);background:#111613}
+  .tool-card .icon{width:17px;height:17px;color:var(--acid);flex:none}
+  .tool-card b{display:block;font-size:12px}
+  .tool-card span{display:block;font-size:9.5px;color:var(--dim);margin-top:2px}
+
+  .day-tabs{display:flex;gap:5px;overflow-x:auto;padding:12px 0 2px;scrollbar-width:none}
+  .day-tabs::-webkit-scrollbar{display:none}
+  .day-tab{
+    flex:none;height:32px;padding:0 11px;display:flex;align-items:center;gap:6px;
+    border:1px solid var(--line);border-radius:var(--r1);background:#0C100E;color:var(--sub);
+    font-family:inherit;font-size:11px;cursor:pointer;
+  }
+  .day-tab b{font-family:var(--font-mono);font-size:9px;color:var(--dim);font-weight:400}
+  .day-tab.is-on{border-color:var(--acid);color:var(--acid);background:var(--acid-soft)}
+  .day-tab.is-on b{color:var(--acid);opacity:.6}
+
+  .ex-line{display:flex;align-items:flex-start;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .ex-line:last-child{border-bottom:0}
+  .ex-line__idx{font-family:var(--font-mono);font-size:10px;color:var(--dim);width:18px;flex:none;padding-top:2px}
+  .ex-line__main{flex:1;min-width:0}
+  .ex-line__name{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .ex-line__sub{font-size:9.5px;color:var(--dim);margin-top:3px;line-height:1.45}
+  .ex-line__right{flex:none;text-align:right;font-family:var(--font-mono);font-size:10px;color:var(--sub);line-height:1.5}
+  .ex-line__right s{display:block;color:#4E5A52;font-size:9px;text-decoration:none}
+  .mini-tag{
+    display:inline-flex;align-items:center;height:16px;padding:0 4px;border-radius:2px;
+    font-family:var(--font-mono);font-size:8px;letter-spacing:.04em;color:var(--dim);
+    border:1px solid var(--line);background:rgba(255,255,255,.015);
+  }
+  .mini-tag--acid{color:var(--acid);border-color:var(--acid-line);background:var(--acid-soft)}
+
+  .warm-list{display:flex;flex-direction:column}
+  .warm-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0;color:inherit;font-family:inherit}
+  .warm-item:last-child{border-bottom:0}
+  .warm-item__num{
+    width:24px;height:24px;flex:none;display:grid;place-items:center;border:1px solid var(--line-2);
+    border-radius:50%;font-family:var(--font-mono);font-size:9px;color:var(--dim);margin-top:1px;
+  }
+  .warm-item__main{flex:1;min-width:0}
+  .warm-item__name{font-size:12px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .warm-item__sub{font-size:9.5px;color:var(--dim);margin-top:3px;line-height:1.45}
+  .warm-item__check{
+    width:26px;height:26px;flex:none;display:grid;place-items:center;border:1px solid #364038;border-radius:var(--r1);
+    background:#080B09;color:#4F5B52;cursor:pointer;transition:all .16s;margin-top:1px;
+  }
+  .warm-item__check .icon{width:14px;height:14px;stroke-width:2.2}
+  .warm-item.is-done .warm-item__num{border-color:var(--acid-line);color:var(--acid)}
+  .warm-item.is-done .warm-item__name{color:var(--sub)}
+  .warm-item.is-done .warm-item__check{background:var(--acid);border-color:var(--acid);color:#0A0D05}
+  .warm-note{font-size:10px;line-height:1.6;color:#525E56;border-left:2px solid #2C342E;padding-left:9px;margin-top:12px}
+  .warm-hero{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:var(--r4);background:linear-gradient(158deg,#151B16,#0C100D 72%)}
+  .warm-hero__kicker{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.16em;color:var(--acid)}
+  .warm-hero__title{font-size:30px;font-weight:700;line-height:1.15;margin-top:8px}
+  .warm-hero__sub{font-size:11px;color:var(--dim);margin-top:6px;line-height:1.6}
+  .warm-hero__tags{display:flex;gap:5px;margin-top:12px;flex-wrap:wrap}
+
+  /* ---------- 动作库 ---------- */
+  .lib-group{margin-top:18px}
+  .lib-group__head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding-bottom:2px}
+  .lib-group__head h3{font-size:11px;font-weight:700;letter-spacing:.08em}
+  .lib-group__head span{font-family:var(--font-mono);font-size:9px;color:var(--dim);letter-spacing:.06em}
+  .lib-row{
+    display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:11px 0;
+    border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font-family:inherit;cursor:pointer;
+  }
+  .lib-row:last-child{border-bottom:0}
+  .lib-row:hover .lib-row__name{color:var(--acid)}
+  .lib-row__main{flex:1;min-width:0}
+  .lib-row__name{font-size:12.5px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap;transition:color .16s}
+  .lib-row__sub{font-size:9.5px;color:var(--dim);margin-top:3px}
+  .lib-row__right{flex:none;display:flex;align-items:center;gap:8px}
+  .lib-row__pr{font-family:var(--font-mono);font-size:9.5px;color:var(--sub);text-align:right;line-height:1.4}
+  .lib-row__pr s{display:block;font-size:8.5px;color:#4E5A52;text-decoration:none}
+  .lib-add{
+    width:28px;height:28px;flex:none;display:grid;place-items:center;border:1px solid var(--line-2);
+    border-radius:var(--r1);background:transparent;color:var(--sub);cursor:pointer;
+  }
+  .lib-add .icon{width:14px;height:14px}
+  .lib-add:hover,.lib-add.is-added{border-color:var(--acid);color:var(--acid);background:var(--acid-soft)}
+  .lib-add.is-added{pointer-events:none;opacity:.6}
+  .lib-count{font-family:var(--font-mono);font-size:9px;color:var(--dim);letter-spacing:.06em;margin-left:6px}
+
+  /* ---------- 模板库 ---------- */
+  .tpl-card{
+    display:block;width:100%;text-align:left;padding:14px;border:1px solid var(--line);border-radius:var(--r3);
+    background:linear-gradient(160deg,#111612,#0B0F0C 75%);color:inherit;font-family:inherit;cursor:pointer;
+    transition:border-color .16s,transform .12s;
+  }
+  .tpl-card:hover{border-color:var(--line-2)}
+  .tpl-card:active{transform:scale(.996)}
+  .tpl-card + .tpl-card{margin-top:7px}
+  .tpl-card__row{display:flex;align-items:center;gap:8px}
+  .tpl-card__name{font-size:15px;font-weight:700}
+  .tpl-card__days{margin-left:auto;font-family:var(--font-mono);font-size:9.5px;color:var(--dim)}
+  .tpl-card__sub{display:block;font-size:11.5px;color:var(--sub);margin-top:5px;line-height:1.55}
+  .tpl-card__meta{display:flex;gap:10px;margin-top:9px;font-family:var(--font-mono);font-size:9.5px;color:var(--dim);flex-wrap:wrap}
+  .tpl-card__tags{display:flex;gap:5px;margin-top:9px;flex-wrap:wrap}
+  .tpl-day{padding:12px 0;border-bottom:1px solid var(--line)}
+  .tpl-day:last-child{border-bottom:0}
+  .tpl-day__head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+  .tpl-day__name{font-size:13px;font-weight:700}
+  .tpl-day__focus{font-size:10px;color:var(--dim);margin-top:3px}
+  .tpl-day__meta{font-family:var(--font-mono);font-size:9px;color:var(--dim)}
+  .tpl-ex{display:flex;justify-content:space-between;gap:10px;padding:6px 0;font-size:10.5px;border-bottom:1px dashed rgba(255,255,255,.04)}
+  .tpl-ex:last-child{border-bottom:0}
+  .tpl-ex span:first-child{color:var(--sub)}
+  .tpl-ex span:last-child{font-family:var(--font-mono);font-size:9px;color:var(--dim);white-space:nowrap}
+
+  /* ---------- 进步 ---------- */
+  .hero-metric{margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:var(--r4);background:linear-gradient(158deg,#151B16,#0C100D 72%);position:relative;overflow:hidden}
+  .hero-metric:after{content:"";position:absolute;right:-30px;top:-50px;width:150px;height:150px;border-radius:50%;border:1px solid rgba(199,255,58,.1)}
+  .hero-metric__label{font-family:var(--font-mono);font-size:9px;letter-spacing:.16em;color:var(--dim)}
+  .hero-metric__num{font-family:var(--font-display);font-size:50px;line-height:1;font-weight:600;color:var(--acid);margin-top:8px;display:flex;align-items:baseline;gap:5px;font-variant-numeric:tabular-nums}
+  .hero-metric__num small{font-family:var(--font-cn);font-size:11px;font-weight:400;color:var(--dim)}
+  .hero-metric__meta{display:flex;gap:14px;margin-top:10px;font-family:var(--font-mono);font-size:9.5px;color:var(--dim);flex-wrap:wrap}
+  .hero-metric__meta b{color:var(--sub);font-weight:500}
+  .chart-card{margin-top:8px;padding:13px;border:1px solid var(--line);border-radius:var(--r3);background:#0B0F0C}
+  .chart-card__head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+  .chart-card__head h3{font-size:11.5px;font-weight:700;letter-spacing:.04em}
+  .chart-card__head span{font-family:var(--font-mono);font-size:9px;color:var(--dim)}
+  .chart{margin-top:10px}
+  .chart svg{display:block;width:100%;height:auto;overflow:visible}
+  .chart .grid{stroke:#232A25;stroke-width:1}
+  .chart .axis{font-family:var(--font-mono);font-size:8px;fill:#5D6961}
+  .chart .axis--strong{fill:var(--sub)}
+  .chart .bar{fill:#2E3931;transition:fill .2s}
+  .chart .bar.is-hot{fill:var(--acid)}
+  .chart .bar.is-empty{fill:#1A211C}
+  .chart .line{fill:none;stroke:var(--acid);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+  .chart .line--sub{stroke:#6C7A71;stroke-width:1.4}
+  .chart .line--ma{stroke:var(--acid);stroke-width:2}
+  .chart .area{fill:url(#trendFill)}
+  .chart .dot{fill:var(--acid);stroke:#0A0D05;stroke-width:1.5}
+  .chart .dot--sub{fill:#6C7A71;stroke:#0A0D05;stroke-width:1.2}
+  .chart-legend{display:flex;gap:14px;margin-top:8px;font-size:9px;color:var(--dim);font-family:var(--font-mono)}
+  .chart-legend i{display:inline-block;width:12px;height:2px;background:var(--acid);vertical-align:middle;margin-right:4px}
+  .chart-legend i.muted{background:#6C7A71;height:1.5px}
+  .chart-empty{padding:26px 0;text-align:center;font-size:10.5px;color:var(--dim)}
+
+  .pr-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .pr-row:last-child{border-bottom:0}
+  .pr-row__rank{font-family:var(--font-mono);font-size:9px;color:#4E5A52;width:18px;flex:none}
+  .pr-row__main{flex:1;min-width:0}
+  .pr-row__name{font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .pr-row__sub{font-family:var(--font-mono);font-size:8.5px;color:var(--dim);margin-top:2px}
+  .pr-row__val{flex:none;text-align:right}
+  .pr-row__val b{font-family:var(--font-mono);font-size:12px;color:var(--acid);font-weight:600}
+  .pr-row__val span{display:block;font-family:var(--font-mono);font-size:8.5px;color:var(--dim);margin-top:2px}
+
+  /* ---------- 身体 ---------- */
+  .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .metric{border:1px solid var(--line);border-radius:var(--r2);padding:11px;background:#0C100E}
+  .metric--wide{grid-column:span 2}
+  .metric__label{font-size:9.5px;color:var(--dim);letter-spacing:.05em}
+  .metric__val{display:flex;align-items:baseline;gap:4px;margin-top:6px}
+  .metric__val b{font-family:var(--font-display);font-size:25px;line-height:1;font-weight:600;font-variant-numeric:tabular-nums}
+  .metric__val small{font-family:var(--font-cn);font-size:9.5px;color:var(--dim)}
+  .metric__delta{font-family:var(--font-mono);font-size:9px;color:var(--acid);margin-top:5px}
+  .metric__delta.is-flat{color:var(--dim)}
+  .metric__delta.is-up{color:var(--acid)}
+  .metric__delta.is-down{color:#FFB18F}
+  .metric__date{font-family:var(--font-mono);font-size:8px;color:#4E5A52;margin-top:4px}
+
+  .log-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .log-row:last-child{border-bottom:0}
+  .log-row__main{flex:1;min-width:0}
+  .log-row__title{font-size:11.5px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .log-row__sub{font-family:var(--font-mono);font-size:9px;color:var(--dim);margin-top:3px}
+  .log-row__val{font-family:var(--font-mono);font-size:11px;color:var(--sub);text-align:right;white-space:nowrap}
+  .del-btn{
+    width:26px;height:26px;flex:none;display:grid;place-items:center;border:1px solid transparent;
+    border-radius:var(--r1);background:transparent;color:#4E5A52;cursor:pointer;
+  }
+  .del-btn .icon{width:12px;height:12px}
+  .del-btn:hover{color:#FF8F7B;border-color:rgba(255,106,77,.35);background:rgba(255,106,77,.06)}
+  .add-btn{
+    display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 9px;border:1px solid var(--line-2);
+    border-radius:var(--r1);background:transparent;color:var(--sub);font-family:inherit;font-size:10.5px;cursor:pointer;
+  }
+  .add-btn:hover{color:var(--acid);border-color:var(--acid-line);background:var(--acid-soft)}
+  .add-btn .icon{width:13px;height:13px}
+  .section-head__action{display:flex;align-items:center;gap:6px}
+
+  /* ---------- 我的 ---------- */
+  .me-hero{display:flex;align-items:center;gap:13px;margin-top:20px}
+  .me-avatar{
+    width:54px;height:54px;flex:none;border-radius:var(--r3);background:var(--acid);color:#0A0D05;
+    display:grid;place-items:center;font-family:var(--font-display);font-size:27px;font-weight:700;
+    box-shadow:0 0 0 1px rgba(199,255,58,.25),0 10px 30px rgba(199,255,58,.08);
+  }
+  .me-name{font-size:19px;font-weight:700}
+  .me-sub{font-family:var(--font-mono);font-size:9.5px;color:var(--dim);margin-top:4px;letter-spacing:.03em}
+  .menu{display:flex;flex-direction:column}
+  .menu-row{
+    display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:13px 0;
+    border:0;border-bottom:1px solid var(--line);background:none;color:inherit;font-family:inherit;cursor:pointer;
+  }
+  .menu-row:last-child{border-bottom:0}
+  .menu-row:hover .menu-row__title{color:var(--acid)}
+  .menu-row__icon{width:30px;height:30px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r1);color:var(--sub);background:#0C100E}
+  .menu-row__icon .icon{width:15px;height:15px}
+  .menu-row__main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+  .menu-row__title{font-size:12.5px;font-weight:600;transition:color .16s}
+  .menu-row__sub{font-size:9.5px;color:var(--dim);margin-top:0}
+  .menu-row__right{font-family:var(--font-mono);font-size:10px;color:var(--dim);display:flex;align-items:center;gap:6px}
+  .menu-row.danger .menu-row__title{color:#FF9C88}
+  .menu-row.danger .menu-row__icon{color:#FF9C88;border-color:rgba(255,106,77,.28)}
+  .notice{
+    display:flex;gap:8px;align-items:flex-start;padding:10px 11px;border:1px dashed #2E3731;border-radius:var(--r2);
+    font-size:10px;line-height:1.6;color:var(--dim);margin-top:10px;
+  }
+  .notice .icon{width:13px;height:13px;flex:none;color:var(--acid);margin-top:1px}
+  .ver{font-family:var(--font-mono);font-size:9px;letter-spacing:.12em;color:#414B44;text-align:center;margin-top:24px}
+
+  /* ---------- 浮动面板 / 表单 ---------- */
+  #sheet-root{position:absolute;inset:0;z-index:104;display:none}
+  #sheet-root.is-open{display:block}
+  .sheet-backdrop{position:absolute;inset:0;background:rgba(3,5,4,.68);backdrop-filter:blur(5px);animation:fadeIn .2s ease}
+  .sheet{
+    position:absolute;left:0;right:0;bottom:0;max-height:88%;overflow-y:auto;overscroll-behavior:contain;
+    background:#101512;border-top:1px solid var(--line-2);border-radius:var(--r5) var(--r5) 0 0;
+    padding:12px 16px calc(18px + env(safe-area-inset-bottom));
+    animation:sheetUp .26s cubic-bezier(.2,.8,.2,1);box-shadow:0 -30px 70px rgba(0,0,0,.6);
+  }
+  .sheet::-webkit-scrollbar{display:none}
+  .sheet__grip{width:34px;height:3px;border-radius:2px;background:#3A453D;margin:0 auto 12px}
+  .sheet__head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .sheet__title{font-size:16px;font-weight:700}
+  .sheet__sub{font-size:10.5px;color:var(--dim);margin-top:4px;line-height:1.5}
+  .sheet__close{width:30px;height:30px;flex:none;display:grid;place-items:center;border:1px solid var(--line);border-radius:var(--r1);background:transparent;color:var(--dim);cursor:pointer}
+  .sheet__close .icon{width:14px;height:14px}
+  .sheet__body{margin-top:6px}
+  .sheet__foot{display:flex;gap:7px;margin-top:16px}
+  .sheet__foot .btn{height:46px;font-size:13px}
+  .sheet__foot .btn--ghost{width:96px;flex:none}
+  .sheet__danger{
+    display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:40px;margin-top:12px;
+    border:1px solid rgba(255,106,77,.28);border-radius:var(--r1);background:rgba(255,106,77,.04);
+    color:#FF9C88;font-family:inherit;font-size:11.5px;cursor:pointer;
+  }
+  .sheet__danger:hover{background:rgba(255,106,77,.1)}
+  .sheet__danger .icon{width:13px;height:13px}
+
+  .stepper{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
+  .stepper:last-child{border-bottom:0}
+  .stepper__label{font-size:12px;font-weight:600}
+  .stepper__hint{display:block;font-size:9px;color:var(--dim);font-weight:400;margin-top:2px}
+  .stepper__ctrl{display:flex;align-items:center;gap:6px;flex:none}
+  .stepper__btn{
+    width:32px;height:32px;display:grid;place-items:center;border:1px solid var(--line-2);border-radius:var(--r1);
+    background:transparent;color:var(--sub);cursor:pointer;
+  }
+  .stepper__btn:hover{color:var(--acid);border-color:var(--acid-line);background:var(--acid-soft)}
+  .stepper__btn:disabled{opacity:.3;pointer-events:none}
+  .stepper__btn .icon{width:13px;height:13px}
+  .stepper__val{min-width:52px;text-align:center;font-family:var(--font-mono);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+  .stepper__val small{font-family:var(--font-cn);font-size:9px;color:var(--dim);font-weight:400;margin-left:2px}
+
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-top:13px}
+  .form-label{font-size:10px;color:var(--sub);letter-spacing:.04em}
+  .form-label span{color:#4E5A52;font-size:9px;margin-left:4px}
+  .form-input{
+    width:100%;height:44px;background:#080B09;border:1px solid #29312B;border-radius:var(--r1);
+    color:var(--text);font-family:var(--font-mono);font-size:15px;padding:0 12px;
+    transition:border-color .16s,box-shadow .16s;
+  }
+  .form-input::placeholder{color:#414B44;font-family:var(--font-cn);font-size:11.5px}
+  .form-input:focus{outline:none;border-color:var(--acid);box-shadow:0 0 0 2px rgba(199,255,58,.13)}
+  .form-split{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .form-tip{font-size:9.5px;line-height:1.55;color:#525E56;margin-top:8px}
+  .chip-group{display:flex;flex-wrap:wrap;gap:5px}
+  .switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line);margin-top:12px}
+  .switch{position:relative;width:42px;height:24px;flex:none;border-radius:12px;border:1px solid #364038;background:#0B0F0C;cursor:pointer;transition:background .18s,border-color .18s}
+  .switch:after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#5E6A61;transition:transform .18s,background .18s}
+  .switch.is-on{background:var(--acid-soft);border-color:var(--acid)}
+  .switch.is-on:after{transform:translateX(18px);background:var(--acid)}
+
+  /* 训练页热身 */
+  .warm-summary{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px;padding:9px 11px;border:1px solid var(--line);border-radius:var(--r2);background:#0B0F0C}
+  .warm-summary span{font-size:10px;color:var(--dim)}
+  .warm-summary b{font-family:var(--font-mono);font-size:10.5px;color:var(--acid)}
+  .abs-block{margin-top:20px}
+  .abs-block__head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:2px}
+  .abs-block__head h2{font-size:12px;font-weight:700;letter-spacing:.06em}
+  .abs-block__head span{font-family:var(--font-mono);font-size:9px;color:var(--dim)}
+
+  .toast--wide{max-width:none}
+
 </style>
 </head>
 <body>
-
-<div class="stage">
-  <div class="phone" id="phone">
-    <div id="app"></div>
-    <div class="gen" id="gen" hidden>
-      <div class="gen__ring"></div>
-      <div>
-        <div class="gen__title">正在生成你的训练计划</div>
-        <div class="gen__msg" id="gen-msg">匹配目标与训练频率…</div>
-      </div>
-      <div class="gen__brand">KEEPREAL · LOCAL ONLY</div>
-    </div>
-    <div id="toast-root"></div>
-    <div id="modal-root"></div>
-  </div>
-  <p class="stage-note">KEEPREAL · 390 × 844 · 高保真可点击原型 · 数据仅存本机</p>
-</div>
-
 <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
   <defs>
     <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M4 9v6"/><path d="M7.5 7v10"/><path d="M16.5 7v10"/><path d="M20 9v6"/><path d="M7.5 12h9"/></symbol>
@@ -584,15 +991,37 @@
     <symbol id="i-calendar" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
     <symbol id="i-trending-up" viewBox="0 0 24 24"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></symbol>
+    <symbol id="i-activity" viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></symbol>
+    <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="i-calculator" viewBox="0 0 24 24"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></symbol>
   </defs>
 </svg>
-
+<div class="stage">
+  <div class="phone" id="phone">
+    <div id="app"></div>
+    <div class="gen" id="gen" hidden>
+      <div class="gen__ring"></div>
+      <div class="gen__text">
+        <div class="gen__title">正在生成你的训练计划</div>
+        <div class="gen__msg" id="gen-msg">匹配目标与训练频率…</div>
+      </div>
+      <div class="gen__brand">KEEPREAL · LOCAL ONLY</div>
+    </div>
+    <div id="toast-root"></div>
+    <div id="modal-root"></div>
+    <div id="sheet-root"></div>
+  </div>
+  <p class="stage-note">KEEPREAL · 390 × 844 · 高保真可点击原型 · 数据仅存本机</p>
+</div>
 <script>
-(function(){
-'use strict';
-
+/* ===== 01-data.js ===== */
 /* ============================================================
-   1. 数据层（单一数据源 · 全部本地 mock，无任何网络请求）
+   1. 数据层 · 动作库 / 模板 / 常量
    ============================================================ */
 
 const GOALS = [
@@ -608,188 +1037,172 @@ const FREQS = [
   {n:5, label:'每周 5 练', hint:'需要一定训练经验'}
 ];
 
-const EX = {
-  '杠铃深蹲': {
-    equip:'杠铃', type:'barbell', muscle:'股四头肌 · 臀大肌', pr:110,
-    prev:[90,90,92.5,92.5], prevReps:[8,8,7,6], suggest:[92.5,92.5,95,95], suggestReps:[8,8,6,6],
-    cue:'脚掌三点踩实，髋膝同时启动，下蹲到髋略低于膝，起身时想象把地面推开。'
-  },
-  '杠铃卧推': {
-    equip:'杠铃', type:'barbell', muscle:'胸大肌 · 肱三头肌', pr:62.5,
-    prev:[60,60,62.5,62.5], prevReps:[8,8,7,6], suggest:[62.5,62.5,65,65], suggestReps:[8,8,6,6],
-    cue:'肩胛后收下沉，杠铃触胸后沿斜线推起，手腕保持中立。'
-  },
-  '坐姿划船': {
-    equip:'器械', type:'machine', muscle:'背阔肌 · 中背', pr:65,
-    prev:[55,55,55], prevReps:[12,11,10], suggest:[57.5,57.5,57.5], suggestReps:[12,12,10],
-    cue:'胸口贴住垫子，肘部向后拉，顶峰夹紧肩胛一秒再回放。'
-  },
-  '哑铃肩推': {
-    equip:'哑铃', type:'dumbbell', muscle:'三角肌前束 · 中束', pr:30,
-    prev:[22.5,22.5,20], prevReps:[10,9,10], suggest:[25,25,25], suggestReps:[10,9,8],
-    cue:'核心收紧，哑铃推到头顶正上方，别用腰去顶重量。'
-  },
-  '绳索下压': {
-    equip:'绳索', type:'cable', muscle:'肱三头肌', pr:32.5,
-    prev:[30,30,30], prevReps:[15,14,12], suggest:[32.5,32.5,35], suggestReps:[14,12,10],
-    cue:'肘部固定贴身，只让小臂发力下压，到底停一下再回。'
-  },
-  '绳索卷腹': {
-    equip:'绳索', type:'cable', muscle:'腹直肌', pr:45,
-    prev:[35,35,35], prevReps:[15,15,12], suggest:[37.5,37.5,37.5], suggestReps:[15,14,12],
-    cue:'髋部固定，用腹肌把肋骨卷向骨盆，不要用手臂拉。'
-  },
-  '罗马尼亚硬拉': {
-    equip:'杠铃', type:'barbell', muscle:'腘绳肌 · 臀大肌', pr:120,
-    prev:[80,85,85,85], prevReps:[10,10,8,8], suggest:[87.5,87.5,90,90], suggestReps:[10,10,8,8],
-    cue:'膝盖微屈，髋向后坐，杠铃贴腿下放，后链有拉伸感就起身。'
-  },
-  '上斜哑铃卧推': {
-    equip:'哑铃', type:'dumbbell', muscle:'上胸 · 三角肌前束', pr:27.5,
-    prev:[20,22.5,22.5,22.5], prevReps:[10,10,9,8], suggest:[22.5,25,25,25], suggestReps:[10,10,8,8],
-    cue:'凳面调到 30°，肘部略低于躯干，推到顶部不要碰铃。'
-  },
-  '高位下拉': {
-    equip:'绳索', type:'cable', muscle:'背阔肌 · 大圆肌', pr:70,
-    prev:[55,57.5,57.5], prevReps:[12,10,10], suggest:[57.5,60,60], suggestReps:[12,10,10],
-    cue:'先沉肩再拉，杆拉到锁骨上方，回放时让背阔肌完全拉长。'
-  },
-  '哑铃弯举': {
-    equip:'哑铃', type:'dumbbell', muscle:'肱二头肌', pr:16,
-    prev:[12,12,12], prevReps:[12,12,10], suggest:[12.5,12.5,12.5], suggestReps:[12,10,10],
-    cue:'肘部不前后摆，顶峰收缩一秒，下放慢一点。'
-  },
-  '腿举': {
-    equip:'器械', type:'machine', muscle:'股四头肌 · 臀', pr:160,
-    prev:[120,130,130], prevReps:[12,12,10], suggest:[130,135,135], suggestReps:[12,12,10],
-    cue:'腰背贴紧靠垫，膝盖顺着脚尖方向，顶端不要锁死。'
-  },
-  '侧平举': {
-    equip:'哑铃', type:'dumbbell', muscle:'三角肌中束', pr:12.5,
-    prev:[8,8,8], prevReps:[15,15,12], suggest:[9,9,9], suggestReps:[15,15,12],
-    cue:'小重量控制，肘部略高于手腕，别耸肩借力。'
-  },
-  '杠铃划船': {
-    equip:'杠铃', type:'barbell', muscle:'背阔肌 · 后束', pr:80,
-    prev:[65,70,70,70], prevReps:[10,10,8,8], suggest:[70,72.5,72.5,72.5], suggestReps:[10,10,8,8],
-    cue:'髋部铰链固定，杠铃拉向下腹，躯干别上下起伏。'
-  },
-  '面拉': {
-    equip:'绳索', type:'cable', muscle:'三角肌后束 · 肩袖', pr:30,
-    prev:[22.5,22.5,22.5], prevReps:[15,15,12], suggest:[25,25,25], suggestReps:[15,15,12],
-    cue:'绳索拉向眉心，末端外旋打开肩袖，肩膀别耸。'
-  },
-  '绳索夹胸': {
-    equip:'绳索', type:'cable', muscle:'胸大肌', pr:30,
-    prev:[20,22.5,22.5], prevReps:[12,12,10], suggest:[22.5,22.5,25], suggestReps:[12,12,10],
-    cue:'肘部微屈固定，用胸肌把把手夹到一起，停一秒再开。'
-  },
-  '腿弯举': {
-    equip:'器械', type:'machine', muscle:'腘绳肌', pr:60,
-    prev:[45,45,45], prevReps:[12,12,10], suggest:[47.5,47.5,47.5], suggestReps:[12,12,10],
-    cue:'收紧核心，只让腿后侧发力，别用下背代偿。'
-  },
-  '坐姿提踵': {
-    equip:'器械', type:'machine', muscle:'腓肠肌 · 比目鱼肌', pr:90,
-    prev:[60,60,60], prevReps:[15,15,15], suggest:[65,65,65], suggestReps:[15,15,12],
-    cue:'顶峰停一秒，下放到小腿充分拉伸，节奏比重量重要。'
-  },
-  '硬拉': {
-    equip:'杠铃', type:'barbell', muscle:'后链 · 背', pr:140,
-    prev:[110,115,120,120], prevReps:[5,5,5,4], suggest:[115,120,122.5,122.5], suggestReps:[5,5,4,4],
-    cue:'杠铃贴腿，背部中立，脚蹬地站起，别用腰把杠铃抽起来。'
-  }
-};
-
-const WORKOUTS = {
-  'fb-a': {name:'全身 A', focus:'基础力量 · 下肢主导', exercises:[
-    {ex:'杠铃深蹲', sets:4, reps:'6-8', rest:150},
-    {ex:'杠铃卧推', sets:4, reps:'6-8', rest:150},
-    {ex:'坐姿划船', sets:3, reps:'10-12', rest:90},
-    {ex:'哑铃肩推', sets:3, reps:'8-10', rest:90},
-    {ex:'绳索下压', sets:3, reps:'10-12', rest:60},
-    {ex:'绳索卷腹', sets:3, reps:'12-15', rest:60}
-  ]},
-  'fb-b': {name:'全身 B', focus:'后链与上肢 · 髋铰链', exercises:[
-    {ex:'罗马尼亚硬拉', sets:4, reps:'8-10', rest:150},
-    {ex:'上斜哑铃卧推', sets:4, reps:'8-10', rest:120},
-    {ex:'高位下拉', sets:3, reps:'10-12', rest:90},
-    {ex:'腿举', sets:3, reps:'12', rest:120},
-    {ex:'哑铃弯举', sets:3, reps:'10-12', rest:60},
-    {ex:'侧平举', sets:3, reps:'12-15', rest:60}
-  ]},
-  'fb-c': {name:'全身 C', focus:'力量与核心 · 全身覆盖', exercises:[
-    {ex:'硬拉', sets:4, reps:'4-6', rest:180},
-    {ex:'杠铃划船', sets:4, reps:'8-10', rest:120},
-    {ex:'哑铃肩推', sets:3, reps:'8-10', rest:90},
-    {ex:'绳索夹胸', sets:3, reps:'10-12', rest:60},
-    {ex:'腿弯举', sets:3, reps:'12', rest:60},
-    {ex:'绳索卷腹', sets:3, reps:'12-15', rest:60}
-  ]},
-  'ul-upper': {name:'上肢 A', focus:'推拉平衡 · 肩背手臂', exercises:[
-    {ex:'杠铃卧推', sets:4, reps:'6-8', rest:150},
-    {ex:'杠铃划船', sets:4, reps:'8-10', rest:150},
-    {ex:'哑铃肩推', sets:3, reps:'8-10', rest:90},
-    {ex:'高位下拉', sets:3, reps:'10-12', rest:90},
-    {ex:'绳索下压', sets:3, reps:'10-12', rest:60},
-    {ex:'哑铃弯举', sets:3, reps:'10-12', rest:60},
-    {ex:'面拉', sets:3, reps:'15', rest:60}
-  ]},
-  'ul-lower': {name:'下肢 A', focus:'蹲与髋铰链 · 腿部容量', exercises:[
-    {ex:'杠铃深蹲', sets:4, reps:'6-8', rest:150},
-    {ex:'罗马尼亚硬拉', sets:4, reps:'8-10', rest:150},
-    {ex:'腿举', sets:3, reps:'12', rest:120},
-    {ex:'腿弯举', sets:3, reps:'12', rest:60},
-    {ex:'坐姿提踵', sets:3, reps:'15', rest:60},
-    {ex:'绳索卷腹', sets:3, reps:'12-15', rest:60}
-  ]},
-  'ppl-push': {name:'推日', focus:'胸 · 肩 · 三头', exercises:[
-    {ex:'杠铃卧推', sets:4, reps:'5-6', rest:180},
-    {ex:'上斜哑铃卧推', sets:4, reps:'8-10', rest:120},
-    {ex:'哑铃肩推', sets:3, reps:'8-10', rest:90},
-    {ex:'绳索夹胸', sets:3, reps:'12', rest:60},
-    {ex:'绳索下压', sets:3, reps:'10-12', rest:60},
-    {ex:'侧平举', sets:3, reps:'15', rest:60}
-  ]},
-  'ppl-pull': {name:'拉日', focus:'背 · 后束 · 二头', exercises:[
-    {ex:'硬拉', sets:4, reps:'4-6', rest:180},
-    {ex:'高位下拉', sets:4, reps:'8-10', rest:90},
-    {ex:'杠铃划船', sets:3, reps:'8-10', rest:120},
-    {ex:'面拉', sets:3, reps:'15', rest:60},
-    {ex:'哑铃弯举', sets:3, reps:'10-12', rest:60},
-    {ex:'绳索卷腹', sets:3, reps:'12-15', rest:60}
-  ]},
-  'ppl-legs': {name:'腿日', focus:'股四头 · 后链 · 小腿', exercises:[
-    {ex:'杠铃深蹲', sets:4, reps:'5-6', rest:180},
-    {ex:'罗马尼亚硬拉', sets:4, reps:'8', rest:150},
-    {ex:'腿举', sets:3, reps:'10-12', rest:120},
-    {ex:'腿弯举', sets:3, reps:'12', rest:60},
-    {ex:'坐姿提踵', sets:3, reps:'15', rest:60},
-    {ex:'绳索卷腹', sets:3, reps:'12-15', rest:60}
-  ]}
-};
-
-const TEMPLATES = [
-  {id:'fb', name:'全身新手版', sub:'全身 A/B 交替 · 每次覆盖主要肌群', desc:'动作简单、恢复压力小，先把深蹲、卧推、划船练扎实。',
-   tags:['新手友好','全身'], rotation:['fb-a','fb-b']},
-  {id:'ul', name:'上下肢分化', sub:'上肢 / 下肢 交替 · 单次更聚焦', desc:'上肢与下肢分开安排，适合一周四练、想提高单部位容量的人。',
-   tags:['进阶','四分化'], rotation:['ul-upper','ul-lower']},
-  {id:'ppl', name:'推拉腿', sub:'推 / 拉 / 腿 循环 · 容量充足', desc:'按动作模式分化，推日练胸肩三头，拉日练背二头，腿日专注下肢。',
-   tags:['进阶','高容量'], rotation:['ppl-push','ppl-pull','ppl-legs']},
-  {id:'fb3', name:'三练全身', sub:'全身 A/B/C 轮换 · 力量与容量兼顾', desc:'三套全身模板轮换，硬拉日与深蹲日错开，适合一周三到四练。',
-   tags:['均衡','全身'], rotation:['fb-a','fb-b','fb-c']}
-];
-
+const PATTERNS = ['蹲','髋铰链','水平推','垂直推','水平拉','垂直拉','手臂','腿后与小腿','核心'];
+const GROUPS = ['胸','背','肩','手臂','腿','臀','核心'];
+const EQUIPS = ['杠铃','哑铃','器械','绳索','自重'];
 const PLATES = [25,20,15,10,5,2.5,1.25];
 const PLATE_H = {25:62,20:56,15:50,10:42,5:34,2.5:27,1.25:21};
-const KEY = 'keepreal.prototype.v1';
+const KEY = 'keepreal.prototype.v2';
+const LEGACY_KEY = 'keepreal.prototype.v1';
 const DAY_CN = ['周日','周一','周二','周三','周四','周五','周六'];
+const CARDIO_TYPES = ['爬坡走','快走','跑步','单车','椭圆机','划船机'];
+const CARDIO_NO_INCLINE = ['跑步','单车'];
+const MEASURES = [
+  {key:'chest', name:'胸围'},
+  {key:'waist', name:'腰围'},
+  {key:'hip',   name:'臀围'},
+  {key:'arm',   name:'臂围'},
+  {key:'leg',   name:'腿围'}
+];
 
+/* 25 个核心动作 · 覆盖 9 个动作模式。base = 建议工作重量，step = 加重量步进 */
+const EX_LIB = {
+  '杠铃深蹲':   {pattern:'蹲', group:'腿', muscle:'股四头肌 · 臀大肌', equip:'杠铃', type:'barbell', base:90, step:2.5, pr:110,
+    cue:'脚掌三点踩实，髋膝同时启动，下蹲到髋略低于膝，起身时想象把地面推开。'},
+  '高脚杯深蹲': {pattern:'蹲', group:'腿', muscle:'股四头肌 · 核心', equip:'哑铃', type:'dumbbell', base:20, step:2, pr:32,
+    cue:'哑铃抱在胸前，肘部在膝盖内侧，躯干保持直立，蹲到底再站起。'},
+  '保加利亚分腿蹲': {pattern:'蹲', group:'腿', muscle:'股四头肌 · 臀', equip:'哑铃', type:'dumbbell', unilateral:true, base:16, step:2, pr:30,
+    cue:'后脚搭在凳上，前脚踩稳，重心压在前腿，下蹲时膝盖对准脚尖。'},
+
+  '硬拉':       {pattern:'髋铰链', group:'背', muscle:'后链 · 竖脊肌', equip:'杠铃', type:'barbell', base:110, step:5, pr:140,
+    cue:'杠铃贴腿，背部中立，脚蹬地站起，别用腰把杠铃抽起来。'},
+  '罗马尼亚硬拉': {pattern:'髋铰链', group:'腿', muscle:'腘绳肌 · 臀大肌', equip:'杠铃', type:'barbell', base:80, step:2.5, pr:120,
+    cue:'膝盖微屈，髋向后坐，杠铃贴腿下放，后链有拉伸感就起身。'},
+  '杠铃臀桥':   {pattern:'髋铰链', group:'臀', muscle:'臀大肌', equip:'杠铃', type:'barbell', base:60, step:5, pr:100,
+    cue:'上背贴凳，杠铃压在髋部，顶峰夹紧臀部一秒，别用腰顶。'},
+  '单腿罗马尼亚硬拉': {pattern:'髋铰链', group:'臀', muscle:'臀 · 腘绳肌', equip:'哑铃', type:'dumbbell', unilateral:true, base:12, step:2, pr:22,
+    cue:'支撑腿微屈，髋向后推，后腿与躯干保持一条线，别让髋部翻开。'},
+
+  '杠铃卧推':   {pattern:'水平推', group:'胸', muscle:'胸大肌 · 肱三头肌', equip:'杠铃', type:'barbell', base:60, step:2.5, pr:62.5,
+    cue:'肩胛后收下沉，杠铃触胸后沿斜线推起，手腕保持中立。'},
+  '哑铃卧推':   {pattern:'水平推', group:'胸', muscle:'胸大肌', equip:'哑铃', type:'dumbbell', base:20, step:2, pr:30,
+    cue:'肩胛收紧，肘部约 45°，下放到胸侧，推起时不要让哑铃相撞。'},
+  '绳索夹胸':   {pattern:'水平推', group:'胸', muscle:'胸大肌', equip:'绳索', type:'cable', base:20, step:2.5, pr:30,
+    cue:'肘部微屈固定，用胸肌把把手夹到一起，停一秒再开。'},
+
+  '哑铃肩推':   {pattern:'垂直推', group:'肩', muscle:'三角肌前束 · 中束', equip:'哑铃', type:'dumbbell', base:22.5, step:2.5, pr:30,
+    cue:'核心收紧，哑铃推到头顶正上方，别用腰去顶重量。'},
+  '侧平举':     {pattern:'垂直推', group:'肩', muscle:'三角肌中束', equip:'哑铃', type:'dumbbell', base:8, step:1, pr:12.5,
+    cue:'小重量控制，肘部略高于手腕，别耸肩借力。'},
+
+  '杠铃划船':   {pattern:'水平拉', group:'背', muscle:'背阔肌 · 后束', equip:'杠铃', type:'barbell', base:65, step:2.5, pr:80,
+    cue:'髋部铰链固定，杠铃拉向下腹，躯干别上下起伏。'},
+  '坐姿划船':   {pattern:'水平拉', group:'背', muscle:'背阔肌 · 中背', equip:'器械', type:'machine', base:55, step:5, pr:65,
+    cue:'胸口贴住垫子，肘部向后拉，顶峰夹紧肩胛一秒再回放。'},
+  '面拉':       {pattern:'水平拉', group:'肩', muscle:'三角肌后束 · 肩袖', equip:'绳索', type:'cable', base:22.5, step:2.5, pr:30,
+    cue:'绳索拉向眉心，末端外旋打开肩袖，肩膀别耸。'},
+
+  '高位下拉':   {pattern:'垂直拉', group:'背', muscle:'背阔肌 · 大圆肌', equip:'绳索', type:'cable', base:55, step:2.5, pr:70,
+    cue:'先沉肩再拉，杆拉到锁骨上方，回放时让背阔肌完全拉长。'},
+  '引体向上':   {pattern:'垂直拉', group:'背', muscle:'背阔肌 · 肱二头肌', equip:'自重', type:'bodyweight', bw:true, base:0, step:0, pr:0,
+    cue:'先沉肩再屈肘，胸口靠近横杆，下放控制住，别摆腿借力。'},
+
+  '哑铃弯举':   {pattern:'手臂', group:'手臂', muscle:'肱二头肌', equip:'哑铃', type:'dumbbell', base:12, step:1, pr:16,
+    cue:'肘部不前后摆，顶峰收缩一秒，下放慢一点。'},
+  '绳索下压':   {pattern:'手臂', group:'手臂', muscle:'肱三头肌', equip:'绳索', type:'cable', base:30, step:2.5, pr:32.5,
+    cue:'肘部固定贴身，只让小臂发力下压，到底停一下再回。'},
+
+  '腿弯举':     {pattern:'腿后与小腿', group:'腿', muscle:'腘绳肌', equip:'器械', type:'machine', base:45, step:2.5, pr:60,
+    cue:'收紧核心，只让腿后侧发力，别用下背代偿。'},
+  '坐姿提踵':   {pattern:'腿后与小腿', group:'腿', muscle:'腓肠肌 · 比目鱼肌', equip:'器械', type:'machine', base:60, step:5, pr:90,
+    cue:'顶峰停一秒，下放到小腿充分拉伸，节奏比重量重要。'},
+
+  '悬垂举腿':   {pattern:'核心', group:'核心', muscle:'腹直肌 · 髂腰肌', equip:'自重', type:'bodyweight', bw:true, base:0, step:0, pr:0,
+    cue:'身体别晃，用腹肌把骨盆卷起来，腿放下时控制住。'},
+  '绳索卷腹':   {pattern:'核心', group:'核心', muscle:'腹直肌', equip:'绳索', type:'cable', base:35, step:2.5, pr:45,
+    cue:'髋部固定，用腹肌把肋骨卷向骨盆，不要用手臂拉。'},
+  '平板支撑':   {pattern:'核心', group:'核心', muscle:'腹横肌 · 核心', equip:'自重', type:'bodyweight', bw:true, hold:true, base:0, step:0, pr:0,
+    cue:'肘在肩下，骨盆后倾，臀腿收紧，保持呼吸不要塌腰。'},
+  '健腹轮':     {pattern:'核心', group:'核心', muscle:'腹直肌 · 背阔肌', equip:'自重', type:'bodyweight', bw:true, base:0, step:0, pr:0,
+    cue:'收紧腹部再向前推，腰部别塌，推到能控制的位置就回。'}
+};
+
+/* 训练日模板（被复制进 plan.days 后才可编辑） */
+function exCfg(ex, sets, min, max, rest){ return {ex, sets, repsMin:min, repsMax:max, rest}; }
+
+const TEMPLATES = [
+  {id:'fb', name:'全身新手版', sub:'全身 A / B 交替 · 每次覆盖主要肌群',
+   desc:'动作简单、恢复压力小，先把深蹲、卧推、划船练扎实。', tags:['新手友好','全身'], recFor:[2,3],
+   days:[
+     {name:'全身 A', focus:'基础力量 · 下肢主导', exercises:[
+       exCfg('杠铃深蹲',4,6,8,150), exCfg('杠铃卧推',4,6,8,150), exCfg('坐姿划船',3,10,12,90),
+       exCfg('哑铃肩推',3,8,10,90), exCfg('绳索下压',2,10,12,60)]},
+     {name:'全身 B', focus:'后链与上肢 · 髋铰链', exercises:[
+       exCfg('罗马尼亚硬拉',4,8,10,150), exCfg('哑铃卧推',4,8,10,120), exCfg('高位下拉',3,10,12,90),
+       exCfg('高脚杯深蹲',3,12,12,90), exCfg('哑铃弯举',2,10,12,60), exCfg('侧平举',3,12,15,60)]}
+   ]},
+  {id:'ul', name:'上下肢分化', sub:'上肢 / 下肢交替 · 单次更聚焦',
+   desc:'上肢与下肢分开安排，适合一周四练、想提高单部位容量的人。', tags:['进阶','四分化'], recFor:[4],
+   days:[
+     {name:'上肢 A', focus:'推拉平衡 · 肩背手臂', exercises:[
+       exCfg('杠铃卧推',4,6,8,150), exCfg('杠铃划船',4,8,10,150), exCfg('哑铃肩推',3,8,10,90),
+       exCfg('高位下拉',3,10,12,90), exCfg('绳索下压',3,10,12,60), exCfg('哑铃弯举',3,10,12,60), exCfg('面拉',3,15,15,60)]},
+     {name:'下肢 A', focus:'蹲与髋铰链 · 腿部容量', exercises:[
+       exCfg('杠铃深蹲',4,6,8,150), exCfg('罗马尼亚硬拉',4,8,10,150), exCfg('高脚杯深蹲',3,12,12,90),
+       exCfg('腿弯举',3,12,12,60), exCfg('坐姿提踵',3,15,15,60)]}
+   ]},
+  {id:'ppl', name:'推拉腿', sub:'推 / 拉 / 腿循环 · 容量充足',
+   desc:'按动作模式分化，推日练胸肩三头，拉日练背二头，腿日专注下肢。', tags:['进阶','高容量'], recFor:[5],
+   days:[
+     {name:'推日', focus:'胸 · 肩 · 三头', exercises:[
+       exCfg('杠铃卧推',4,5,6,180), exCfg('哑铃卧推',3,8,10,120), exCfg('哑铃肩推',3,8,10,90),
+       exCfg('绳索夹胸',3,12,12,60), exCfg('绳索下压',3,10,12,60), exCfg('侧平举',3,15,15,60)]},
+     {name:'拉日', focus:'背 · 后束 · 二头', exercises:[
+       exCfg('硬拉',4,4,6,180), exCfg('高位下拉',4,8,10,90), exCfg('杠铃划船',3,8,10,120),
+       exCfg('面拉',3,15,15,60), exCfg('哑铃弯举',3,10,12,60)]},
+     {name:'腿日', focus:'股四头 · 后链 · 小腿', exercises:[
+       exCfg('杠铃深蹲',4,5,6,180), exCfg('罗马尼亚硬拉',4,8,8,150), exCfg('高脚杯深蹲',3,10,12,120),
+       exCfg('腿弯举',3,12,12,60), exCfg('坐姿提踵',3,15,15,60)]}
+   ]},
+  {id:'fb3', name:'三练全身', sub:'全身 A / B / C 轮换 · 力量与容量兼顾',
+   desc:'三套全身模板轮换，硬拉日与深蹲日错开，适合一周三到四练。', tags:['均衡','全身'], recFor:[3],
+   days:[
+     {name:'全身 A', focus:'下肢主导 · 全身覆盖', exercises:[
+       exCfg('杠铃深蹲',4,6,8,150), exCfg('杠铃卧推',4,6,8,150), exCfg('坐姿划船',3,10,12,90),
+       exCfg('哑铃肩推',3,8,10,90), exCfg('绳索下压',3,10,12,60)]},
+     {name:'全身 B', focus:'后链与上肢 · 髋铰链', exercises:[
+       exCfg('罗马尼亚硬拉',4,8,10,150), exCfg('哑铃卧推',4,8,10,120), exCfg('高位下拉',3,10,12,90),
+       exCfg('高脚杯深蹲',3,12,12,90), exCfg('哑铃弯举',3,10,12,60), exCfg('侧平举',3,12,15,60)]},
+     {name:'全身 C', focus:'力量与核心 · 全身覆盖', exercises:[
+       exCfg('硬拉',4,4,6,180), exCfg('杠铃划船',4,8,10,120), exCfg('哑铃肩推',3,8,10,90),
+       exCfg('绳索夹胸',3,10,12,60), exCfg('腿弯举',3,12,12,60), exCfg('坐姿提踵',3,15,15,60)]}
+   ]}
+];
+
+/* 腹部收尾：四个动作两两轮换 */
+const ABS_POOL = {
+  '悬垂举腿': {sets:3, repsMin:10, repsMax:15, rest:60},
+  '绳索卷腹': {sets:3, repsMin:12, repsMax:15, rest:60},
+  '平板支撑': {sets:3, repsMin:45, repsMax:45, rest:60},
+  '健腹轮':   {sets:3, repsMin:10, repsMax:12, rest:60}
+};
+const ABS_PAIRS = [
+  ['悬垂举腿','绳索卷腹'],
+  ['平板支撑','健腹轮'],
+  ['悬垂举腿','健腹轮'],
+  ['绳索卷腹','平板支撑']
+];
+
+/* 热身池：练腿偏髋膝踝，上肢偏肩肘 */
+const WARM_POOL = {
+  cardio:   {name:'轻有氧热身', detail:'单车或划船 4 分钟，心率上来、微微出汗', tag:'全身'},
+  hip:      {name:'髋部环绕', detail:'双手叉腰，前后各 8 次，把髋关节活动开', tag:'髋膝踝'},
+  squat:    {name:'自重深蹲', detail:'15 次，幅度做满，膝盖顺着脚尖方向', tag:'髋膝踝'},
+  bridge:   {name:'臀桥激活', detail:'15 次，顶峰夹紧臀部 2 秒', tag:'髋膝踝'},
+  ankle:    {name:'踝关节背屈', detail:'每侧 10 次，脚跟不离地，膝盖向前压', tag:'髋膝踝'},
+  shoulder: {name:'肩部环绕', detail:'前后各 10 次，小幅度开始逐渐加大', tag:'肩肘'},
+  band:     {name:'弹力带外旋', detail:'每侧 12 次，肘贴身体，只转小臂', tag:'肩肘'},
+  scap:     {name:'肩胛俯卧撑', detail:'10 次，手臂伸直，只让肩胛骨前后移动', tag:'肩肘'},
+  catcow:   {name:'猫牛式', detail:'8 次，配合呼吸活动整条脊柱', tag:'全身'}
+};
+
+/* ===== 02-core.js ===== */
 /* ============================================================
-   2. 工具
+   2. 工具 / 状态 / 持久化 / 计划模型
    ============================================================ */
 
 const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.prototype.slice.call((r || document).querySelectorAll(s));
 
 function icon(name, cls){
   return '<svg class="icon ' + (cls || '') + '" aria-hidden="true"><use href="#i-' + name + '"></use></svg>';
@@ -799,19 +1212,21 @@ function esc(v){
 }
 function pad(n){ return String(n).padStart(2,'0'); }
 function fmtNum(n){
-  const r = Math.round(n * 100) / 100;
+  const r = Math.round((+n || 0) * 100) / 100;
   return String(r);
 }
-function fmtVol(n){
-  return Math.round(n).toLocaleString('en-US');
+function fmtVol(n){ return Math.round(n || 0).toLocaleString('en-US'); }
+function fmtK(n){
+  if(n >= 10000) return (n/1000).toFixed(n >= 100000 ? 0 : 1) + 'k';
+  return fmtVol(n);
 }
 function fmtClock(sec){
-  sec = Math.max(0, Math.floor(sec));
+  sec = Math.max(0, Math.floor(sec || 0));
   const h = Math.floor(sec/3600), m = Math.floor((sec%3600)/60), s = sec%60;
   return pad(h) + ':' + pad(m) + ':' + pad(s);
 }
 function fmtMs(ms){
-  ms = Math.max(0, ms);
+  ms = Math.max(0, ms || 0);
   const total = Math.ceil(ms/1000);
   return pad(Math.floor(total/60)) + ':' + pad(total%60);
 }
@@ -824,226 +1239,554 @@ function addDays(d, n){
   return x;
 }
 function parseISO(iso){
-  const p = iso.split('-');
+  const p = String(iso).split('-');
   return new Date(+p[0], +p[1]-1, +p[2]);
 }
-function goalName(id){
-  const g = GOALS.find(x => x.id === id);
-  return g ? g.name : '';
+function daysBetween(a, b){
+  return Math.round((parseISO(b) - parseISO(a)) / 86400000);
 }
-function templateById(id){
-  return TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
+function shortDate(iso){
+  const d = parseISO(iso);
+  return (d.getMonth()+1) + '/' + d.getDate();
 }
-function estimatedMinutes(w){
-  const sec = w.exercises.reduce((a,e) => a + e.sets * (45 + e.rest), 0);
-  return Math.max(20, Math.round(sec/60/5)*5);
+function todayISO(){ return isoOf(new Date()); }
+function goalName(id){ const g = GOALS.find(x => x.id === id); return g ? g.name : ''; }
+function templateById(id){ return TEMPLATES.find(t => t.id === id) || TEMPLATES[0]; }
+function roundStep(w, step){
+  step = step || 1;
+  return Math.round(w / step) * step;
 }
-function totalSetsOf(w){
-  return w.exercises.reduce((a,e) => a + e.sets, 0);
+function e1rm(w, reps){
+  w = +w || 0; reps = +reps || 0;
+  if(!(w > 0) || !(reps > 0)) return 0;
+  return Math.round(w * (1 + reps/30) * 10) / 10;
 }
-function exerciseCountOf(w){
-  return w.exercises.length;
-}
-function recTemplate(freq){
-  return ({2:'fb',3:'fb',4:'ul',5:'ppl'})[freq] || 'fb';
-}
-function prod(rows){
-  return rows.reduce((a,r) => a + (+r.weight) * (+r.reps), 0);
-}
+function uid(prefix){ return (prefix || 'id') + '_' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
-/* ============================================================
-   3. 本地状态
-   ============================================================ */
+/* ---------- 动作信息 ---------- */
+function customInfo(c){
+  return {
+    pattern:'自定义', group:c.group, muscle:c.muscle, equip:c.equip,
+    type: c.equip === '杠铃' ? 'barbell' : (c.equip === '绳索' ? 'cable' : (c.equip === '器械' ? 'machine' : (c.equip === '自重' ? 'bodyweight' : 'dumbbell'))),
+    unilateral: !!c.unilateral, bw: c.equip === '自重', base: 20, step: c.equip === '杠铃' ? 2.5 : 1,
+    pr: 0, cue:'自定义动作 · 保持动作控制，做满全程幅度。', custom:true
+  };
+}
+function exInfo(name){
+  if(EX_LIB[name]) return EX_LIB[name];
+  const c = (S.customEx || []).find(x => x.name === name);
+  if(c) return customInfo(c);
+  return {pattern:'自定义', group:'核心', muscle:'未标注', equip:'自重', type:'bodyweight', bw:true, base:0, step:0, pr:0, cue:'', custom:true};
+}
+function isBW(name){ return !!exInfo(name).bw; }
+function isHold(name){ return !!exInfo(name).hold; }
 
+/* ---------- 默认状态 ---------- */
 function defaultState(){
   return {
-    version: 1,
+    version: 2,
     plan: null,
     onboard: {step:1, goal:null, freq:null, template:null},
     session: null,
     prs: {},
     history: [],
     lastSummary: null,
+    body: {weights:[], measures:[], cardio:[]},
+    customEx: [],
+    demo: false,
     view: 'onboarding',
-    selectedDay: 0
+    selectedDay: 0,
+    ui: {
+      tab: 'today', planDay: null, progressRange: '4w', progressEx: null,
+      prAll: false, libGroup: '全部', libEquip: '全部'
+    }
   };
 }
 
 let S = defaultState();
-let modal = null;
+let SHEET = null;
+let MODAL = null;
+let NAV = {tab:'today', stack:[]};
 let calcFor = -1;
 let calcFlat = null;
 let renderedView = null;
 let lastScroll = 0;
 let saveTimer = null;
+let libQuery = '';
+
+function normalizeState(p){
+  const d = defaultState();
+  const st = Object.assign(d, p || {});
+  st.onboard = Object.assign({step:1, goal:null, freq:null, template:null}, p && p.onboard || {});
+  st.body = Object.assign({weights:[], measures:[], cardio:[]}, p && p.body || {});
+  st.ui = Object.assign(d.ui, p && p.ui || {});
+  if(!st.plan || !Array.isArray(st.plan.days) || !st.plan.days.length) st.plan = null;
+  if(!Array.isArray(st.history)) st.history = [];
+  if(!Array.isArray(st.customEx)) st.customEx = [];
+  if(!st.body.weights) st.body.weights = [];
+  if(!st.body.measures) st.body.measures = [];
+  if(!st.body.cardio) st.body.cardio = [];
+  st.version = 2;
+  return st;
+}
 
 function loadState(){
   try{
     const raw = localStorage.getItem(KEY);
-    if(!raw) return defaultState();
-    const parsed = JSON.parse(raw);
-    if(!parsed || parsed.version !== 1) return defaultState();
-    return Object.assign(defaultState(), parsed);
-  }catch(e){
-    return defaultState();
-  }
+    if(raw){
+      const parsed = JSON.parse(raw);
+      if(parsed && parsed.version === 2) return normalizeState(parsed);
+    }
+  }catch(e){ /* 忽略损坏数据，走迁移或重置 */ }
+  try{
+    const legacy = localStorage.getItem(LEGACY_KEY);
+    if(legacy){
+      const v1 = JSON.parse(legacy);
+      if(v1 && v1.plan){
+        const st = migrateV1(v1);
+        try{
+          localStorage.setItem(KEY, JSON.stringify(st));
+          localStorage.removeItem(LEGACY_KEY);
+        }catch(e){}
+        return st;
+      }
+    }
+  }catch(e){}
+  return defaultState();
 }
 
 function save(){
-  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ /* 文件模式或隐私模式下退化为内存状态 */ }
+  try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){ /* 隐私模式仅内存运行 */ }
 }
 function saveSoon(){
   clearTimeout(saveTimer);
   saveTimer = setTimeout(save, 240);
 }
 
-function buildPlan(templateId, goal, freq){
-  const t = templateById(templateId);
+/* ---------- 第一批数据迁移 ---------- */
+function migrateV1(v1){
+  const st = defaultState();
+  st.prs = v1.prs || {};
+  st.onboard = v1.onboard || st.onboard;
+  st.demo = false;
+  const p = v1.plan;
+  if(p && TEMPLATES.some(t => t.id === p.templateId)){
+    const plan = buildPlan(p.templateId, p.goal, p.freq, p.startDate);
+    plan.createdAt = p.createdAt || Date.now();
+    if(Array.isArray(p.schedule)){
+      plan.schedule = p.schedule.map((e, i) => {
+        const base = {date:e.date, dow:e.dow, dayNum:e.dayNum, month:e.month};
+        if(e.type !== 'train') return Object.assign(base, {type:'rest'});
+        const day = plan.days.find(d => d.srcId === e.workoutId) ||
+          getDayById(plan, plan.rotation[(e.indexInRotation || i) % plan.rotation.length]);
+        return Object.assign(base, {type:'train', dayId:day.id, indexInRotation:e.indexInRotation || 0});
+      });
+    }
+    st.plan = plan;
+    st.history = (v1.history || []).map((h, i) => ({
+      id: h.id || ('legacy_' + i),
+      date: h.date,
+      dayId: (plan.days.find(d => d.srcId === h.workoutId) || {}).id || null,
+      workoutName: h.workoutName || '训练',
+      volume: +h.volume || 0,
+      sets: +h.sets || 0,
+      totalSets: +h.totalSets || 0,
+      duration: +h.duration || 0,
+      prs: h.prs || [],
+      breakdown: h.breakdown || [],
+      lifts: (h.breakdown || []).filter(b => b.best).map(b => ({
+        ex: b.name, weight: +b.best.weight || 0, reps: +b.best.reps || 0,
+        volume: +b.volume || 0, sets: +b.sets || 0, e1rm: e1rm(b.best.weight, b.best.reps)
+      }))
+    }));
+    if(v1.session && v1.session.date){
+      const old = v1.session;
+      const day = plan.days.find(d => d.srcId === old.workoutId) || plan.days[0];
+      /* makeSession 依赖全局 S 读取计划与历史，临时切换后恢复 */
+      const prevS = S;
+      let s;
+      try{
+        S = st;
+        s = makeSession({dayId:day.id, date:old.date});
+      }finally{
+        S = prevS;
+      }
+      s.elapsed = +old.elapsed || 0;
+      s.currentEx = Math.min(+old.currentEx || 0, s.exercises.length - 1);
+      (old.sets || []).forEach(os => {
+        const row = s.sets.find(x => x.ex === os.ex && x.setIdx === os.setIdx && !x.done);
+        if(row){ row.weight = os.weight; row.reps = os.reps; row.done = !!os.done; }
+      });
+      if(old.rest) s.rest = null;
+      if(s.sets.some(x => x.done)){ s.phase = 'train'; s.warmupDone = s.warmup.map((w, i) => i); }
+      st.session = s;
+    }
+    if(v1.lastSummary){
+      const h = st.history.find(x => x.date === v1.lastSummary.date);
+      st.lastSummary = h || null;
+    }
+    st.selectedDay = Math.min(Math.max(+v1.selectedDay || 0, 0), 6);
+    if(st.session && st.session.date === todayISO()) st.view = 'workout';
+    else if(st.lastSummary) st.view = 'summary';
+    else st.view = 'main';
+  }else{
+    st.view = 'onboarding';
+  }
+  if(st.view === 'workout' && !st.session) st.view = 'main';
+  if(st.view === 'summary' && !st.lastSummary) st.view = 'main';
+  st.ui.tab = 'today';
+  return st;
+}
+
+/* ---------- 计划模型 ---------- */
+/* 与第一批 WORKOUTS 的 id 对齐，保证旧数据迁移时能匹配到同一训练日 */
+const LEGACY_DAY_IDS = {
+  fb:['fb-a','fb-b'],
+  ul:['ul-upper','ul-lower'],
+  ppl:['ppl-push','ppl-pull','ppl-legs'],
+  fb3:['fb-a','fb-b','fb-c']
+};
+
+function planDaysFromTemplate(tpl){
+  const legacy = LEGACY_DAY_IDS[tpl.id] || [];
+  return tpl.days.map((d, i) => ({
+    id: 'd' + (i + 1),
+    srcId: legacy[i] || (tpl.id + '-' + (i + 1)),
+    name: d.name,
+    focus: d.focus,
+    exercises: d.exercises.map(e => ({ex:e.ex, sets:e.sets, repsMin:e.repsMin, repsMax:e.repsMax, rest:e.rest})),
+    abs: ABS_PAIRS[i % ABS_PAIRS.length].slice()
+  }));
+}
+
+function buildSchedule(days, freq){
   const offsetsMap = {2:[0,3], 3:[0,2,4], 4:[0,2,4,5], 5:[0,1,3,4,6]};
   const offsets = offsetsMap[freq] || offsetsMap[3];
   const today = new Date();
-  let trainIndex = 0;
-  const schedule = [];
+  let ti = 0;
+  const out = [];
   for(let i=0;i<7;i++){
     const d = addDays(today, i);
     const base = {date:isoOf(d), dow:DAY_CN[d.getDay()], dayNum:d.getDate(), month:d.getMonth()+1};
     if(offsets.indexOf(i) >= 0){
-      const wid = t.rotation[trainIndex % t.rotation.length];
-      schedule.push(Object.assign(base, {type:'train', workoutId:wid, indexInRotation:trainIndex}));
-      trainIndex++;
+      const day = days[ti % days.length];
+      out.push(Object.assign(base, {type:'train', dayId:day.id, indexInRotation:ti}));
+      ti++;
     }else{
-      schedule.push(Object.assign(base, {type:'rest'}));
+      out.push(Object.assign(base, {type:'rest'}));
     }
   }
+  return out;
+}
+
+function buildPlan(templateId, goal, freq, startDate){
+  const tpl = templateById(templateId);
+  const days = planDaysFromTemplate(tpl);
   return {
     templateId, goal, freq,
+    name: tpl.name,
     createdAt: Date.now(),
-    startDate: isoOf(today),
-    schedule
+    startDate: startDate || todayISO(),
+    days,
+    rotation: days.map(d => d.id),
+    schedule: buildSchedule(days, freq)
   };
 }
 
+function getDayById(plan, id){
+  return (plan || S.plan || {days:[]}).days.find(d => d.id === id) || null;
+}
+function rotationDays(plan){
+  const p = plan || S.plan;
+  return p ? p.rotation.map(id => getDayById(p, id)).filter(Boolean) : [];
+}
 function ensurePlanFresh(){
   if(!S.plan) return;
-  const today = isoOf(new Date());
-  if(S.plan.schedule[0] && S.plan.schedule[0].date === today) return;
-  S.plan = buildPlan(S.plan.templateId, S.plan.goal, S.plan.freq);
+  const today = todayISO();
+  if(S.plan.schedule && S.plan.schedule[0] && S.plan.schedule[0].date === today) return;
+  S.plan.schedule = buildSchedule(S.plan.days, S.plan.freq);
   if(S.session && S.session.date !== today) S.session = null;
   S.selectedDay = 0;
   save();
 }
 
+function dayStats(day){
+  const all = day.exercises.concat((day.abs || []).map(a => Object.assign({ex:a, abs:true}, ABS_POOL[a])));
+  const sets = all.reduce((a, e) => a + (+e.sets || 0), 0);
+  const sec = all.reduce((a, e) => a + e.sets * (45 + e.rest), 0);
+  return {
+    main: day.exercises.length,
+    abs: (day.abs || []).length,
+    total: all.length,
+    sets,
+    minutes: Math.max(20, Math.round((sec + 360) / 60 / 5) * 5)
+  };
+}
+function totalWeeklySets(){
+  const plan = S.plan;
+  if(!plan) return 0;
+  const sched = plan.schedule || [];
+  const trainDays = sched.filter(e => e.type === 'train' && getDayById(plan, e.dayId));
+  if(!trainDays.length) return rotationDays().reduce((a, d) => a + dayStats(d).sets, 0);
+  return trainDays.reduce((a, e) => a + dayStats(getDayById(plan, e.dayId)).sets, 0);
+}
+function repsText(cfg, name){
+  if(isHold(name)) return (cfg.repsMax || cfg.repsMin) + ' 秒';
+  return cfg.repsMin === cfg.repsMax ? String(cfg.repsMin) : cfg.repsMin + '-' + cfg.repsMax;
+}
+
+/* ---------- 热身 ---------- */
+function warmupFor(day){
+  const pats = day.exercises.map(e => exInfo(e.ex).pattern);
+  const lower = pats.some(p => p === '蹲' || p === '髋铰链' || p === '腿后与小腿');
+  const upper = pats.some(p => p === '水平推' || p === '垂直推' || p === '水平拉' || p === '垂直拉' || p === '手臂');
+  let keys;
+  if(lower && upper) keys = ['cardio','hip','squat','bridge','shoulder','scap'];
+  else if(lower) keys = ['cardio','hip','squat','bridge','ankle'];
+  else if(upper) keys = ['cardio','shoulder','band','scap','catcow'];
+  else keys = ['cardio','catcow'];
+  return keys.map((k, i) => Object.assign({id:i}, WARM_POOL[k]));
+}
+
+/* ---------- 训练会话 ---------- */
+function lastLift(name){
+  for(let i=0;i<S.history.length;i++){
+    const hit = (S.history[i].lifts || []).find(l => l.ex === name);
+    if(hit) return hit;
+  }
+  return null;
+}
+function prefillRow(name, cfg, setIdx){
+  const info = exInfo(name);
+  const last = lastLift(name);
+  let weight = 0;
+  if(!info.bw || (last && last.weight > 0)) weight = last ? last.weight : (info.base || 0);
+  if(info.bw && !(last && last.weight > 0)) weight = 0;
+  const reps = info.hold ? (cfg.repsMax || 45) : (last && last.reps ? last.reps : (cfg.repsMax || 10));
+  return {weight:String(fmtNum(weight)), reps:String(reps)};
+}
+
+function exercisesOfDay(day){
+  return day.exercises.map(e => ({ex:e.ex, sets:e.sets, repsMin:e.repsMin, repsMax:e.repsMax, rest:e.rest}))
+    .concat((day.abs || []).map(a => Object.assign({ex:a, abs:true}, ABS_POOL[a])));
+}
+
 function makeSession(entry){
-  const w = WORKOUTS[entry.workoutId];
+  const day = getDayById(S.plan, entry.dayId) || rotationDays()[0];
+  const exs = exercisesOfDay(day);
   const sets = [];
-  w.exercises.forEach((e, ei) => {
-    const lib = EX[e.ex];
+  exs.forEach((e, ei) => {
     for(let i=0;i<e.sets;i++){
-      const sIdx = Math.min(i, lib.suggest.length - 1);
-      sets.push({
-        ex: e.ex, exIdx: ei, setIdx: i,
-        weight: String(lib.suggest[sIdx]),
-        reps: String(lib.suggestReps[sIdx]),
-        done: false
-      });
+      const pf = prefillRow(e.ex, e, i);
+      sets.push({ex:e.ex, exIdx:ei, setIdx:i, weight:pf.weight, reps:pf.reps, done:false});
     }
   });
   return {
-    workoutId: entry.workoutId,
-    workoutName: w.name,
+    dayId: day.id,
+    dayName: day.name,
     templateName: templateById(S.plan.templateId).name,
-    date: entry.date,
+    date: entry.date || todayISO(),
     elapsed: 0,
+    phase: 'warmup',
     currentEx: 0,
+    warmup: warmupFor(day),
+    warmupDone: [],
+    exercises: exs,
     sets,
     rest: null
   };
 }
 
+/* ---------- 汇总与记录 ---------- */
+function buildSummary(){
+  const s = S.session;
+  /* 完成组：勾选且次数/秒数有值；容量只算有重量的组（自重动作组数照常算） */
+  const doneRows = s.sets.filter(x => x.done && (+x.reps) > 0);
+  const weightedRows = doneRows.filter(x => (+x.weight) > 0);
+  const names = [];
+  s.sets.forEach(x => { if(names.indexOf(x.ex) < 0) names.push(x.ex); });
+  const breakdown = names.map(name => {
+    const allRows = s.sets.filter(x => x.ex === name);
+    const rows = doneRows.filter(x => x.ex === name);
+    const wRows = weightedRows.filter(x => x.ex === name);
+    let best = null;
+    wRows.forEach(r => {
+      if(!best || (+r.weight) > best.weight || ((+r.weight) === best.weight && (+r.reps) > best.reps)){
+        best = {weight:+r.weight, reps:+r.reps};
+      }
+    });
+    return {name, sets:rows.length, planSets:allRows.length, best, volume:wRows.reduce((a, r) => a + (+r.weight)*(+r.reps), 0), bw:isBW(name)};
+  });
+  const prs = [];
+  breakdown.forEach(b => {
+    if(!b.best || b.bw) return;
+    const old = S.prs[b.name];
+    if(typeof old === 'number' && b.best.weight > old + 0.0001){
+      prs.push({name:b.name, from:old, to:b.best.weight, delta:b.best.weight - old});
+      S.prs[b.name] = b.best.weight;
+    }else if(typeof old !== 'number'){
+      S.prs[b.name] = b.best.weight;
+    }
+  });
+  const lifts = breakdown.filter(b => b.best).map(b => ({
+    ex:b.name, weight:b.best.weight, reps:b.best.reps,
+    e1rm:e1rm(b.best.weight, b.best.reps), volume:b.volume, sets:b.sets
+  }));
+  return {
+    id: uid('h'),
+    date: s.date,
+    dayId: s.dayId,
+    workoutName: s.dayName,
+    volume: weightedRows.reduce((a, r) => a + (+r.weight)*(+r.reps), 0),
+    sets: doneRows.length,
+    totalSets: s.sets.length,
+    duration: s.elapsed,
+    prs,
+    breakdown,
+    lifts
+  };
+}
+
+/* ---------- 示例数据（仅新用户） ---------- */
+function seedDemo(plan){
+  const today = new Date();
+  const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+  const hist = [];
+  const weeks = 12;
+  let counter = 0;
+  for(let w=weeks-1; w>=0; w--){
+    for(let s=0; s<plan.freq; s++){
+      const d = addDays(todayStart, -(w*7 + 2) + s*2);
+      if(d >= todayStart) continue;
+      const day = rotationDays(plan)[counter % plan.rotation.length];
+      counter++;
+      if(!day) continue;
+      const exs = exercisesOfDay(day);
+      const factor = 0.80 + (weeks-1-w) * 0.012;
+      const lifts = [];
+      let volume = 0, setsDone = 0;
+      const breakdown = [];
+      exs.forEach(e => {
+        const info = exInfo(e.ex);
+        let best = null, mVol = 0, mSets = 0;
+        for(let i=0;i<e.sets;i++){
+          let weight = 0;
+          if(!info.bw) weight = roundStep((info.base || 20) * factor * (1 + i*0.006), info.step || 1);
+          const reps = info.hold ? 45 : Math.max(e.repsMin, Math.round((e.repsMin + e.repsMax)/2) + (i === 0 ? 2 : 0));
+          if(!info.bw) mVol += weight * reps;
+          mSets++;
+          if(weight > 0 && (!best || weight > best.weight)) best = {weight, reps};
+        }
+        if(best) lifts.push({ex:e.ex, weight:best.weight, reps:best.reps, e1rm:e1rm(best.weight,best.reps), volume:mVol, sets:mSets});
+        breakdown.push({name:e.ex, sets:mSets, planSets:e.sets, best, volume:mVol, bw:info.bw});
+        volume += mVol; setsDone += mSets;
+      });
+      hist.push({
+        id: uid('demo'),
+        date: isoOf(d),
+        dayId: day.id,
+        workoutName: day.name,
+        volume,
+        sets: setsDone,
+        totalSets: setsDone,
+        duration: setsDone * 95 + 420,
+        prs: [],
+        breakdown,
+        lifts
+      });
+    }
+  }
+  hist.sort((a, b) => a.date < b.date ? 1 : -1);
+
+  const weights = [];
+  for(let d=84; d>=0; d-=3){
+    weights.push({
+      id: uid('w'),
+      date: isoOf(addDays(today, -d)),
+      kg: Math.round((78.4 - (84-d)*0.033 + Math.sin(d/5)*0.22) * 10) / 10
+    });
+  }
+  const measures = [
+    {id:uid('m'), date:isoOf(addDays(today,-84)), chest:99, waist:84, hip:97, arm:35, leg:56},
+    {id:uid('m'), date:isoOf(addDays(today,-7)), chest:100, waist:81.5, hip:96, arm:35.8, leg:56.5}
+  ];
+  const cardio = [];
+  const cTypes = ['爬坡走','跑步','单车','椭圆机','划船机','快走'];
+  for(let i=0;i<9;i++){
+    const type = cTypes[i % cTypes.length];
+    cardio.push({
+      id: uid('c'),
+      date: isoOf(addDays(today, -(i*8 + 2))),
+      type,
+      minutes: 25 + (i % 4) * 5,
+      incline: CARDIO_NO_INCLINE.indexOf(type) >= 0 ? null : (6 + i % 5),
+      speed: type === '单车' ? null : Math.round((5.2 + (i % 5) * 0.6) * 10) / 10
+    });
+  }
+  hist.sort((a, b) => a.date < b.date ? 1 : -1);
+  S.history = hist;
+  S.body = {weights, measures, cardio};
+  S.demo = true;
+}
+
+function clearDemo(){
+  S.history = [];
+  S.body = {weights:[], measures:[], cardio:[]};
+  S.demo = false;
+  S.lastSummary = null;
+  save();
+}
+
+/* ===== 03-views-shell.js ===== */
 /* ============================================================
-   4. 引导页
+   3. 应用外壳 / 今天 / 我的
    ============================================================ */
 
-function viewOnboarding(){
-  const ob = S.onboard;
-  const step = ob.step;
-  let body = '';
-  let primary = '下一步';
-  let can = false;
+const TABS = [
+  {id:'today',    name:'今天', icon:'calendar'},
+  {id:'plan',     name:'计划', icon:'layers'},
+  {id:'progress', name:'进步', icon:'trending-up'},
+  {id:'body',     name:'身体', icon:'activity'},
+  {id:'me',       name:'我的', icon:'user'}
+];
 
-  if(step === 1){
-    can = !!ob.goal;
-    body = '<div class="ob-step">' +
-      '<div class="ob-step-num">STEP 01 / 03</div>' +
-      '<h1 class="ob-title">先定目标，<br><em>再上重量。</em></h1>' +
-      '<p class="ob-sub">KEEPREAL 会根据你的目标和频率生成每周安排。之后每次训练，都会把上次的重量摆在你面前。</p>' +
-      '<div class="opt-list">' + GOALS.map(g =>
-        '<button class="opt ' + (ob.goal === g.id ? 'is-on' : '') + '" data-action="ob-goal" data-value="' + g.id + '">' +
-          '<span class="opt__icon">' + icon(g.icon) + '</span>' +
-          '<span class="opt__text"><span class="opt__title">' + g.name + '</span><span class="opt__desc">' + g.desc + '</span></span>' +
-          '<span class="opt__radio"></span>' +
-        '</button>'
-      ).join('') + '</div>' +
-      '<p class="ob-privacy">' + icon('lock') + '无需账号 · 全部数据只保存在本机</p>' +
-    '</div>';
-  }else if(step === 2){
-    can = !!ob.freq;
-    body = '<div class="ob-step">' +
-      '<div class="ob-step-num">STEP 02 / 03</div>' +
-      '<h1 class="ob-title">每周能<br><em>练几天？</em></h1>' +
-      '<p class="ob-sub">按实际能坚持的频率来，别按理想状态。' + goalName(ob.goal) + '阶段，一周三练已经足够把基础打牢。</p>' +
-      '<div class="freq-grid">' + FREQS.map(f =>
-        '<button class="freq ' + (ob.freq === f.n ? 'is-on' : '') + '" data-action="ob-freq" data-value="' + f.n + '">' +
-          '<span class="freq__n">' + f.n + '<span>天</span></span>' +
-          '<span class="freq__label">' + f.label + '</span>' +
-          '<span class="freq__hint">' + f.hint + '</span>' +
-        '</button>'
-      ).join('') + '</div>' +
-      '<p class="ob-privacy">' + icon('info') + '训练日会从今天开始排进本周</p>' +
-    '</div>';
-  }else{
-    can = !!ob.template;
-    primary = '生成我的计划';
-    const rec = recTemplate(ob.freq);
-    body = '<div class="ob-step">' +
-      '<div class="ob-step-num">STEP 03 / 03</div>' +
-      '<h1 class="ob-title">选一套<br><em>训练模板。</em></h1>' +
-      '<p class="ob-sub">模板决定每天练什么。之后可以在计划里替换动作（下一批开放）。</p>' +
-      '<div class="opt-list">' + TEMPLATES.map(t => {
-        const w = WORKOUTS[t.rotation[0]];
-        return '<button class="tpl ' + (ob.template === t.id ? 'is-on' : '') + '" data-action="ob-template" data-value="' + t.id + '">' +
-          '<span class="tpl__row"><span class="tpl__name">' + t.name + '</span>' +
-            (rec === t.id ? '<span class="tpl__badge">推荐</span>' : '') +
-            '<span class="opt__radio"></span></span>' +
-          '<span class="tpl__sub">' + t.sub + '</span>' +
-          '<span class="tpl__meta"><span>' + (ob.freq || 3) + ' 练 / 周</span><span>约 ' + estimatedMinutes(w) + ' 分钟</span><span>' + exerciseCountOf(w) + ' 个动作</span></span>' +
-          '<span class="tpl__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
-        '</button>';
-      }).join('') + '</div>' +
-      '<p class="ob-privacy">' + icon('lock') + '计划生成后立刻保存在本机</p>' +
-    '</div>';
-  }
+function tabbar(active){
+  return '<nav class="tabbar">' + TABS.map(t =>
+    '<button class="tabbar__item ' + (t.id === active ? 'is-on' : '') + '" data-action="go-tab" data-tab="' + t.id + '" aria-label="' + t.name + '">' +
+      icon(t.icon) + '<span>' + t.name + '</span>' +
+    '</button>'
+  ).join('') + '</nav>';
+}
 
+function shellTab(active, inner, opts){
+  const o = opts || {};
+  return '<div class="screen screen--tab view-anim">' +
+    '<div class="screen__body">' + inner + '</div>' +
+    tabbar(active) +
+  '</div>';
+}
+
+function subScreen(title, meta, inner, opts){
+  const o = opts || {};
   return '<div class="screen view-anim">' +
-    '<div class="ob-head">' +
-      '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
-      '<div class="ob-progress">' + [1,2,3].map(i => '<i class="' + (i <= step ? 'on' : '') + '"></i>').join('') + '</div>' +
-    '</div>' +
-    '<div class="screen__body"><div class="ob-body">' + body + '</div></div>' +
-    '<div class="ob-foot">' +
-      (step > 1 ? '<button class="icon-btn" data-action="ob-back" aria-label="上一步">' + icon('arrow-left') + '</button>' : '') +
-      '<button class="btn btn--primary" data-action="ob-next" ' + (can ? '' : 'disabled') + '>' + primary + icon('arrow-right') + '</button>' +
-    '</div>' +
+    '<header class="sub-head">' +
+      '<button class="icon-btn" data-action="back" aria-label="返回">' + icon('arrow-left') + '</button>' +
+      '<div class="sub-head__mid"><div class="sub-head__name">' + esc(title) + '</div>' +
+        (meta ? '<div class="sub-head__meta">' + meta + '</div>' : '') + '</div>' +
+      (o.right || '<span class="text-btn"></span>') +
+    '</header>' +
+    '<div class="screen__body">' + inner + '</div>' +
+    (o.foot || '') +
   '</div>';
 }
 
 /* ============================================================
-   5. 今天
+   今天
    ============================================================ */
 
 function weekStrip(plan, selected){
   return '<div class="week">' + plan.schedule.map((d, i) => {
-    const done = S.history.some(h => h.date === d.date);
+    const done = S.history.some(h => h.date === d.date && (h.dayId === d.dayId || (!h.dayId && h.workoutName)));
     const label = i === 0 ? '今天' : d.dow.replace('周','');
     const dotCls = done ? 'is-done' : (d.type === 'rest' ? 'is-rest' : '');
     return '<button class="day ' + (i === selected ? 'is-sel' : '') + '" data-action="select-day" data-day="' + i + '" aria-label="' + d.dow + ' ' + d.month + '月' + d.dayNum + '日">' +
@@ -1055,37 +1798,38 @@ function weekStrip(plan, selected){
 }
 
 function heroStart(entry){
-  const w = WORKOUTS[entry.workoutId];
+  const day = getDayById(S.plan, entry.dayId);
+  const st = dayStats(day);
   return '<section class="hero">' +
     '<span class="hero__corner"></span><span class="hero__corner hero__corner--br"></span>' +
     '<div class="hero__top"><span class="tag tag--acid">今日训练</span><span class="hero__day">第 ' + (entry.indexInRotation + 1) + ' 练</span></div>' +
-    '<div class="hero__name">' + w.name + '</div>' +
-    '<div class="hero__focus">' + w.focus + '</div>' +
+    '<div class="hero__name">' + day.name + '</div>' +
+    '<div class="hero__focus">' + day.focus + '</div>' +
     '<div class="stat-row">' +
-      '<div class="stat"><span class="stat__num">' + exerciseCountOf(w) + '<small>个</small></span><span class="stat__label">动作</span></div>' +
-      '<div class="stat"><span class="stat__num">' + totalSetsOf(w) + '<small>组</small></span><span class="stat__label">总组数</span></div>' +
-      '<div class="stat"><span class="stat__num">' + estimatedMinutes(w) + '<small>分</small></span><span class="stat__label">预计</span></div>' +
+      '<div class="stat"><span class="stat__num">' + st.main + '<small>+' + st.abs + '</small></span><span class="stat__label">动作</span></div>' +
+      '<div class="stat"><span class="stat__num">' + st.sets + '<small>组</small></span><span class="stat__label">总组数</span></div>' +
+      '<div class="stat"><span class="stat__num">' + st.minutes + '<small>分</small></span><span class="stat__label">预计</span></div>' +
     '</div>' +
     '<button class="btn btn--primary" data-action="start">' + icon('play') + '开始训练</button>' +
-    '<p class="hero__hint">组间自动计时 · 中途退出自动保留草稿</p>' +
+    '<p class="hero__hint">先热身打卡 · 组间自动计时 · 退出保留草稿</p>' +
   '</section>';
 }
 
 function heroDraft(){
   const s = S.session;
-  const w = WORKOUTS[s.workoutId];
   const total = s.sets.length;
   const done = s.sets.filter(x => x.done).length;
-  const pct = Math.round(done / total * 100);
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const next = s.sets.find(x => !x.done);
   return '<section class="hero">' +
     '<span class="hero__corner"></span><span class="hero__corner hero__corner--br"></span>' +
     '<div class="hero__top"><span class="tag tag--acid">训练未完成</span><span class="hero__day">' + fmtClock(s.elapsed) + '</span></div>' +
-    '<div class="hero__name">' + w.name + '</div>' +
+    '<div class="hero__name">' + s.dayName + '</div>' +
     '<div class="hero__focus">草稿已保存在本机 · 随时接着上次继续</div>' +
     '<div class="live-bar"><i style="width:' + pct + '%"></i></div>' +
     '<div class="live-meta"><span>已完成 <b>' + done + '</b> / ' + total + ' 组</span><span>' + pct + '%</span></div>' +
     '<button class="btn btn--primary" data-action="resume">' + icon('play') + '继续训练</button>' +
-    '<p class="hero__hint">接下来练「' + (s.sets.find(x => !x.done) ? s.sets.find(x => !x.done).ex : '最后一个动作') + '」</p>' +
+    '<p class="hero__hint">接下来练「' + (next ? next.ex : '最后一个动作') + '」</p>' +
   '</section>';
 }
 
@@ -1099,22 +1843,23 @@ function heroDone(h){
     '<div class="stat-row">' +
       '<div class="stat"><span class="stat__num">' + fmtVol(h.volume) + '</span><span class="stat__label">总容量 KG</span></div>' +
       '<div class="stat"><span class="stat__num">' + h.sets + '<small>/ ' + h.totalSets + '</small></span><span class="stat__label">完成组数</span></div>' +
-      '<div class="stat"><span class="stat__num">' + h.prs.length + '<small>PR</small></span><span class="stat__label">个人纪录</span></div>' +
+      '<div class="stat"><span class="stat__num">' + ((h.prs || []).length) + '<small>PR</small></span><span class="stat__label">个人纪录</span></div>' +
     '</div>' +
     '<button class="btn btn--ghost" data-action="view-summary">查看训练汇总' + icon('arrow-right') + '</button>' +
-    (next ? '<div class="next-box"><div class="next-box__label">下次训练</div><div class="next-box__row"><span>' + next.dow + ' · ' + next.month + '/' + next.dayNum + '</span><b>' + WORKOUTS[next.workoutId].name + '</b></div><div class="next-box__meta">' + exerciseCountOf(WORKOUTS[next.workoutId]) + ' 个动作 · 约 ' + estimatedMinutes(WORKOUTS[next.workoutId]) + ' 分钟</div></div>' : '') +
+    (next ? '<div class="next-box"><div class="next-box__label">下次训练</div><div class="next-box__row"><span>' + next.dow + ' · ' + next.month + '/' + next.dayNum + '</span><b>' + getDayById(S.plan, next.dayId).name + '</b></div><div class="next-box__meta">' + dayStats(getDayById(S.plan, next.dayId)).total + ' 个动作 · 约 ' + dayStats(getDayById(S.plan, next.dayId)).minutes + ' 分钟</div></div>' : '') +
   '</section>';
 }
 
 function heroRest(day){
   const next = nextTrainAfter(S.selectedDay);
-  let nextHtml = '';
+  let nextHtml;
   if(next){
-    const w = WORKOUTS[next.workoutId];
+    const nd = getDayById(S.plan, next.dayId);
+    const st = dayStats(nd);
     nextHtml = '<div class="next-box">' +
       '<div class="next-box__label">下次训练</div>' +
-      '<div class="next-box__row"><span>' + next.dow + ' · ' + next.month + '月' + next.dayNum + '日</span><b>' + w.name + '</b></div>' +
-      '<div class="next-box__meta">' + exerciseCountOf(w) + ' 个动作 · 约 ' + estimatedMinutes(w) + ' 分钟</div>' +
+      '<div class="next-box__row"><span>' + next.dow + ' · ' + next.month + '月' + next.dayNum + '日</span><b>' + nd.name + '</b></div>' +
+      '<div class="next-box__meta">' + st.total + ' 个动作 · 约 ' + st.minutes + ' 分钟</div>' +
     '</div>';
   }else{
     nextHtml = '<div class="next-box"><div class="next-box__label">下次训练</div><div class="next-box__row"><span>本周训练已排完</span><b>下周继续</b></div><div class="next-box__meta">恢复好，下周同一时间见</div></div>';
@@ -1130,16 +1875,17 @@ function heroRest(day){
 }
 
 function heroPlanned(day){
-  const w = WORKOUTS[day.workoutId];
+  const w = getDayById(S.plan, day.dayId);
+  const st = dayStats(w);
   return '<section class="hero">' +
     '<span class="hero__corner"></span>' +
     '<div class="hero__top"><span class="tag">计划训练</span><span class="hero__day">' + day.dow + ' · ' + day.month + '/' + day.dayNum + '</span></div>' +
     '<div class="hero__name">' + w.name + '</div>' +
     '<div class="hero__focus">' + w.focus + '</div>' +
     '<div class="stat-row">' +
-      '<div class="stat"><span class="stat__num">' + exerciseCountOf(w) + '<small>个</small></span><span class="stat__label">动作</span></div>' +
-      '<div class="stat"><span class="stat__num">' + totalSetsOf(w) + '<small>组</small></span><span class="stat__label">总组数</span></div>' +
-      '<div class="stat"><span class="stat__num">' + estimatedMinutes(w) + '<small>分</small></span><span class="stat__label">预计</span></div>' +
+      '<div class="stat"><span class="stat__num">' + st.main + '<small>+' + st.abs + '</small></span><span class="stat__label">动作</span></div>' +
+      '<div class="stat"><span class="stat__num">' + st.sets + '<small>组</small></span><span class="stat__label">总组数</span></div>' +
+      '<div class="stat"><span class="stat__num">' + st.minutes + '<small>分</small></span><span class="stat__label">预计</span></div>' +
     '</div>' +
     '<p class="hero__hint">已排进本周计划 · 到当天即可开始</p>' +
   '</section>';
@@ -1160,9 +1906,8 @@ function viewToday(){
   const sel = Math.min(S.selectedDay, 6);
   const days = plan.schedule;
   const day = days[sel];
-  const todayISO = isoOf(new Date());
-  const draft = S.session && S.session.date === todayISO;
-  const doneToday = S.history.find(h => h.date === days[0].date && h.workoutId === days[0].workoutId);
+  const draft = S.session && S.session.date === todayISO();
+  const doneToday = days[0].type === 'train' ? S.history.find(h => h.date === days[0].date && h.dayId === days[0].dayId) : null;
 
   let card;
   if(sel === 0 && draft) card = heroDraft();
@@ -1171,744 +1916,1894 @@ function viewToday(){
   else card = heroRest(day);
 
   const tpl = templateById(plan.templateId);
-  const rotation = tpl.rotation.map(id => ({id, w: WORKOUTS[id]}));
-  const todayWid = days[0].type === 'train' ? days[0].workoutId : null;
+  const rotation = rotationDays(plan);
+  const todayDayId = days[0].type === 'train' ? days[0].dayId : null;
 
-  return '<div class="screen view-anim">' +
-    '<div class="screen__body">' +
-      '<header class="home-head">' +
-        '<div class="topbar">' +
-          '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
-          '<span class="plan-pill"><i></i>' + goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练</span>' +
-        '</div>' +
-        '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + tpl.name + '</span></div>' +
-        '<div class="home-title-row"><h1 class="home-title">' + (sel === 0 ? '今天' : day.dow) + '</h1><span class="home-day-idx">DAY ' + pad(sel + 1) + ' / 07</span></div>' +
-        weekStrip(plan, sel) +
-      '</header>' +
-      card +
-      '<div class="section-head"><h2>本计划</h2><span>' + plan.freq + ' 练 / 周 · ' + rotation.length + ' 套轮换</span></div>' +
-      '<div class="plan-list">' + rotation.map((r, i) => {
-        const isToday = r.id === todayWid;
-        return '<div class="plan-row ' + (isToday ? 'is-today' : '') + '">' +
-          '<span class="plan-row__idx">' + pad(i + 1) + '</span>' +
-          '<span><span class="plan-row__name">' + r.w.name + '</span><span class="plan-row__sub">' + r.w.focus + '</span></span>' +
-          '<span class="plan-row__meta">' + exerciseCountOf(r.w) + ' 动作<br>' + estimatedMinutes(r.w) + ' 分钟</span>' +
-        '</div>';
-      }).join('') + '</div>' +
-      '<footer class="home-foot"><span>' + icon('lock') + '本地训练日志 · 不联网</span><button class="link-btn" data-action="reset">重置演示</button></footer>' +
-    '</div>' +
-  '</div>';
+  return shellTab('today',
+    '<header class="home-head">' +
+      '<div class="topbar">' +
+        '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
+        '<span class="plan-pill"><i></i>' + goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练</span>' +
+      '</div>' +
+      '<div class="home-date"><span class="eyebrow">' + day.month + '月' + day.dayNum + '日</span><span>' + day.dow + ' · ' + tpl.name + '</span></div>' +
+      '<div class="home-title-row"><h1 class="home-title">' + (sel === 0 ? '今天' : day.dow) + '</h1><span class="home-day-idx">DAY ' + pad(sel + 1) + ' / 07</span></div>' +
+      weekStrip(plan, sel) +
+    '</header>' +
+    card +
+    '<div class="section-head"><h2>本计划</h2><span>' + plan.freq + ' 练 / 周 · ' + rotation.length + ' 套轮换</span></div>' +
+    '<div class="plan-list">' + rotation.map((d, i) => {
+      const isToday = d.id === todayDayId;
+      const st = dayStats(d);
+      return '<button class="plan-row ' + (isToday ? 'is-today' : '') + '" data-action="open-plan-day" data-day-id="' + d.id + '" style="width:100%;text-align:left;background:none;border-left:0;border-right:0;border-top:0;color:inherit;font-family:inherit;cursor:pointer">' +
+        '<span class="plan-row__idx">' + pad(i + 1) + '</span>' +
+        '<span><span class="plan-row__name">' + d.name + '</span><span class="plan-row__sub">' + d.focus + '</span></span>' +
+        '<span class="plan-row__meta">' + st.total + ' 动作<br>' + st.minutes + ' 分钟</span>' +
+      '</button>';
+    }).join('') + '</div>' +
+    '<footer class="home-foot"><span>' + icon('lock') + '本地训练日志 · 不联网</span><button class="link-btn" data-action="go-tab" data-tab="me">设置</button></footer>'
+  );
 }
-
 
 /* ============================================================
-   6. 训练执行
+   我的
    ============================================================ */
 
-function prevTextOf(name, count){
-  const lib = EX[name];
-  const n = Math.max(1, Math.min(count || lib.prev.length, lib.prev.length));
-  return lib.prev.slice(0, n).map((w, i) => fmtNum(w) + '×' + lib.prevReps[i]).join(' / ');
+function viewMe(){
+  const plan = S.plan;
+  const tpl = plan ? templateById(plan.templateId) : null;
+  const totalVol = S.history.reduce((a, h) => a + (+h.volume || 0), 0);
+  const trainCount = S.history.length;
+  const bodyCount = S.body.weights.length + S.body.measures.length + S.body.cardio.length;
+  const customCount = S.customEx.length;
+
+  return shellTab('me',
+    '<div class="pg">' +
+      '<div class="pg-head"><div><div class="pg-eyebrow">PROFILE / 本机</div><h1 class="pg-title">我的</h1></div></div>' +
+      '<div class="me-hero">' +
+        '<div class="me-avatar">K</div>' +
+        '<div><div class="me-name">训练者 01</div><div class="me-sub">' + (plan ? goalName(plan.goal) + ' · 每周 ' + plan.freq + ' 练 · ' + tpl.name : '还没有训练计划') + '</div></div>' +
+      '</div>' +
+      '<div class="stat-grid" style="margin-top:18px">' +
+        '<div><span>累计训练</span><b>' + trainCount + '<small>次</small></b></div>' +
+        '<div><span>累计容量</span><b>' + fmtK(totalVol) + '<small>kg</small></b></div>' +
+        '<div><span>身体记录</span><b>' + bodyCount + '<small>条</small></b></div>' +
+      '</div>' +
+      '<div class="section-head"><h2>训练配置</h2><span>' + (plan ? plan.days.length + ' 个训练日' : '未生成') + '</span></div>' +
+      '<div class="menu">' +
+        '<button class="menu-row" data-action="go-tab" data-tab="plan">' +
+          '<span class="menu-row__icon">' + icon('layers') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">我的计划</span><span class="menu-row__sub">训练日、动作、组次与休息</span></span>' +
+          '<span class="menu-row__right">' + icon('chevron-right') + '</span>' +
+        '</button>' +
+        '<button class="menu-row" data-action="open-templates">' +
+          '<span class="menu-row__icon">' + icon('copy') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">模板库</span><span class="menu-row__sub">四套内置模板 · 可复制再改</span></span>' +
+          '<span class="menu-row__right">' + templateById(plan ? plan.templateId : 'fb').name + icon('chevron-right') + '</span>' +
+        '</button>' +
+        '<button class="menu-row" data-action="open-library">' +
+          '<span class="menu-row__icon">' + icon('dumbbell') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">动作库</span><span class="menu-row__sub">25 个核心动作' + (customCount ? ' · 自定义 ' + customCount : '') + '</span></span>' +
+          '<span class="menu-row__right">' + icon('chevron-right') + '</span>' +
+        '</button>' +
+      '</div>' +
+      '<div class="section-head"><h2>数据</h2><span>仅存本机</span></div>' +
+      '<div class="menu">' +
+        (S.demo ? '<button class="menu-row" data-action="clear-demo">' +
+          '<span class="menu-row__icon">' + icon('rotate') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">清空示例数据</span><span class="menu-row__sub">移除生成的训练历史与身体记录，保留计划</span></span>' +
+          '<span class="menu-row__right">' + icon('chevron-right') + '</span>' +
+        '</button>' : '') +
+        '<button class="menu-row danger" data-action="reset">' +
+          '<span class="menu-row__icon">' + icon('trash') + '</span>' +
+          '<span class="menu-row__main"><span class="menu-row__title">重置全部数据</span><span class="menu-row__sub">计划、训练记录、身体数据一起清除</span></span>' +
+          '<span class="menu-row__right">' + icon('chevron-right') + '</span>' +
+        '</button>' +
+      '</div>' +
+      '<div class="notice">' + icon('lock') + '<span>无账号、无云端、无网络请求。所有数据保存在这台设备的 localStorage 中，清除浏览器数据会一并删除。</span></div>' +
+      (S.demo ? '<div class="notice" style="border-style:solid">' + icon('info') + '<span>统计与图表里包含一份生成的示例记录，便于首次查看。可在上方「清空示例数据」移除。</span></div>' : '') +
+      '<div class="ver">KEEPREAL · PROTOTYPE v0.2 · LOCAL ONLY</div>' +
+    '</div>'
+  );
 }
 
-function calcPanel(weightRaw, setLabel){
-  const weight = parseFloat(weightRaw);
-  const total = isFinite(weight) && weight > 0 ? weight : 20;
-  const perSide = Math.max(0, (total - 20) / 2);
-  const plates = [];
-  let rem = perSide;
-  PLATES.forEach(p => {
-    while(rem >= p - 0.0001){ plates.push(p); rem -= p; }
-  });
-  const plateEl = p => '<span class="plate ' + (p === 25 ? 'plate--acid' : '') + '" style="height:' + PLATE_H[p] + 'px"></span>';
-  const leftStack = plates.slice().reverse().map(plateEl).join('');
-  const rightStack = plates.map(plateEl).join('');
-  return '<div class="calc__panel" id="calc-panel">' +
-    '<div class="plate-vis">' +
-      '<span class="plate-stack">' + leftStack + '</span>' +
-      '<span class="collar"></span><span class="bar-rod"></span><span class="collar"></span>' +
-      '<span class="plate-stack">' + rightStack + '</span>' +
+/* ===== 04-plan.js ===== */
+/* ============================================================
+   4. 计划 / 模板库 / 动作库
+   ============================================================ */
+
+let CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
+
+function allExNames(){
+  return Object.keys(EX_LIB).concat((S.customEx || []).map(c => c.name));
+}
+function bestWeightOf(name){
+  if(typeof S.prs[name] === 'number') return S.prs[name];
+  const info = exInfo(name);
+  return info.pr || 0;
+}
+function libRow(name, mode, dayId){
+  const info = exInfo(name);
+  const pr = bestWeightOf(name);
+  const last = lastLift(name);
+  const already = mode === 'pick' && getDayById(S.plan, dayId) &&
+    getDayById(S.plan, dayId).exercises.some(e => e.ex === name);
+  const right = mode === 'pick' ?
+    '<button class="lib-add ' + (already ? 'is-added' : '') + '" data-action="picker-add" data-ex="' + esc(name) + '" data-day-id="' + dayId + '" aria-label="' + (already ? '已添加' : '添加 ' + name) + '">' +
+      icon(already ? 'check' : 'plus') + '</button>' :
+    '<div class="lib-row__pr">' + (info.bw ? '自重' : (pr ? fmtNum(pr) + ' kg' : '—')) + '<s>' + (info.bw ? (info.hold ? '计时' : '次数') : 'PR') + '</s></div>' + icon('chevron-right');
+  return '<div class="lib-row">' +
+    '<div class="lib-row__main" ' + (mode === 'pick' ? '' : 'data-action="lib-info" data-ex="' + esc(name) + '" style="cursor:pointer"') + '>' +
+      '<div class="lib-row__name">' + esc(name) +
+        (info.unilateral ? '<span class="mini-tag">单侧</span>' : '') +
+        (info.custom ? '<span class="mini-tag mini-tag--acid">自定义</span>' : '') +
+      '</div>' +
+      '<div class="lib-row__sub">' + esc(info.muscle) + ' · ' + esc(info.equip) + (last ? ' · 上次 ' + fmtNum(last.weight) + '×' + last.reps : '') + '</div>' +
     '</div>' +
-    '<div class="calc__rows">' +
-      '<div class="calc__row"><span>' + setLabel + '</span><b>' + fmtNum(total) + ' kg</b></div>' +
-      '<div class="calc__row"><span>每侧配重 · 20kg 奥杆</span><b>' + fmtNum(perSide) + ' kg</b></div>' +
-      '<div class="calc__row"><span>每侧杠铃片</span><b>' + (plates.length ? plates.map(p => fmtNum(p)).join(' + ') : '仅空杆') + '</b></div>' +
-      (rem > 0.01 ? '<div class="calc__row is-warn"><span>无法精确配重</span><b>每侧差 ' + fmtNum(rem) + ' kg</b></div>' : '') +
-    '</div>' +
-    (total < 20 ? '<div class="calc__note">当前重量低于空杆 20kg</div>' : '') +
+    '<div class="lib-row__right">' + right + '</div>' +
   '</div>';
 }
 
-function viewWorkout(){
-  const s = S.session;
-  if(!s) return viewToday();
-  const w = WORKOUTS[s.workoutId];
-  const exCount = w.exercises.length;
-  const exIdx = Math.max(0, Math.min(s.currentEx, exCount - 1));
-  const e = w.exercises[exIdx];
-  const lib = EX[e.ex];
+function filteredExNames(){
+  const q = libQuery.trim().toLowerCase();
+  return allExNames().filter(name => {
+    const info = exInfo(name);
+    if(S.ui.libGroup !== '全部' && info.group !== S.ui.libGroup) return false;
+    if(S.ui.libEquip !== '全部' && info.equip !== S.ui.libEquip) return false;
+    if(!q) return true;
+    return (name + ' ' + info.muscle + ' ' + info.group + ' ' + info.equip + ' ' + info.pattern).toLowerCase().indexOf(q) >= 0;
+  });
+}
+
+function libResultsHtml(mode, dayId){
+  const names = filteredExNames();
+  if(!names.length){
+    return '<div class="empty" style="margin-top:14px"><b>没有匹配的动作</b>换个关键词，或清空筛选试试。</div>';
+  }
+  if(mode === 'pick'){
+    const groups = {};
+    names.forEach(n => {
+      const p = exInfo(n).pattern;
+      (groups[p] = groups[p] || []).push(n);
+    });
+    const order = PATTERNS.concat(['自定义']);
+    return order.filter(p => groups[p]).map(p =>
+      '<div class="lib-group">' +
+        '<div class="lib-group__head"><h3>' + p + '</h3><span>' + groups[p].length + ' 个</span></div>' +
+        groups[p].map(n => libRow(n, 'pick', dayId)).join('') +
+      '</div>'
+    ).join('');
+  }
+  const groups = {};
+  names.forEach(n => {
+    const p = exInfo(n).pattern;
+    (groups[p] = groups[p] || []).push(n);
+  });
+  const order = PATTERNS.concat(['自定义']);
+  return order.filter(p => groups[p]).map(p =>
+    '<div class="lib-group">' +
+      '<div class="lib-group__head"><h3>' + p + '</h3><span>' + groups[p].length + ' 个</span></div>' +
+      groups[p].map(n => libRow(n, 'browse')).join('') +
+    '</div>'
+  ).join('');
+}
+
+function libFilters(){
+  return '<div class="filter-row">' +
+    '<div class="chips">' +
+      ['全部'].concat(GROUPS).map(g => '<button class="chip ' + (S.ui.libGroup === g ? 'is-on' : '') + '" data-action="lib-group" data-value="' + g + '">' + g + '</button>').join('') +
+    '</div>' +
+    '<div class="chips">' +
+      ['全部'].concat(EQUIPS).map(e => '<button class="chip ' + (S.ui.libEquip === e ? 'is-on' : '') + '" data-action="lib-equip" data-value="' + e + '">' + e + '</button>').join('') +
+    '</div>' +
+  '</div>';
+}
+
+/* ---------- 计划首页 ---------- */
+function viewPlan(){
+  const plan = S.plan;
+  if(!plan) return viewOnboarding();
+  const tpl = templateById(plan.templateId);
+  const days = rotationDays(plan);
+  const weekSets = totalWeeklySets();
+  const totalEx = days.reduce((a, d) => a + dayStats(d).total, 0);
+
+  return shellTab('plan',
+    '<div class="pg">' +
+      '<div class="pg-head">' +
+        '<div><div class="pg-eyebrow">PLAN / 训练日</div><h1 class="pg-title">计划</h1></div>' +
+        '<div class="pg-tools"><button class="pg-tool" data-action="open-templates">' + icon('copy') + '模板库</button></div>' +
+      '</div>' +
+      '<div class="plan-hero">' +
+        '<div class="plan-hero__top"><span class="tag tag--acid">' + goalName(plan.goal) + '</span><span class="hero__day">每周 ' + plan.freq + ' 练</span></div>' +
+        '<div class="plan-hero__name">' + tpl.name + '</div>' +
+        '<div class="plan-hero__meta">' + plan.days.length + ' 个训练日 · ' + totalEx + ' 个动作 · 由模板复制后可自由编辑</div>' +
+        '<div class="plan-hero__stats">' +
+          '<div class="plan-hero__stat"><b>' + plan.days.length + '</b><span>训练日</span></div>' +
+          '<div class="plan-hero__stat"><b>' + weekSets + '</b><span>每周组数</span></div>' +
+          '<div class="plan-hero__stat"><b>' + totalEx + '</b><span>动作总数</span></div>' +
+        '</div>' +
+        '<div class="plan-hero__actions">' +
+          '<button class="mini-btn" data-action="edit-day" data-day-id="' + days[0].id + '">' + icon('sliders') + '编辑训练日</button>' +
+          '<button class="mini-btn" data-action="open-templates">' + icon('copy') + '更换模板</button>' +
+        '</div>' +
+      '</div>' +
+      '<div class="section-head"><h2>训练日</h2><span>点开查看动作与热身</span></div>' +
+      '<div class="panel" style="padding:0 14px">' + days.map((d, i) => {
+        const st = dayStats(d);
+        return '<button class="day-row" data-action="open-plan-day" data-day-id="' + d.id + '">' +
+          '<span class="day-row__idx">' + pad(i + 1) + '</span>' +
+          '<span class="day-row__main"><span class="day-row__name">' + d.name + '</span><span class="day-row__sub">' + d.focus + '</span></span>' +
+          '<span class="day-row__meta">' + st.main + ' + ' + st.abs + ' 动作<br>' + st.sets + ' 组</span>' +
+          icon('chevron-right') +
+        '</button>';
+      }).join('') + '</div>' +
+      '<div class="section-head"><h2>工具</h2><span>动作与模板</span></div>' +
+      '<div class="tool-row">' +
+        '<button class="tool-card" data-action="open-library">' + icon('dumbbell') + '<span><b>动作库</b><span>25 个核心动作 + 自定义</span></span></button>' +
+        '<button class="tool-card" data-action="open-templates">' + icon('copy') + '<span><b>模板库</b><span>4 套模板可预览复制</span></span></button>' +
+      '</div>' +
+      '<div class="notice">' + icon('info') + '<span>复制模板会替换当前训练日安排，训练历史与身体数据不受影响。</span></div>' +
+    '</div>'
+  );
+}
+
+/* ---------- 训练日详情 ---------- */
+function viewPlanDay(dayId){
+  const plan = S.plan;
+  if(!plan) return viewOnboarding();
+  const day = getDayById(plan, dayId) || rotationDays(plan)[0];
+  const days = rotationDays(plan);
+  const st = dayStats(day);
+  const warm = warmupFor(day);
+  const abs = (day.abs || []).map(a => Object.assign({ex:a}, ABS_POOL[a]));
+
+  return subScreen(day.name, esc(day.focus),
+    '<div class="day-tabs">' + days.map((d, i) =>
+      '<button class="day-tab ' + (d.id === day.id ? 'is-on' : '') + '" data-action="select-plan-day" data-day-id="' + d.id + '"><b>' + pad(i+1) + '</b>' + d.name + '</button>'
+    ).join('') + '</div>' +
+    '<div class="stat-grid" style="margin-top:12px">' +
+      '<div><span>主训练</span><b>' + st.main + '<small>动作</small></b></div>' +
+      '<div><span>总组数</span><b>' + st.sets + '<small>组</small></b></div>' +
+      '<div><span>预计</span><b>' + st.minutes + '<small>分钟</small></b></div>' +
+    '</div>' +
+    '<div class="section-head"><h2>热身</h2><span>' + warm.length + ' 项 · 不计容量</span></div>' +
+    '<div class="panel" style="padding:4px 14px">' +
+      warm.map((w, i) =>
+        '<div class="warm-item">' +
+          '<span class="warm-item__num">' + pad(i + 1) + '</span>' +
+          '<div class="warm-item__main"><div class="warm-item__name">' + w.name + '<span class="mini-tag">' + w.tag + '</span></div><div class="warm-item__sub">' + w.detail + '</div></div>' +
+        '</div>'
+      ).join('') +
+    '</div>' +
+    '<div class="section-head"><h2>训练动作</h2><span>' + day.exercises.length + ' 个</span></div>' +
+    '<div class="panel" style="padding:2px 14px">' +
+      day.exercises.map((e, i) => {
+        const info = exInfo(e.ex);
+        return '<div class="ex-line">' +
+          '<span class="ex-line__idx">' + pad(i + 1) + '</span>' +
+          '<div class="ex-line__main"><div class="ex-line__name">' + esc(e.ex) + (info.unilateral ? '<span class="mini-tag">单侧</span>' : '') + '</div><div class="ex-line__sub">' + esc(info.muscle) + ' · ' + esc(info.equip) + '</div></div>' +
+          '<div class="ex-line__right">' + e.sets + ' 组<s>' + repsText(e, e.ex) + ' 次 · ' + e.rest + 's</s></div>' +
+        '</div>';
+      }).join('') +
+    '</div>' +
+    '<div class="abs-block">' +
+      '<div class="abs-block__head"><h2>腹部收尾</h2><span>固定 2 个动作</span></div>' +
+      '<div class="panel" style="padding:2px 14px">' +
+        abs.map((e, i) =>
+          '<div class="ex-line">' +
+            '<span class="ex-line__idx">' + pad(i + 1) + '</span>' +
+            '<div class="ex-line__main"><div class="ex-line__name">' + e.ex + '<span class="mini-tag mini-tag--acid">收尾</span></div><div class="ex-line__sub">' + esc(exInfo(e.ex).muscle) + '</div></div>' +
+            '<div class="ex-line__right">' + e.sets + ' 组<s>' + repsText(e, e.ex) + ' · ' + e.rest + 's</s></div>' +
+          '</div>'
+        ).join('') +
+      '</div>' +
+    '</div>' +
+    '<p class="warm-note">热身与收尾都写在当天流程里：热身只打卡，不计入训练容量；收尾动作计入组数与容量。</p>',
+    {right:'<button class="text-btn" data-action="edit-day" data-day-id="' + day.id + '">编辑</button>',
+     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="edit-day" data-day-id="' + day.id + '">' + icon('sliders') + '编辑训练日</button></div>'}
+  );
+}
+
+/* ---------- 编辑训练日 ---------- */
+function viewPlanEdit(dayId){
+  const day = getDayById(S.plan, dayId);
+  if(!day) return viewPlan();
+  const abs = (day.abs || []).map(a => Object.assign({ex:a}, ABS_POOL[a]));
+  return subScreen('编辑 · ' + day.name, '调整顺序与组次 · 修改即时保存',
+    '<div class="notice" style="margin-top:2px">' + icon('info') + '<span>点右侧箭头调整顺序，点「调节」改组数、次数区间和休息；训练日的热身会根据动作自动更新。</span></div>' +
+    '<div class="section-head"><h2>训练动作</h2><span>' + day.exercises.length + ' 个</span></div>' +
+    '<div class="panel" style="padding:2px 12px">' +
+      day.exercises.map((e, i) => {
+        const info = exInfo(e.ex);
+        return '<div class="ex-line">' +
+          '<span class="ex-line__idx">' + pad(i + 1) + '</span>' +
+          '<div class="ex-line__main"><div class="ex-line__name">' + esc(e.ex) + '</div><div class="ex-line__sub">' + e.sets + ' 组 · ' + repsText(e, e.ex) + (isHold(e.ex) ? '' : ' 次') + ' · ' + e.rest + 's · ' + esc(info.equip) + '</div></div>' +
+          '<div style="display:flex;gap:4px;flex:none">' +
+            '<button class="lib-add" data-action="move-ex" data-dir="-1" data-idx="' + i + '" ' + (i === 0 ? 'disabled style="opacity:.25;pointer-events:none"' : '') + ' aria-label="上移">' + icon('arrow-up') + '</button>' +
+            '<button class="lib-add" data-action="move-ex" data-dir="1" data-idx="' + i + '" ' + (i === day.exercises.length - 1 ? 'disabled style="opacity:.25;pointer-events:none"' : '') + ' aria-label="下移">' + icon('arrow-down') + '</button>' +
+            '<button class="lib-add" data-action="config-ex" data-idx="' + i + '" aria-label="调节">' + icon('sliders') + '</button>' +
+          '</div>' +
+        '</div>';
+      }).join('') +
+    '</div>' +
+    '<div class="abs-block">' +
+      '<div class="abs-block__head"><h2>腹部收尾</h2><span>固定 · 不参与编辑</span></div>' +
+      '<div class="panel" style="padding:2px 14px">' +
+        abs.map((e, i) =>
+          '<div class="ex-line"><span class="ex-line__idx">' + pad(i + 1) + '</span><div class="ex-line__main"><div class="ex-line__name">' + e.ex + '<span class="mini-tag mini-tag--acid">收尾</span></div><div class="ex-line__sub">' + esc(exInfo(e.ex).muscle) + '</div></div><div class="ex-line__right">' + e.sets + ' 组<s>' + repsText(e, e.ex) + '</s></div></div>'
+        ).join('') +
+      '</div>' +
+    '</div>' +
+    '<p class="warm-note">腹部收尾由计划固定轮换，不在本页编辑。</p>',
+    {right:'<button class="text-btn" data-action="plan-edit-done">完成</button>',
+     foot:'<div class="sum-foot" style="display:flex;gap:8px">' +
+       '<button class="btn btn--ghost" style="width:110px;flex:none" data-action="plan-edit-done">完成</button>' +
+       '<button class="btn btn--primary" data-action="open-picker" data-day-id="' + day.id + '">' + icon('plus') + '添加动作</button>' +
+     '</div>'}
+  );
+}
+
+/* ---------- 从动作库添加 ---------- */
+function viewPicker(dayId){
+  const day = getDayById(S.plan, dayId);
+  if(!day) return viewPlan();
+  return subScreen('添加动作', '从动作库选择 · 已添加 ' + day.exercises.length + ' 个',
+    '<div class="search">' + icon('search') + '<input id="lib-search" type="search" placeholder="搜索动作、肌群或器械" value="' + esc(libQuery) + '" autocomplete="off"></div>' +
+    libFilters() +
+    '<div id="lib-results">' + libResultsHtml('pick', dayId) + '</div>' +
+    '<p class="form-tip">新动作默认 3 组 × 8-12 次，组间休息 90 秒；添加后可回到编辑页调整。</p>',
+    {right:'<button class="text-btn" data-action="plan-edit-done">完成</button>',
+     foot:'<div class="sum-foot" style="display:flex;gap:8px">' +
+       '<button class="btn btn--ghost" style="width:130px;flex:none" data-action="new-custom">自定义</button>' +
+       '<button class="btn btn--primary" data-action="plan-edit-done">完成添加</button>' +
+     '</div>'}
+  );
+}
+
+/* ---------- 动作库浏览 ---------- */
+function viewLibrary(){
+  return subScreen('动作库', '25 个核心动作 · 9 个动作模式' + (S.customEx.length ? ' · 自定义 ' + S.customEx.length : ''),
+    '<div class="search" style="margin-top:4px">' + icon('search') + '<input id="lib-search" type="search" placeholder="搜索动作、肌群或器械" value="' + esc(libQuery) + '" autocomplete="off"></div>' +
+    libFilters() +
+    '<div id="lib-results">' + libResultsHtml('browse') + '</div>',
+    {right:'<button class="text-btn" data-action="new-custom">新增</button>'}
+  );
+}
+
+/* ---------- 自定义动作 ---------- */
+function viewCustomEx(){
+  const d = CUSTOM_DRAFT;
+  return subScreen('新增动作', '只填四个字段',
+    '<div class="form-row"><label class="form-label">动作名称</label>' +
+      '<input class="form-input" id="custom-name" type="text" maxlength="20" placeholder="例如：史密斯上斜卧推" value="' + esc(d.name) + '" style="font-family:var(--font-cn);font-size:14px"></div>' +
+    '<div class="form-row"><label class="form-label">主要肌群</label><div class="chip-group">' +
+      GROUPS.map(g => '<button class="chip ' + (d.group === g ? 'is-on' : '') + '" data-action="custom-group" data-value="' + g + '">' + g + '</button>').join('') +
+    '</div></div>' +
+    '<div class="form-row"><label class="form-label">器械</label><div class="chip-group">' +
+      EQUIPS.map(e => '<button class="chip ' + (d.equip === e ? 'is-on' : '') + '" data-action="custom-equip" data-value="' + e + '">' + e + '</button>').join('') +
+    '</div></div>' +
+    '<div class="switch-row"><div><div class="stepper__label">是否单侧</div><span class="stepper__hint">单侧动作会标记「单侧」，重量按单边记录</span></div>' +
+      '<button class="switch ' + (d.unilateral ? 'is-on' : '') + '" data-action="custom-unilateral" aria-label="是否单侧"></button></div>' +
+    '<p class="form-tip">自定义动作只保存名称、主要肌群、器械和是否单侧，生成在动作库里，可加入任意训练日。</p>',
+    {foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="custom-save">' + icon('check') + '保存动作</button></div>'}
+  );
+}
+
+/* ---------- 模板库 ---------- */
+function templateMeta(t){
+  const exCount = t.days.reduce((a, d) => a + d.exercises.length, 0);
+  const sets = t.days.reduce((a, d) => a + d.exercises.reduce((x, e) => x + e.sets, 0), 0);
+  return {exCount, sets};
+}
+function viewTemplates(){
+  return subScreen('模板库', '四套内置模板 · 预览后复制',
+    '<p class="pg-sub" style="margin-top:2px">模板决定训练日的动作与组次。复制成自己的计划后，可以在「计划」里自由增删动作、调整顺序和休息。</p>' +
+    '<div class="section-head"><h2>内置模板</h2><span>' + TEMPLATES.length + ' 套</span></div>' +
+    '<div>' + TEMPLATES.map(t => {
+      const m = templateMeta(t);
+      return '<button class="tpl-card" data-action="open-template" data-id="' + t.id + '">' +
+        '<span class="tpl-card__row"><span class="tpl-card__name">' + t.name + '</span><span class="tpl-card__days">' + t.days.length + ' 天</span></span>' +
+        '<span class="tpl-card__sub">' + t.sub + '</span>' +
+        '<span class="tpl-card__meta"><span>' + m.exCount + ' 个动作</span><span>' + m.sets + ' 组 / 轮</span><span>建议 ' + t.recFor.join('-') + ' 练</span></span>' +
+        '<span class="tpl-card__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
+      '</button>';
+    }).join('') + '</div>' +
+    '<div class="notice">' + icon('info') + '<span>复制模板只替换训练日安排，不清空训练历史、PR 和身体数据。</span></div>'
+  );
+}
+
+function viewTemplateDetail(id){
+  const t = TEMPLATES.find(x => x.id === id);
+  if(!t) return viewTemplates();
+  const m = templateMeta(t);
+  return subScreen(t.name, '模板预览 · ' + m.exCount + ' 个动作',
+    '<div class="panel">' +
+      '<div class="panel__label">TEMPLATE / ' + t.id.toUpperCase() + '</div>' +
+      '<div class="panel__title">' + t.sub + '</div>' +
+      '<div class="panel__sub">' + t.desc + '</div>' +
+      '<div class="tpl-card__tags" style="margin-top:10px">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '<span class="tag">建议 ' + t.recFor.join('-') + ' 练</span></div>' +
+    '</div>' +
+    '<div class="section-head"><h2>训练日安排</h2><span>' + t.days.length + ' 天 / 轮</span></div>' +
+    '<div class="panel" style="padding:2px 14px">' +
+      t.days.map((d, i) => {
+        const sets = d.exercises.reduce((a, e) => a + e.sets, 0);
+        return '<div class="tpl-day">' +
+          '<div class="tpl-day__head"><div><div class="tpl-day__name">' + pad(i+1) + ' · ' + d.name + '</div><div class="tpl-day__focus">' + d.focus + '</div></div><div class="tpl-day__meta">' + sets + ' 组</div></div>' +
+          '<div style="margin-top:8px">' + d.exercises.map(e =>
+            '<div class="tpl-ex"><span>' + e.ex + '</span><span>' + e.sets + ' × ' + (isHold(e.ex) ? e.repsMax + '秒' : (e.repsMin === e.repsMax ? e.repsMin : e.repsMin + '-' + e.repsMax)) + ' · ' + e.rest + 's</span></div>'
+          ).join('') + '</div>' +
+          '<div class="tpl-day__focus" style="margin-top:8px">腹部收尾：' + ABS_PAIRS[i % ABS_PAIRS.length].join(' + ') + '</div>' +
+        '</div>';
+      }).join('') +
+    '</div>' +
+    '<div class="notice">' + icon('info') + '<span>复制后会按你当前的每周训练频率重新排入本周，已有训练历史保留。</span></div>',
+    {right:'<button class="text-btn" data-action="copy-template" data-id="' + t.id + '">复制</button>',
+     foot:'<div class="sum-foot"><button class="btn btn--primary" data-action="copy-template" data-id="' + t.id + '">' + icon('copy') + '复制为我的计划</button></div>'}
+  );
+}
+
+/* ===== 05-progress.js ===== */
+/* ============================================================
+   5. 进步 · 图表与统计
+   ============================================================ */
+
+function mondayOf(d){
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const w = (x.getDay() + 6) % 7;
+  return addDays(x, -w);
+}
+function niceMax(v){
+  if(!(v > 0)) return 100;
+  const raw = v * 1.08;
+  const exp = Math.pow(10, Math.floor(Math.log10(raw)));
+  const f = raw / exp;
+  const nice = f <= 1 ? 1 : f <= 1.2 ? 1.2 : f <= 1.5 ? 1.5 : f <= 2 ? 2 : f <= 2.5 ? 2.5 : f <= 3 ? 3 : f <= 4 ? 4 : f <= 5 ? 5 : f <= 6 ? 6 : f <= 8 ? 8 : 10;
+  return nice * exp;
+}
+
+function svgBars(bars, opts){
+  const o = opts || {};
+  const W = 326, H = 170, L = 32, R = 6, T = 20, B = 25;
+  const pw = W - L - R, ph = H - T - B;
+  const max = niceMax(Math.max.apply(null, bars.map(b => b.value).concat([1])));
+  const n = Math.max(1, bars.length);
+  const slot = pw / n;
+  const bw = Math.min(28, slot * 0.56);
+  const y = v => T + ph - (v / max) * ph;
+  let g = '';
+  [0, 0.5, 1].forEach(k => {
+    const v = max * k, yy = y(v);
+    g += '<line class="grid" x1="' + L + '" y1="' + yy.toFixed(1) + '" x2="' + (W-R) + '" y2="' + yy.toFixed(1) + '"/>';
+    g += '<text class="axis" x="' + (L-5) + '" y="' + (yy+3).toFixed(1) + '" text-anchor="end">' + (v ? fmtK(v) : '0') + '</text>';
+  });
+  let body = '';
+  bars.forEach((b, i) => {
+    const x = L + slot * i + (slot - bw) / 2;
+    const top = y(b.value);
+    const h = Math.max(b.value > 0 ? 2 : 1, y(0) - top);
+    const hot = i === n - 1;
+    body += '<rect class="bar ' + (hot ? 'is-hot' : '') + (b.value <= 0 ? ' is-empty' : '') + '" x="' + x.toFixed(1) + '" y="' + top.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2"/>';
+    if(hot && b.value > 0){
+      body += '<text class="axis axis--strong" x="' + (x + bw/2).toFixed(1) + '" y="' + (top - 5).toFixed(1) + '" text-anchor="middle">' + fmtK(b.value) + '</text>';
+    }
+    const show = n <= 5 ? true : (i % 3 === 0 || i === n - 1);
+    if(show){
+      body += '<text class="axis" x="' + (L + slot * i + slot/2).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="middle">' + b.label + '</text>';
+    }
+  });
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (o.label || '柱状图') + '">' + g + body + '</svg>';
+}
+
+function svgSeries(series, labels, opts){
+  const o = opts || {};
+  const W = 326, H = 170, L = 34, R = 8, T = 18, B = 26;
+  const pw = W - L - R, ph = H - T - B;
+  const all = [];
+  series.forEach(s => s.values.forEach(v => { if(typeof v === 'number' && isFinite(v)) all.push(v); }));
+  let lo = Math.min.apply(null, all), hi = Math.max.apply(null, all);
+  if(!all.length){ lo = 0; hi = 1; }
+  const span = (hi - lo) || Math.abs(hi) * 0.15 || 1;
+  lo -= span * 0.2; hi += span * 0.2;
+  if(o.baseZero) lo = 0;
+  const n = Math.max.apply(null, series.map(s => s.values.length).concat([1]));
+  const x = i => n <= 1 ? L + pw/2 : L + (i / (n - 1)) * pw;
+  const y = v => T + ph - ((v - lo) / (hi - lo)) * ph;
+  const baseY = T + ph;
+  let g = '';
+  [0, 0.5, 1].forEach(k => {
+    const v = lo + (hi - lo) * k, yy = y(v);
+    g += '<line class="grid" x1="' + L + '" y1="' + yy.toFixed(1) + '" x2="' + (W-R) + '" y2="' + yy.toFixed(1) + '"/>';
+    g += '<text class="axis" x="' + (L-5) + '" y="' + (yy+3).toFixed(1) + '" text-anchor="end">' + (o.fmt ? o.fmt(v) : Math.round(v)) + '</text>';
+  });
+  let body = '';
+  series.forEach((s, si) => {
+    const pts = s.values.map((v, i) => [x(i), y(v)]);
+    if(!pts.length) return;
+    if(s.area && pts.length > 1){
+      body += '<path class="area" d="M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' L') +
+        ' L' + pts[pts.length-1][0].toFixed(1) + ' ' + baseY + ' L' + pts[0][0].toFixed(1) + ' ' + baseY + ' Z"/>';
+    }
+    body += '<polyline class="line ' + (s.cls || '') + '" points="' + pts.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ') + '"/>';
+    if(s.dots !== false){
+      pts.forEach(p => {
+        body += '<circle class="dot ' + (s.dotCls || '') + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (s.dotR || 2.6) + '"/>';
+      });
+    }
+  });
+  if(labels && labels.length){
+    const idx = n <= 1 ? [0] : (n <= 5 ? [0, n-1] : [0, Math.floor((n-1)/2), n-1]);
+    idx.forEach((i, k) => {
+      const yi = n <= 1 ? x(0) : x(i);
+      body += '<text class="axis" x="' + yi.toFixed(1) + '" y="' + (H - 7) + '" text-anchor="' + (k === 0 ? 'start' : (k === idx.length - 1 ? 'end' : 'middle')) + '">' + labels[i] + '</text>';
+    });
+  }
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (o.label || '趋势图') + '">' + g + body + '</svg>';
+}
+
+function weeklyBuckets(days){
+  const n = days === 28 ? 4 : 13;
+  const thisMon = mondayOf(new Date());
+  const buckets = [];
+  for(let i=n-1;i>=0;i--){
+    const mon = addDays(thisMon, -7*i);
+    buckets.push({label:shortDate(isoOf(mon)), value:0, start:isoOf(mon)});
+  }
+  const today = todayISO();
+  S.history.forEach(h => {
+    const diff = Math.round((thisMon - mondayOf(parseISO(h.date))) / 604800000);
+    if(diff >= 0 && diff < n) buckets[n - 1 - diff].value += (+h.volume || 0);
+  });
+  return buckets;
+}
+
+function prRows(){
+  const map = {};
+  S.history.forEach(h => {
+    (h.lifts || []).forEach(l => {
+      if(!(l.weight > 0) || !(l.reps > 0)) return;
+      const cur = map[l.ex] || (map[l.ex] = {ex:l.ex, weight:0, reps:0, e1rm:0, date:h.date});
+      if(l.weight > cur.weight || (l.weight === cur.weight && l.reps > cur.reps)){
+        cur.weight = l.weight; cur.reps = l.reps; cur.date = h.date;
+      }
+      const e = e1rm(l.weight, l.reps);
+      if(e > cur.e1rm){ cur.e1rm = e; cur.e1rmDate = h.date; }
+    });
+  });
+  return Object.keys(map).map(k => map[k]).filter(r => r.weight > 0)
+    .sort((a, b) => b.e1rm - a.e1rm);
+}
+
+function historyExNames(){
+  const seen = {};
+  const out = [];
+  S.history.forEach(h => (h.lifts || []).forEach(l => {
+    if(l.weight > 0 && !seen[l.ex]){ seen[l.ex] = 1; out.push(l.ex); }
+  }));
+  return out;
+}
+
+function exSeries(name, days){
+  const today = todayISO();
+  const list = S.history
+    .filter(h => daysBetween(h.date, today) <= days)
+    .map(h => {
+      const l = (h.lifts || []).find(x => x.ex === name);
+      return l && l.e1rm > 0 ? {date:h.date, value:l.e1rm} : null;
+    })
+    .filter(Boolean);
+  list.sort((a, b) => a.date < b.date ? -1 : 1);
+  return list;
+}
+
+function viewProgress(){
+  if(!S.plan) return viewOnboarding();
+  const days = S.ui.progressRange === '3m' ? 90 : 28;
+  const buckets = weeklyBuckets(days);
+  const thisWeek = buckets[buckets.length - 1].value;
+  const lastWeek = buckets[buckets.length - 2] ? buckets[buckets.length - 2].value : 0;
+  const avg4 = buckets.slice(-4).reduce((a, b) => a + b.value, 0) / Math.min(4, buckets.length);
+  const sessions = S.history.filter(h => daysBetween(h.date, todayISO()) <= days).length;
+  const delta = lastWeek ? Math.round((thisWeek - lastWeek) / lastWeek * 100) : 0;
+
+  const prs = prRows();
+  const shown = S.ui.prAll ? prs : prs.slice(0, 8);
+  const names = historyExNames();
+  let sel = S.ui.progressEx;
+  if(names.indexOf(sel) < 0) sel = names.indexOf('杠铃深蹲') >= 0 ? '杠铃深蹲' : names[0];
+  S.ui.progressEx = sel || null;
+  const series = sel ? exSeries(sel, days) : [];
+  const last = series.length ? series[series.length - 1].value : 0;
+  const first = series.length ? series[0].value : 0;
+  const exDelta = last && first ? Math.round((last - first) / first * 100) : 0;
+
+  const rangeLabel = S.ui.progressRange === '3m' ? '近 3 个月' : '近 4 周';
+  const hasHistory = S.history.length > 0;
+
+  return shellTab('progress',
+    '<div class="pg">' +
+      '<div class="pg-head"><div><div class="pg-eyebrow">PROGRESS / 趋势</div><h1 class="pg-title">进步</h1>' +
+        '<p class="pg-sub">训练容量、个人纪录和单动作趋势都来自本机日志。</p></div></div>' +
+      '<div class="seg" style="margin-top:16px">' +
+        '<button class="' + (S.ui.progressRange === '4w' ? 'is-on' : '') + '" data-action="range" data-value="4w">近 4 周</button>' +
+        '<button class="' + (S.ui.progressRange === '3m' ? 'is-on' : '') + '" data-action="range" data-value="3m">近 3 个月</button>' +
+      '</div>' +
+      '<div class="hero-metric">' +
+        '<div class="hero-metric__label">本周训练容量 · ' + rangeLabel + '</div>' +
+        '<div class="hero-metric__num">' + fmtVol(thisWeek) + '<small>KG</small></div>' +
+        '<div class="hero-metric__meta">' +
+          '<span>较上周 <b>' + (delta >= 0 ? '+' : '') + delta + '%</b></span>' +
+          '<span>' + (S.ui.progressRange === '3m' ? '13 周均值' : '4 周均值') + ' <b>' + fmtVol(avg4) + '</b></span>' +
+          '<span>训练 <b>' + sessions + '</b> 次</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="chart-card">' +
+        '<div class="chart-card__head"><h3>周训练容量</h3><span>' + (S.ui.progressRange === '3m' ? '13 周' : '4 周') + ' · KG</span></div>' +
+        (hasHistory ? '<div class="chart">' + svgBars(buckets, {label:'周训练容量'}) + '</div>' :
+          '<div class="chart-empty">完成第一次训练后，这里开始累计周容量。</div>') +
+        '<div class="chart-legend"><span><i></i>每周总容量</span><span>按周一至周日统计</span></div>' +
+      '</div>' +
+      '<div class="section-head"><h2>PR 榜</h2><span>最好重量 · 预估 1RM</span></div>' +
+      (prs.length ?
+        '<div class="panel" style="padding:2px 14px">' +
+          shown.map((r, i) =>
+            '<div class="pr-row">' +
+              '<span class="pr-row__rank">' + pad(i + 1) + '</span>' +
+              '<div class="pr-row__main"><div class="pr-row__name">' + esc(r.ex) + '</div><div class="pr-row__sub">' + fmtNum(r.weight) + ' kg × ' + r.reps + ' · ' + shortDate(r.date) + '</div></div>' +
+              '<div class="pr-row__val"><b>' + fmtNum(r.e1rm) + '</b><span>e1RM kg</span></div>' +
+            '</div>'
+          ).join('') +
+        '</div>' +
+        (prs.length > 8 ? '<button class="text-btn" style="display:block;margin:10px auto 0" data-action="pr-all">' + (S.ui.prAll ? '收起' : '查看全部 ' + prs.length + ' 项') + '</button>' : '') :
+        '<div class="empty"><b>还没有 PR</b>完成带重量的训练组后，这里会记录最好重量和预估 1RM。</div>') +
+      '<div class="section-head"><h2>单动作趋势</h2><span>预估 1RM · ' + rangeLabel + '</span></div>' +
+      (names.length ?
+        '<div class="chips" style="margin-top:2px">' + names.map(n =>
+          '<button class="chip ' + (n === sel ? 'is-on' : '') + '" data-action="progress-ex" data-ex="' + esc(n) + '">' + esc(n) + '</button>'
+        ).join('') + '</div>' : '') +
+      (sel ?
+        '<div class="chart-card" style="margin-top:10px">' +
+          '<div class="chart-card__head"><h3>' + esc(sel) + '</h3><span>' + (series.length ? series.length + ' 次训练' : '暂无数据') + '</span></div>' +
+          (series.length > 1 ?
+            '<div class="chart">' + svgSeries([{values:series.map(p => p.value), area:true, dotR:2.4}], series.map(p => shortDate(p.date)), {fmt:v => Math.round(v), label:sel + ' 预估 1RM'}) + '</div>' :
+            '<div class="chart-empty">' + (series.length === 1 ? '再完成一次「' + esc(sel) + '」就能看到趋势。' : '当前时间范围里没有这个动作的数据。') + '</div>') +
+          (series.length ?
+            '<div class="chart-legend"><span><i></i>预估 1RM</span><span>最新 <b style="color:var(--acid)">' + fmtNum(last) + ' kg</b></span><span>' + (exDelta >= 0 ? '+' : '') + exDelta + '%</span></div>' : '') +
+        '</div>' :
+        '<div class="empty"><b>还没有单动作数据</b>完成训练后可以在这里选动作查看曲线。</div>') +
+      (!hasHistory ? '<div class="notice">' + icon('info') + '<span>当前没有训练历史。去「今天」完成一次训练，进步页会自动更新；如果你的第一批数据还在，会自动迁移到这里。</span></div>' : '') +
+    '</div>'
+  );
+}
+
+/* ===== 06-body.js ===== */
+/* ============================================================
+   6. 身体 · 体重 / 围度 / 有氧
+   ============================================================ */
+
+function signed(v, unit, digits){
+  const r = Math.round((+v || 0) * Math.pow(10, digits == null ? 1 : digits)) / Math.pow(10, digits == null ? 1 : digits);
+  if(Math.abs(r) < 0.0001) return '0' + (unit || '');
+  return (r > 0 ? '+' : '') + r + (unit || '');
+}
+function weightsAsc(){
+  return S.body.weights.slice().sort((a, b) => a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
+}
+function measuresAsc(){
+  return S.body.measures.slice().sort((a, b) => a.date < b.date ? -1 : (a.date > b.date ? 1 : 0));
+}
+function latestMeasure(key){
+  const arr = measuresAsc().filter(m => typeof m[key] === 'number' && m[key] > 0);
+  return arr.length ? arr[arr.length - 1] : null;
+}
+function cardioWeekMinutes(){
+  const mon = isoOf(mondayOf(new Date()));
+  return S.body.cardio.filter(c => c.date >= mon && c.date <= todayISO()).reduce((a, c) => a + (+c.minutes || 0), 0);
+}
+
+function viewBody(){
+  if(!S.plan) return viewOnboarding();
+  const ws = weightsAsc();
+  const latest = ws.length ? ws[ws.length - 1] : null;
+  const base = latest ? ws.filter(w => w.date <= isoOf(addDays(parseISO(latest.date), -7))).pop() : null;
+  const weekDelta = latest && base ? latest.kg - base.kg : 0;
+  const ma = ws.map((w, i) => {
+    const from = isoOf(addDays(parseISO(w.date), -6));
+    const slice = ws.filter(x => x.date >= from && x.date <= w.date);
+    return slice.reduce((a, x) => a + (+x.kg || 0), 0) / slice.length;
+  });
+  const latestMA = ma.length ? ma[ma.length - 1] : 0;
+  const recent = ws.slice(-3).reverse();
+  const cardio = S.body.cardio.slice().sort((a, b) => a.date < b.date ? 1 : -1);
+  const measures = measuresAsc();
+
+  const metrics = MEASURES.map((m, i) => {
+    const arr = measures.filter(x => typeof x[m.key] === 'number' && x[m.key] > 0);
+    const cur = arr.length ? arr[arr.length - 1] : null;
+    const prev = arr.length > 1 ? arr[arr.length - 2] : null;
+    return {key:m.key, name:m.name, cur, prev, delta: cur && prev ? cur[m.key] - prev[m.key] : null};
+  });
+
+  return shellTab('body',
+    '<div class="pg">' +
+      '<div class="pg-head"><div><div class="pg-eyebrow">BODY / 身体</div><h1 class="pg-title">身体</h1>' +
+        '<p class="pg-sub">体重、围度和有氧记录。趋势比单次数字更重要。</p></div></div>' +
+
+      '<div class="section-head"><h2>体重</h2><div class="section-head__action"><span>7 日移动平均</span><button class="add-btn" data-action="add-weight">' + icon('plus') + '记录</button></div></div>' +
+      '<div class="hero-metric" style="margin-top:4px">' +
+        '<div class="hero-metric__label">当前体重</div>' +
+        '<div class="hero-metric__num">' + (latest ? fmtNum(latest.kg) : '—') + '<small>KG</small></div>' +
+        '<div class="hero-metric__meta">' +
+          '<span>较 7 日前 <b>' + (latest ? signed(weekDelta, ' kg') : '—') + '</b></span>' +
+          '<span>7 日均 <b>' + (latestMA ? fmtNum(latestMA) + ' kg' : '—') + '</b></span>' +
+          '<span>' + ws.length + ' 条记录</span>' +
+        '</div>' +
+      '</div>' +
+      (ws.length > 1 ?
+        '<div class="chart-card">' +
+          '<div class="chart-card__head"><h3>体重曲线</h3><span>近 12 周 · KG</span></div>' +
+          '<div class="chart">' + svgSeries(
+            [{values:ma, area:true, dots:false, cls:'line--ma'}, {values:ws.map(w => +w.kg), cls:'line--sub', dotCls:'dot--sub', dotR:2.1}],
+            ws.map(w => shortDate(w.date)),
+            {fmt:v => v.toFixed(1), label:'体重曲线'}
+          ) + '</div>' +
+          '<div class="chart-legend"><span><i></i>7 日均线</span><span><i class="muted"></i>单次记录</span></div>' +
+        '</div>' :
+        '<div class="empty" style="margin-top:8px"><b>还没有体重曲线</b>至少记录两次体重，就能看到 7 日移动平均。</div>') +
+      (recent.length ?
+        '<div class="panel" style="margin-top:8px;padding:2px 14px">' + recent.map(w =>
+          '<div class="log-row">' +
+            '<div class="log-row__main"><div class="log-row__title">' + fmtNum(w.kg) + ' kg</div><div class="log-row__sub">' + w.date.replace(/-/g, '.') + '</div></div>' +
+            '<div class="log-row__val">' + (w.note ? esc(w.note) : '') + '</div>' +
+            '<button class="del-btn" data-action="del-weight" data-id="' + w.id + '" aria-label="删除体重记录">' + icon('trash') + '</button>' +
+          '</div>'
+        ).join('') + '</div>' : '') +
+
+      '<div class="section-head"><h2>围度</h2><div class="section-head__action"><span>单位 cm</span><button class="add-btn" data-action="add-measure">' + icon('plus') + '记录</button></div></div>' +
+      (measures.length ?
+        '<div class="metric-grid">' + metrics.map((m, i) =>
+          '<div class="metric ' + (i === metrics.length - 1 ? 'metric--wide' : '') + '">' +
+            '<div class="metric__label">' + m.name + '</div>' +
+            '<div class="metric__val"><b>' + (m.cur ? fmtNum(m.cur[m.key]) : '—') + '</b><small>cm</small></div>' +
+            '<div class="metric__delta ' + (m.delta == null ? 'is-flat' : '') + '">' + (m.delta == null ? '首次记录' : '较上次 ' + signed(m.delta, ' cm')) + '</div>' +
+            '<div class="metric__date">' + (m.cur ? m.cur.date.replace(/-/g, '.') : '') + '</div>' +
+          '</div>'
+        ).join('') + '</div>' :
+        '<div class="empty"><b>还没有围度记录</b>记下胸腰臀臂腿，和之后的自己对比。</div>') +
+
+      '<div class="section-head"><h2>有氧</h2><div class="section-head__action"><span>本周 ' + cardioWeekMinutes() + ' 分钟</span><button class="add-btn" data-action="add-cardio">' + icon('plus') + '记录</button></div></div>' +
+      (cardio.length ?
+        '<div class="panel" style="padding:2px 14px">' + cardio.map(c => {
+          const bits = [];
+          if(c.incline) bits.push('坡度 ' + c.incline + '%');
+          if(c.speed) bits.push(c.speed + ' km/h');
+          return '<div class="log-row">' +
+            '<div class="log-row__main"><div class="log-row__title">' + esc(c.type) + '<span class="mini-tag">有氧</span></div>' +
+              '<div class="log-row__sub">' + c.date.replace(/-/g, '.') + (bits.length ? ' · ' + bits.join(' · ') : '') + '</div></div>' +
+            '<div class="log-row__val">' + (c.minutes || 0) + ' 分</div>' +
+            '<button class="del-btn" data-action="del-cardio" data-id="' + c.id + '" aria-label="删除有氧记录">' + icon('trash') + '</button>' +
+          '</div>';
+        }).join('') + '</div>' :
+        '<div class="empty"><b>还没有有氧记录</b>爬坡走、快走、跑步、单车、椭圆机、划船机都能记。</div>') +
+
+      (S.demo ? '<div class="notice">' + icon('info') + '<span>身体数据里包含生成的示例记录，可在「我的」中清空示例数据。</span></div>' : '') +
+    '</div>'
+  );
+}
+
+/* ===== 07-workout.js ===== */
+/* ============================================================
+   7. 训练执行（含热身 / 腹部收尾）/ 汇总
+   ============================================================ */
+
+function workoutPager(s){
+  const warmDone = s.warmup.length && s.warmupDone.length >= s.warmup.length;
+  return '<div class="ex-pager">' +
+    '<button class="ex-chip ' + (s.phase === 'warmup' ? 'is-on' : '') + ' ' + (warmDone ? 'is-complete' : '') + '" data-action="goto-warmup"><span class="ex-chip__dot"></span>热身</button>' +
+    s.exercises.map((e, i) => {
+      const rows = s.sets.filter(x => x.exIdx === i);
+      const done = rows.length && rows.every(x => x.done);
+      return '<button class="ex-chip ' + (s.phase !== 'warmup' && s.currentEx === i ? 'is-on' : '') + ' ' + (done ? 'is-complete' : '') + '" data-action="goto-ex" data-idx="' + i + '"><span class="ex-chip__dot"></span>' + pad(i + 1) + '</button>';
+    }).join('') +
+  '</div>';
+}
+
+function workoutHead(s, isWarm){
+  const total = s.sets.length;
+  const done = s.sets.filter(x => x.done).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const meta = isWarm ? '热身 · 不计容量' : 'EX ' + pad(s.currentEx + 1) + ' / ' + pad(s.exercises.length) + ' · ' + fmtClock(s.elapsed);
+  return '<header class="wk-head">' +
+      '<button class="icon-btn" data-action="exit-workout" aria-label="退出训练">' + icon('x') + '</button>' +
+      '<div class="wk-head__mid"><div class="wk-head__name">' + s.dayName + '</div><div class="wk-head__meta">' + meta + '</div></div>' +
+      '<button class="text-btn" data-action="finish-workout">完成</button>' +
+    '</header>' +
+    '<div class="progress"><i style="width:' + pct + '%"></i></div>';
+}
+
+function plateStack(weight){
+  const perSide = Math.max(0, (weight - 20) / 2);
+  let left = perSide;
+  const used = [];
+  PLATES.forEach(p => {
+    while(left >= p - 0.001){
+      used.push(p);
+      left -= p;
+    }
+  });
+  const vis = (arr) => '<div class="plate-stack">' + arr.map(p => '<i class="plate" style="height:' + PLATE_H[p] + 'px"></i>').join('') + '</div>';
+  return {used, left, html:
+    '<div class="plate-vis">' + vis(used.slice().reverse()) + '<i class="collar"></i><i class="bar-rod"></i><i class="collar"></i>' + vis(used) + '</div>'};
+}
+
+function calcHtml(s, exIdx){
+  const info = exInfo(s.exercises[exIdx].ex);
+  if(info.type !== 'barbell') return '';
+  const open = calcFor === exIdx;
   const rows = s.sets.filter(x => x.exIdx === exIdx);
-  const totalSets = s.sets.length;
-  const doneCount = s.sets.filter(x => x.done).length;
-  const pct = Math.round(doneCount / totalSets * 100);
-  const nextRow = rows.find(x => !x.done);
-  const isLast = exIdx === exCount - 1;
-  const calcOpen = calcFor === exIdx;
+  const w = +((rows.find(r => !r.done) || rows[0] || {}).weight) || 20;
+  const stack = plateStack(w);
+  return '<div class="calc">' +
+    '<button class="calc__toggle" data-action="toggle-calc" data-idx="' + exIdx + '"><span>' + icon('calculator') + '杠铃片计算</span>' +
+      icon('chevron-down', 'calc__chev ' + (open ? 'is-open' : '')) + '</button>' +
+    (open ? '<div class="calc__panel">' + stack.html +
+      '<div class="calc__rows">' +
+        '<div class="calc__row"><span>杠铃 + 卡扣</span><b>20 kg</b></div>' +
+        '<div class="calc__row"><span>每侧加载</span><b>' + fmtNum((w - 20) / 2) + ' kg</b></div>' +
+        '<div class="calc__row"><span>片组合</span><b>' + (stack.used.length ? stack.used.join(' + ') : '空杆') + '</b></div>' +
+        (stack.left > 0.01 ? '<div class="calc__row is-warn"><span>无法配平</span><b>差 ' + fmtNum(stack.left) + ' kg</b></div>' : '') +
+      '</div><div class="calc__note">按当前重量 ' + fmtNum(w) + ' kg 计算，两侧对称</div></div>' : '') +
+  '</div>';
+}
 
-  const chips = w.exercises.map((ex, i) => {
-    const complete = s.sets.filter(x => x.exIdx === i).every(x => x.done);
-    return '<button class="ex-chip ' + (i === exIdx ? 'is-on' : '') + ' ' + (complete ? 'is-complete' : '') + '" data-action="goto-ex" data-ex="' + i + '" aria-label="第' + (i+1) + '个动作 ' + ex.ex + '">' +
-      pad(i + 1) + '<i class="ex-chip__dot"></i>' +
-    '</button>';
-  }).join('');
+function viewWarmup(s){
+  const tags = [];
+  s.warmup.forEach(w => { if(tags.indexOf(w.tag) < 0) tags.push(w.tag); });
+  const checked = s.warmupDone.length;
+  const all = checked >= s.warmup.length;
+  return '<div class="screen view-anim">' +
+    workoutHead(s, true) +
+    '<div class="screen__body">' +
+      workoutPager(s) +
+      '<div class="warm-hero">' +
+        '<div class="warm-hero__kicker">WARM UP / 不计入容量</div>' +
+        '<div class="warm-hero__title">开练前<br>把身体叫醒</div>' +
+        '<div class="warm-hero__sub">今天以' + (tags.indexOf('髋膝踝') >= 0 && tags.indexOf('肩肘') >= 0 ? '全身' : (tags.indexOf('髋膝踝') >= 0 ? '髋 · 膝 · 踝' : (tags.indexOf('肩肘') >= 0 ? '肩 · 肘' : '脊柱'))) + '为主，花 5 分钟活动关节、激活目标肌群。</div>' +
+        '<div class="warm-hero__tags">' + tags.map(t => '<span class="tag ' + (t === '全身' ? '' : 'tag--acid') + '">' + t + '</span>').join('') + '</div>' +
+      '</div>' +
+      '<div class="section-head"><h2>热身清单</h2><span>' + checked + ' / ' + s.warmup.length + ' 已完成</span></div>' +
+      '<div class="panel" style="padding:2px 14px">' +
+        s.warmup.map((w, i) => {
+          const done = s.warmupDone.indexOf(i) >= 0;
+          return '<button class="warm-item ' + (done ? 'is-done' : '') + '" data-action="warm-toggle" data-idx="' + i + '">' +
+            '<span class="warm-item__num">' + pad(i + 1) + '</span>' +
+            '<span class="warm-item__main"><span class="warm-item__name">' + w.name + '<span class="mini-tag">' + w.tag + '</span></span><span class="warm-item__sub">' + w.detail + '</span></span>' +
+            '<span class="warm-item__check">' + icon('check') + '</span>' +
+          '</button>';
+        }).join('') +
+      '</div>' +
+      '<p class="warm-note">热身的勾选只是打卡，不会写入训练容量或 PR。勾选完可直接开始第一组。</p>' +
+    '</div>' +
+    '<div class="wk-foot">' +
+      '<button class="btn btn--ghost" data-action="skip-warm">跳过</button>' +
+      '<button class="btn btn--primary" data-action="start-training">' + (all ? '开始第一组' : '热身完成 · 开始') + icon('arrow-right') + '</button>' +
+    '</div>' +
+  '</div>';
+}
 
-  const setHead = '<div class="set-table__head"><span>组</span><span>重量 KG</span><span>次数</span><span>上次</span><span></span></div>';
-
-  const setRows = rows.map(r => {
-    const flat = s.sets.indexOf(r);
-    const pi = Math.min(r.setIdx, lib.prev.length - 1);
-    const prevW = lib.prev[pi], prevR = lib.prevReps[pi];
-    return '<div class="set-row ' + (r.done ? 'is-done' : '') + ' ' + (nextRow === r ? 'is-next' : '') + '">' +
-      '<div class="set-idx">' + pad(r.setIdx + 1) + '</div>' +
-      '<input class="set-input" data-flat="' + flat + '" data-field="weight" inputmode="decimal" autocomplete="off" value="' + esc(r.weight) + '" aria-label="第' + (r.setIdx+1) + '组重量（公斤）">' +
-      '<input class="set-input" data-flat="' + flat + '" data-field="reps" inputmode="numeric" autocomplete="off" value="' + esc(r.reps) + '" aria-label="第' + (r.setIdx+1) + '组次数">' +
-      '<div class="set-prev">' + fmtNum(prevW) + '×' + prevR + '</div>' +
-      '<button class="set-check" data-action="toggle-set" data-flat="' + flat + '" aria-label="' + (r.done ? '取消完成' : '完成') + '第' + (r.setIdx+1) + '组">' + icon('check') + '</button>' +
-    '</div>';
-  }).join('');
-
-  const weightForCalc = (function(){
-    const focus = (calcFlat !== null && s.sets[calcFlat] && s.sets[calcFlat].exIdx === exIdx) ? s.sets[calcFlat] : null;
-    const row = focus || nextRow || rows[rows.length - 1];
-    return row ? row.weight : '';
-  })();
-  const calcSetNo = (function(){
-    const focus = (calcFlat !== null && s.sets[calcFlat] && s.sets[calcFlat].exIdx === exIdx) ? s.sets[calcFlat] : null;
-    const row = focus || nextRow || rows[rows.length - 1];
-    return row ? row.setIdx + 1 : 1;
-  })();
-  const calcHtml = lib.type === 'barbell' ?
-    '<div class="calc">' +
-      '<button class="calc__toggle" data-action="toggle-calc">' +
-        '<span>' + icon('dumbbell') + '配重计算 · 20kg 奥杆</span>' +
-        icon('chevron-down', 'calc__chev ' + (calcOpen ? 'is-open' : '')) +
-      '</button>' +
-      (calcOpen ? calcPanel(weightForCalc, '按第 ' + calcSetNo + ' 组计算') : '') +
-    '</div>' : '';
-
-  const restHtml = restSheet();
+function viewExercise(s){
+  const idx = s.currentEx;
+  const ex = s.exercises[idx];
+  if(!ex) return viewWarmup(s);
+  const info = exInfo(ex.ex);
+  const rows = s.sets.map((r, i) => ({r, i})).filter(x => x.r.exIdx === idx);
+  const doneCount = rows.filter(x => x.r.done).length;
+  const last = lastLift(ex.ex);
+  const hold = isHold(ex.ex);
+  const isLast = idx === s.exercises.length - 1;
+  const nextLabel = isLast ? '完成训练' : '下一个';
+  const prevText = last ? (last.weight > 0 ? fmtNum(last.weight) + ' × ' + last.reps : '自重 × ' + last.reps) : '首次训练';
+  const facts = hold ?
+    ['组数', ex.sets, '保持', (ex.repsMax || 45) + 's', '休息', ex.rest + 's'] :
+    ['组数', ex.sets, '次数', repsText(ex, ex.ex), '休息', ex.rest + 's'];
 
   return '<div class="screen view-anim">' +
-    '<header class="wk-head">' +
-      '<button class="icon-btn" data-action="exit" aria-label="退出训练">' + icon('x') + '</button>' +
-      '<div class="wk-head__mid">' +
-        '<div class="wk-head__name">' + w.name + '</div>' +
-        '<div class="wk-head__meta"><b>' + doneCount + '</b> / ' + totalSets + ' 组 · <span id="elapsed">' + fmtClock(s.elapsed) + '</span></div>' +
-      '</div>' +
-      '<button class="text-btn" data-action="finish">结束</button>' +
-    '</header>' +
-    '<div class="progress"><i style="width:' + pct + '%"></i></div>' +
+    workoutHead(s, false) +
     '<div class="screen__body">' +
-      '<div class="ex-pager">' + chips + '</div>' +
+      workoutPager(s) +
       '<div class="ex-head">' +
-        '<div class="ex-kicker">动作 ' + pad(exIdx + 1) + ' / ' + pad(exCount) + '</div>' +
-        '<h1 class="ex-name">' + e.ex + '</h1>' +
-        '<div class="ex-sub"><span>' + lib.muscle + '</span><span class="sep"></span><span>' + lib.equip + '</span></div>' +
+        '<div class="ex-kicker">' + (ex.abs ? 'ABS FINISHER / 腹部收尾' : 'WORKING SET / 主训练') + ' · ' + pad(idx + 1) + '</div>' +
+        '<h1 class="ex-name">' + esc(ex.ex) + '</h1>' +
+        '<div class="ex-sub">' + esc(info.muscle) + '<span class="sep"></span>' + esc(info.equip) + (info.unilateral ? '<span class="sep"></span>单侧' : '') + '</div>' +
       '</div>' +
       '<div class="ex-facts">' +
-        '<div class="ex-fact"><b>' + e.sets + '</b>组</div>' +
-        '<div class="ex-fact"><b>' + e.reps + '</b>次</div>' +
-        '<div class="ex-fact"><b>' + e.rest + 's</b>组间休息</div>' +
+        '<div class="ex-fact"><b>' + facts[1] + '</b>' + facts[0] + '</div>' +
+        '<div class="ex-fact"><b>' + facts[3] + '</b>' + facts[2] + '</div>' +
+        '<div class="ex-fact"><b>' + facts[5] + '</b>' + facts[4] + '</div>' +
       '</div>' +
-      '<p class="cue">' + lib.cue + '</p>' +
-      '<div class="prev-bar"><span class="tag tag--quiet">上次</span><b>' + prevTextOf(e.ex, e.sets) + '</b></div>' +
-      calcHtml +
-      '<div class="set-table">' + setHead + setRows + '</div>' +
+      '<p class="cue">' + esc(info.cue || '保持动作控制，做满全程幅度。') + '</p>' +
+      '<div class="prev-bar"><span>上次</span><b>' + prevText + '</b><span style="margin-left:auto">已完成 ' + doneCount + ' / ' + rows.length + '</span></div>' +
+      calcHtml(s, idx) +
+      '<div class="set-table">' +
+        '<div class="set-table__head"><span>组</span><span>重量 KG</span><span>' + (hold ? '秒' : '次数') + '</span><span>上次</span><span></span></div>' +
+        rows.map(({r, i}) =>
+          '<div class="set-row ' + (r.done ? 'is-done' : '') + '">' +
+            '<span class="set-idx">' + (r.setIdx + 1) + '</span>' +
+            '<input class="set-input" type="number" inputmode="decimal" step="' + (info.step || 1) + '" min="0" value="' + esc(r.weight) + '" data-set="' + i + '" data-field="weight" aria-label="重量">' +
+            '<input class="set-input" type="number" inputmode="numeric" step="1" min="1" value="' + esc(r.reps) + '" data-set="' + i + '" data-field="reps" aria-label="' + (hold ? '秒' : '次数') + '">' +
+            '<span class="set-prev">' + (info.bw ? '自重' : (last ? fmtNum(last.weight) : '—')) + '<br>' + (last ? last.reps : '') + '</span>' +
+            '<button class="set-check" data-action="toggle-set" data-row="' + i + '" aria-label="完成第 ' + (r.setIdx + 1) + ' 组">' + icon('check') + '</button>' +
+          '</div>'
+        ).join('') +
+      '</div>' +
       '<div class="set-tools">' +
-        '<button class="mini-btn" data-action="copy-set">' + icon('copy') + '复制上一组</button>' +
-        '<span class="tool-hint">勾选完成<br>自动开始 ' + e.rest + 's 休息</span>' +
+        '<button class="mini-btn" data-action="copy-first" data-idx="' + idx + '">' + icon('copy') + '复制首组到未完成组</button>' +
+        '<span class="tool-hint">勾选后自动计时<br>' + ex.rest + ' 秒休息</span>' +
       '</div>' +
     '</div>' +
     '<div class="wk-foot">' +
-      '<button class="btn btn--ghost" data-action="prev-ex" ' + (exIdx === 0 ? 'disabled' : '') + '>上一动作</button>' +
-      '<button class="btn btn--primary" data-action="next-ex">' + (isLast ? '完成训练' : '下一动作') + icon(isLast ? 'check' : 'arrow-right') + '</button>' +
+      '<button class="btn btn--ghost" data-action="prev-ex" ' + (idx === 0 ? 'disabled style="opacity:.35"' : '') + '>上一项</button>' +
+      '<button class="btn btn--primary" data-action="next-ex">' + nextLabel + icon('arrow-right') + '</button>' +
     '</div>' +
-    restHtml +
+    restOverlay(s) +
   '</div>';
 }
 
-function restSheet(){
-  const s = S.session;
-  if(!s || !s.rest) return '';
-  const left = Math.max(0, s.rest.endAt - Date.now());
-  const total = s.rest.total || 1;
-  const pct = Math.min(100, left / total * 100);
-  return '<div class="rest">' +
-    '<div class="rest__top">' +
-      '<span class="rest__label">' + icon('timer') + '组间休息</span>' +
-      '<span class="rest__next">' + esc(s.rest.nextLabel || '') + '</span>' +
-    '</div>' +
+function restOverlay(s){
+  if(!s.rest) return '';
+  const left = Math.max(0, s.rest.until - Date.now());
+  const pct = Math.min(100, Math.max(0, left / s.rest.total * 100));
+  return '<div class="rest" id="rest-panel">' +
+    '<div class="rest__top"><span class="rest__label">' + icon('timer') + '组间休息</span><span class="rest__next">下一组 · ' + esc(s.rest.next || '') + '</span></div>' +
     '<div class="rest__mid"><span class="rest__time" id="rest-time">' + fmtMs(left) + '</span><span class="rest__unit">剩余</span></div>' +
-    '<div class="rest__bar"><i id="rest-fill" style="width:' + pct + '%"></i></div>' +
+    '<div class="rest__bar"><i id="rest-bar" style="width:' + pct + '%"></i></div>' +
     '<div class="rest__actions">' +
-      '<button class="mini-btn" data-action="rest-minus">' + icon('minus') + '15 秒</button>' +
-      '<button class="mini-btn" data-action="rest-plus">' + icon('plus') + '15 秒</button>' +
+      '<button class="mini-btn" data-action="rest-minus">-15 秒</button>' +
+      '<button class="mini-btn" data-action="rest-plus">+15 秒</button>' +
       '<button class="rest__skip" data-action="rest-skip">跳过休息</button>' +
     '</div>' +
   '</div>';
 }
 
-/* ============================================================
-   7. 汇总
-   ============================================================ */
-
-function buildSummary(){
+function viewWorkout(){
   const s = S.session;
-  const w = WORKOUTS[s.workoutId];
-  const doneRows = s.sets.filter(x => x.done && (+x.weight) > 0 && (+x.reps) > 0);
-  const names = [];
-  s.sets.forEach(x => { if(names.indexOf(x.ex) < 0) names.push(x.ex); });
-
-  const breakdown = names.map(name => {
-    const rows = doneRows.filter(x => x.ex === name);
-    let best = null;
-    rows.forEach(r => {
-      if(!best || (+r.weight) > best.weight || ((+r.weight) === best.weight && (+r.reps) > best.reps)){
-        best = {weight:+r.weight, reps:+r.reps};
-      }
-    });
-    return {name, sets:rows.length, best, volume:prod(rows)};
-  });
-
-  const prs = [];
-  breakdown.forEach(b => {
-    if(!b.best) return;
-    const old = S.prs[b.name];
-    if(typeof old === 'number' && b.best.weight > old + 0.0001){
-      prs.push({name:b.name, from:old, to:b.best.weight, delta:b.best.weight - old});
-      S.prs[b.name] = b.best.weight;
-    }
-  });
-
-  return {
-    date: s.date,
-    workoutId: s.workoutId,
-    workoutName: w.name,
-    volume: prod(doneRows),
-    sets: doneRows.length,
-    totalSets: s.sets.length,
-    duration: s.elapsed,
-    prs,
-    breakdown
-  };
+  if(!s){ S.view = 'main'; return viewToday(); }
+  if(s.phase === 'warmup') return viewWarmup(s);
+  return viewExercise(s);
 }
 
+/* ---------- 汇总 ---------- */
 function viewSummary(){
-  const sum = S.lastSummary;
-  if(!sum) return viewToday();
-  const d = parseISO(sum.date);
-  const vol = Math.round(sum.volume);
-  const avg = sum.sets ? Math.round(vol / sum.sets) : 0;
-
-  const prs = sum.prs || [];
-  const prHtml = prs.length ?
-    prs.map(p =>
-      '<div class="pr-card">' +
-        '<span class="pr-card__icon">' + icon('trophy') + '</span>' +
-        '<div><div class="pr-name">' + p.name + '</div><div class="pr-val">原纪录 <s>' + fmtNum(p.from) + ' kg</s> · 本次 ' + fmtNum(p.to) + ' kg</div></div>' +
-        '<span class="pr-delta">+' + fmtNum(p.delta) + '</span>' +
-      '</div>'
-    ).join('') :
-    '<div class="note-box">本次没有刷新 PR。动作做满次数、把组间休息压住，下次同样的重量就会变成新纪录。</div>';
-
-  const bd = (sum.breakdown || []).map(b => {
-    const bestText = b.best ? ('最佳 ' + fmtNum(b.best.weight) + 'kg × ' + b.best.reps) : '未完成';
-    return '<div class="bd-row ' + (b.sets ? '' : 'is-zero') + '">' +
-      '<div><div class="bd-name">' + b.name + '</div><div class="bd-sub">' + b.sets + ' 组 · ' + bestText + '</div></div>' +
-      '<div class="bd-vol">' + fmtVol(b.volume) + ' kg</div>' +
-    '</div>';
-  }).join('');
-
+  const h = S.lastSummary;
+  if(!h){ S.view = 'main'; return viewToday(); }
+  const doneRows = h.breakdown.filter(b => b.sets > 0);
   return '<div class="screen view-anim">' +
     '<div class="screen__body">' +
       '<div class="sum-hero">' +
         '<div class="sum-check">' + icon('check') + '</div>' +
-        '<div class="sum-date">训练完成 · ' + (d.getMonth()+1) + '月' + d.getDate() + '日 ' + DAY_CN[d.getDay()] + '</div>' +
-        '<h1 class="sum-title">' + sum.workoutName + '</h1>' +
+        '<div class="sum-date">' + h.date.replace(/-/g, ' / ') + ' · ' + h.workoutName + '</div>' +
+        '<h1 class="sum-title">训练完成<br>记录已落地</h1>' +
+        '<div class="volume-card">' +
+          '<div class="volume-label">TOTAL VOLUME / 训练容量</div>' +
+          '<div class="volume-num">' + fmtVol(h.volume) + '<small>KG</small></div>' +
+          '<div class="volume-sub">重量 × 次数累计 · 热身不计入 · 自重动作不计容量</div>' +
+        '</div>' +
+        '<div class="stat2">' +
+          '<div><span>完成组数</span><b>' + h.sets + ' / ' + h.totalSets + '</b></div>' +
+          '<div><span>训练用时</span><b>' + fmtClock(h.duration) + '</b></div>' +
+        '</div>' +
+        ((h.prs && h.prs.length) ?
+          '<div class="section-head"><h2>本次 PR</h2><span>' + h.prs.length + ' 项</span></div>' +
+          h.prs.map(p =>
+            '<div class="pr-card"><div class="pr-card__icon">' + icon('trophy') + '</div>' +
+              '<div><div class="pr-name">' + esc(p.name) + '</div><div class="pr-val">' + fmtNum(p.from) + ' kg <s>→</s> ' + fmtNum(p.to) + ' kg</div></div>' +
+              '<span class="pr-delta">+' + fmtNum(p.delta) + '</span>' +
+            '</div>'
+          ).join('') : '') +
+        '<div class="section-head"><h2>动作明细</h2><span>' + doneRows.length + ' 个动作</span></div>' +
+        '<div class="panel" style="padding:2px 14px">' +
+          h.breakdown.map(b =>
+            '<div class="bd-row ' + (b.sets ? '' : 'is-zero') + '">' +
+              '<div><div class="bd-name">' + esc(b.name) + '</div><div class="bd-sub">' + b.sets + ' / ' + b.planSets + ' 组' + (b.best ? ' · ' + fmtNum(b.best.weight) + ' kg × ' + b.best.reps : (b.bw ? ' · 自重' : '')) + '</div></div>' +
+              '<div class="bd-vol">' + (b.volume ? fmtVol(b.volume) + ' kg' : '—') + '</div>' +
+            '</div>'
+          ).join('') +
+        '</div>' +
+        '<div class="note-box" style="margin-top:14px">训练日志已保存在本机。「进步」里能看到周容量、PR 和单动作趋势；「身体」里可以补记体重与有氧。</div>' +
       '</div>' +
-      '<div class="volume-card">' +
-        '<div class="volume-label">总容量 / TOTAL VOLUME</div>' +
-        '<div class="volume-num">' + fmtVol(vol) + '<small>kg</small></div>' +
-        '<div class="volume-sub">' + sum.sets + ' 组 · ' + fmtClock(sum.duration) + ' · 平均每组 ' + fmtVol(avg) + ' kg</div>' +
-      '</div>' +
-      '<div class="stat2">' +
-        '<div><span>完成组数</span><b>' + sum.sets + ' / ' + sum.totalSets + '</b></div>' +
-        '<div><span>训练时长</span><b>' + fmtClock(sum.duration) + '</b></div>' +
-      '</div>' +
-      '<div class="section-head"><h2>个人纪录</h2><span>' + prs.length + ' PR</span></div>' +
-      prHtml +
-      '<div class="section-head"><h2>动作明细</h2><span>' + (sum.breakdown || []).length + ' 个动作</span></div>' +
-      '<div class="breakdown">' + bd + '</div>' +
-      '<footer class="home-foot"><span>' + icon('lock') + '已保存到本机训练日志</span><span>' + fmtClock(sum.duration) + '</span></footer>' +
     '</div>' +
-    '<div class="sum-foot">' +
-      '<button class="btn btn--primary" data-action="go-home">返回今日' + icon('arrow-right') + '</button>' +
-    '</div>' +
+    '<div class="sum-foot"><button class="btn btn--primary" data-action="go-home">' + icon('check') + '返回今日</button></div>' +
   '</div>';
 }
 
+/* ===== 08-onboarding.js ===== */
 /* ============================================================
-   8. 交互
+   8. 初次引导
    ============================================================ */
 
-function toast(msg){
-  const root = document.getElementById('toast-root');
+function obHead(step){
+  return '<header class="ob-head">' +
+    '<div class="brand"><span class="brand__mark">K</span>KEEPREAL</div>' +
+    '<div class="ob-progress">' + [1,2,3].map(i => '<i class="' + (i <= step ? 'on' : '') + '"></i>').join('') + '</div>' +
+  '</header>';
+}
+
+function viewOnboarding(){
+  const ob = S.onboard;
+  const step = ob.step || 1;
+  let body = '', foot = '';
+  if(step === 1){
+    body = '<div class="ob-body">' +
+      '<div class="ob-step-num">STEP 01 / 03 · 目标</div>' +
+      '<h1 class="ob-title">先定一个<br><em>说得清的目标</em></h1>' +
+      '<p class="ob-sub">计划、动作和组次都围绕它来。之后可以在「计划」里随时更换模板。</p>' +
+      '<div class="opt-list">' + GOALS.map(g =>
+        '<button class="opt ' + (ob.goal === g.id ? 'is-on' : '') + '" data-action="ob-goal" data-value="' + g.id + '">' +
+          '<span class="opt__icon">' + icon(g.icon) + '</span>' +
+          '<span class="opt__text"><span class="opt__title">' + g.name + '</span><span class="opt__desc">' + g.desc + '</span></span>' +
+          '<span class="opt__radio"></span>' +
+        '</button>'
+      ).join('') + '</div>' +
+      '<p class="ob-privacy">' + icon('lock') + '无需账号 · 训练数据只存在这台设备</p>' +
+    '</div>';
+    foot = '<div class="ob-foot"><button class="btn btn--primary" data-action="ob-next" ' + (!ob.goal ? 'disabled' : '') + '>下一步' + icon('arrow-right') + '</button></div>';
+  }else if(step === 2){
+    body = '<div class="ob-body">' +
+      '<div class="ob-step-num">STEP 02 / 03 · 频率</div>' +
+      '<h1 class="ob-title">一周能练<br><em>几次</em></h1>' +
+      '<p class="ob-sub">按真实可执行的频率选。少练一次但坚持半年，比计划表排满更重要。</p>' +
+      '<div class="freq-grid">' + FREQS.map(f =>
+        '<button class="freq ' + (ob.freq === f.n ? 'is-on' : '') + '" data-action="ob-freq" data-value="' + f.n + '">' +
+          '<span class="freq__n">' + f.n + '<span>次</span></span>' +
+          '<span class="freq__label">' + f.label + '</span>' +
+          '<span class="freq__hint">' + f.hint + '</span>' +
+        '</button>'
+      ).join('') + '</div>' +
+    '</div>';
+    foot = '<div class="ob-foot"><button class="btn btn--ghost" data-action="ob-back" style="width:96px;flex:none">上一步</button>' +
+      '<button class="btn btn--primary" data-action="ob-next" ' + (!ob.freq ? 'disabled' : '') + '>下一步' + icon('arrow-right') + '</button></div>';
+  }else{
+    body = '<div class="ob-body">' +
+      '<div class="ob-step-num">STEP 03 / 03 · 模板</div>' +
+      '<h1 class="ob-title">选一套<br><em>训练模板</em></h1>' +
+      '<p class="ob-sub">四套都能复制进你的计划再改。热身与腹部收尾会自动排进每个训练日。</p>' +
+      '<div class="opt-list" style="gap:8px">' + TEMPLATES.map(t => {
+        const m = templateMeta(t);
+        return '<button class="tpl ' + (ob.template === t.id ? 'is-on' : '') + '" data-action="ob-template" data-value="' + t.id + '">' +
+          '<span class="tpl__row"><span class="tpl__name">' + t.name + '</span>' +
+            (ob.freq && t.recFor.indexOf(ob.freq) >= 0 ? '<span class="tpl__badge">适合 ' + ob.freq + ' 练</span>' : '') +
+            '<span class="opt__radio"></span></span>' +
+          '<span class="tpl__sub">' + t.sub + '</span>' +
+          '<span class="tpl__meta"><span>' + t.days.length + ' 个训练日</span><span>' + m.exCount + ' 个动作</span><span>' + m.sets + ' 组</span></span>' +
+          '<span class="tpl__tags">' + t.tags.map(x => '<span class="tag">' + x + '</span>').join('') + '</span>' +
+        '</button>';
+      }).join('') + '</div>' +
+    '</div>';
+    foot = '<div class="ob-foot"><button class="btn btn--ghost" data-action="ob-back" style="width:96px;flex:none">上一步</button>' +
+      '<button class="btn btn--primary" data-action="ob-generate" ' + (!ob.template ? 'disabled' : '') + '>生成我的计划' + icon('arrow-right') + '</button></div>';
+  }
+  return '<div class="screen view-anim">' + obHead(step) +
+    '<div class="screen__body"><div style="padding:0 16px">' + body + '</div></div>' +
+    foot + '</div>';
+}
+
+function startGenerate(){
+  const ob = S.onboard;
+  if(!ob.goal || !ob.freq || !ob.template) return;
+  const gen = $('#gen');
+  const msg = $('#gen-msg');
+  const steps = ['读取动作库…', '排入热身与腹部收尾…', '生成本周训练日…'];
+  gen.hidden = false;
+  let i = 0;
+  if(msg) msg.textContent = steps[0];
+  const timer = setInterval(() => {
+    i++;
+    if(msg && steps[i]) msg.textContent = steps[i];
+  }, 360);
+  setTimeout(() => {
+    clearInterval(timer);
+    S.plan = buildPlan(ob.template, ob.goal, ob.freq);
+    S.prs = {};
+    Object.keys(EX_LIB).forEach(n => { if(EX_LIB[n].pr) S.prs[n] = EX_LIB[n].pr; });
+    seedDemo(S.plan);
+    S.view = 'main';
+    S.ui.tab = 'today';
+    S.selectedDay = 0;
+    NAV = {tab:'today', stack:[]};
+    save();
+    gen.hidden = true;
+    render();
+    toast('计划已生成 · 可在「计划」里调整动作与组次');
+  }, 900);
+}
+
+/* ===== 09-events.js ===== */
+/* ============================================================
+   9. 渲染 / 面板 / 事件 / 启动
+   ============================================================ */
+
+function toast(msg, ms){
+  const root = $('#toast-root');
   if(!root) return;
   const el = document.createElement('div');
   el.className = 'toast';
   el.textContent = msg;
   root.appendChild(el);
-  while(root.children.length > 3) root.firstElementChild.remove();
   setTimeout(() => {
-    el.style.transition = 'opacity .26s ease, transform .26s ease';
+    el.style.transition = 'opacity .25s,transform .25s';
     el.style.opacity = '0';
     el.style.transform = 'translateY(-6px)';
-    setTimeout(() => el.remove(), 280);
-  }, 2400);
+    setTimeout(() => el.remove(), 260);
+  }, ms || 2400);
 }
 
-function generatePlan(){
-  const ob = S.onboard;
-  if(!ob.goal || !ob.freq || !ob.template) return;
-  const gen = document.getElementById('gen');
-  const msg = document.getElementById('gen-msg');
-  const messages = [
-    '匹配目标与训练频率…',
-    '挑选复合动作与组次…',
-    '写入本周训练日…',
-    '准备第一练…'
-  ];
-  let mi = 0;
-  gen.hidden = false;
-  if(msg) msg.textContent = messages[0];
-  const tick = setInterval(() => {
-    mi = (mi + 1) % messages.length;
-    if(msg) msg.textContent = messages[mi];
-  }, 420);
-
-  setTimeout(() => {
-    clearInterval(tick);
-    S.plan = buildPlan(ob.template, ob.goal, ob.freq);
-    S.prs = {};
-    Object.keys(EX).forEach(k => { S.prs[k] = EX[k].pr; });
-    S.history = [];
-    S.session = null;
-    S.lastSummary = null;
-    S.selectedDay = 0;
-    S.view = 'today';
-    gen.hidden = true;
-    save();
-    render('top');
-    const w = WORKOUTS[S.plan.schedule[0].workoutId];
-    toast('计划已生成 · 今天从「' + w.name + '」开始');
-  }, 1500);
-}
-
-function toggleSet(flat){
-  const s = S.session;
-  if(!s) return;
-  const r = s.sets[flat];
-  if(!r) return;
-  if(r.done){
-    r.done = false;
-    s.rest = null;
-    save();
-    render();
-    return;
-  }
-  const w = parseFloat(r.weight);
-  const reps = parseInt(r.reps, 10);
-  if(!(w > 0) || !(reps > 0)){
-    toast('先填写重量和次数');
-    const field = !(w > 0) ? 'weight' : 'reps';
-    const inp = document.querySelector('.set-input[data-flat="' + flat + '"][data-field="' + field + '"]');
-    if(inp){ inp.focus(); inp.select(); }
-    return;
-  }
-  r.done = true;
-  calcFlat = null;
-  const nextIdx = s.sets.findIndex(x => !x.done);
-  if(nextIdx >= 0){
-    const n = s.sets[nextIdx];
-    const cfg = WORKOUTS[s.workoutId].exercises[n.exIdx];
-    const same = n.exIdx === r.exIdx;
-    const nextDetail = (n.weight !== '' && n.reps !== '') ? (' · ' + fmtNum(n.weight) + 'kg × ' + n.reps) : '';
-    const label = same ?
-      ('下一组 · 第 ' + (n.setIdx + 1) + ' 组' + nextDetail) :
-      ('下一动作 · ' + n.ex);
-    s.rest = {endAt: Date.now() + cfg.rest * 1000, total: cfg.rest * 1000, nextLabel: label};
-  }else{
-    s.rest = null;
-  }
-  save();
-  render();
-  if(nextIdx < 0) toast('全部组数完成 · 可以结束训练了');
-}
-
-function copySet(){
-  const s = S.session;
-  if(!s) return;
-  const rows = s.sets.filter(x => x.exIdx === s.currentEx);
-  const target = rows.find(x => !x.done);
-  if(!target){ toast('本动作已全部完成'); return; }
-  const prev = rows[target.setIdx - 1];
-  let w, r, fromOwn = false;
-  if(prev && prev.weight !== '' && prev.reps !== ''){
-    w = prev.weight; r = prev.reps; fromOwn = true;
-  }else{
-    const lib = EX[target.ex];
-    const pi = Math.min(target.setIdx, lib.prev.length - 1);
-    w = String(lib.prev[pi]);
-    r = String(lib.prevReps[pi]);
-  }
-  target.weight = w;
-  target.reps = r;
-  save();
-  render();
-  toast(fromOwn ? '已复制上一组数据' : '已填入上次同组数据');
-}
-
-function updateRestUI(){
-  const s = S.session;
-  if(!s || !s.rest) return;
-  const left = Math.max(0, s.rest.endAt - Date.now());
-  const timeEl = document.getElementById('rest-time');
-  const fillEl = document.getElementById('rest-fill');
-  if(timeEl) timeEl.textContent = fmtMs(left);
-  if(fillEl) fillEl.style.width = Math.min(100, left / s.rest.total * 100) + '%';
-  if(left <= 0){
-    s.rest = null;
-    save();
-    render();
-    toast('休息结束 · 下一组开始');
-  }
-}
-
-function refreshCalc(){
-  const s = S.session;
-  if(!s) return;
-  const el = document.getElementById('calc-panel');
-  if(!el) return;
-  const rows = s.sets.filter(x => x.exIdx === s.currentEx);
-  const focus = (calcFlat !== null && s.sets[calcFlat] && s.sets[calcFlat].exIdx === s.currentEx) ? s.sets[calcFlat] : null;
-  const row = focus || rows.find(x => !x.done) || rows[rows.length - 1];
-  if(!row) return;
-  el.outerHTML = calcPanel(row.weight, '按第 ' + (row.setIdx + 1) + ' 组计算');
-}
-
-function renderModal(){
-  const root = document.getElementById('modal-root');
+function openConfirm(o){
+  MODAL = o;
+  const root = $('#modal-root');
   if(!root) return;
-  if(!modal){
-    root.classList.remove('is-open');
-    root.innerHTML = '';
-    return;
-  }
-  let title = '', desc = '', okText = '', okAction = '', cancelText = '继续训练', okClass = 'btn btn--primary';
-  if(modal === 'exit'){
-    title = '退出训练？';
-    desc = '已完成的组会保留在草稿里，回到「今天」可以继续，不用从头再来。';
-    okText = '退出并保存';
-    okAction = 'do-exit';
-  }else if(modal === 'finish'){
-    const s = S.session;
-    const done = s ? s.sets.filter(x => x.done).length : 0;
-    const total = s ? s.sets.length : 0;
-    title = '结束本次训练？';
-    desc = done ? ('已完成 ' + done + ' / ' + total + ' 组。未完成的组不会计入本次汇总。') : '还没有完成任何一组，汇总会是空的。';
-    okText = '结束并查看汇总';
-    okAction = 'do-finish';
-    cancelText = '继续训练';
-  }else if(modal === 'reset'){
-    title = '重置演示数据？';
-    desc = '会清除本机保存的计划、草稿和训练记录，重新回到首次引导。';
-    okText = '重置';
-    okAction = 'do-reset';
-    cancelText = '取消';
-    okClass = 'btn btn--danger';
-  }
+  root.classList.add('is-open');
   root.innerHTML = '<div class="modal-backdrop" data-action="modal-close"></div>' +
     '<div class="modal">' +
-      '<h3>' + title + '</h3>' +
-      '<p>' + desc + '</p>' +
+      '<h3>' + esc(o.title) + '</h3>' +
+      '<p>' + (o.desc || '') + '</p>' +
       '<div class="modal-actions">' +
-        '<button class="btn btn--ghost" data-action="modal-close">' + cancelText + '</button>' +
-        '<button class="' + okClass + '" data-action="' + okAction + '">' + okText + '</button>' +
+        '<button class="btn btn--ghost" data-action="modal-close">' + esc(o.cancelText || '取消') + '</button>' +
+        '<button class="btn ' + (o.danger ? 'btn--danger' : 'btn--primary') + '" data-action="modal-ok">' + esc(o.okText || '确定') + '</button>' +
       '</div>' +
     '</div>';
-  root.classList.add('is-open');
+}
+function closeModal(){
+  MODAL = null;
+  const root = $('#modal-root');
+  if(root){ root.classList.remove('is-open'); root.innerHTML = ''; }
 }
 
-function finishSession(){
+/* ---------- 底部面板 ---------- */
+function openSheet(kind, ctx){
+  SHEET = {kind, ctx:ctx || {}, data:{}};
+  if(kind === 'add-cardio') SHEET.data.type = CARDIO_TYPES[0];
+  renderSheet();
+}
+function closeSheet(){
+  SHEET = null;
+  renderSheet();
+}
+function sheetStep(label, hint, field, value, unit, min, max){
+  return '<div class="stepper">' +
+    '<div><div class="stepper__label">' + label + '</div>' + (hint ? '<span class="stepper__hint">' + hint + '</span>' : '') + '</div>' +
+    '<div class="stepper__ctrl">' +
+      '<button class="stepper__btn" data-action="sheet-step" data-field="' + field + '" data-dir="-1" ' + (+value <= +min ? 'disabled' : '') + ' aria-label="减少">−</button>' +
+      '<span class="stepper__val">' + value + '<small>' + unit + '</small></span>' +
+      '<button class="stepper__btn" data-action="sheet-step" data-field="' + field + '" data-dir="1" ' + (+value >= +max ? 'disabled' : '') + ' aria-label="增加">+</button>' +
+    '</div>' +
+  '</div>';
+}
+
+function sheetHtml(){
+  if(!SHEET) return '';
+  const k = SHEET.kind;
+  let title = '', sub = '', body = '', foot = '', danger = '';
+
+  if(k === 'ex-config'){
+    const day = getDayById(S.plan, SHEET.ctx.dayId);
+    const e = day && day.exercises[SHEET.ctx.idx];
+    if(!e){ SHEET = null; return ''; }
+    const hold = isHold(e.ex);
+    const info = exInfo(e.ex);
+    title = e.ex;
+    sub = info.muscle + ' · ' + info.equip;
+    body = sheetStep('组数', '正式训练组，不含热身', 'sets', e.sets, '组', 1, 10) +
+      (hold ?
+        sheetStep('保持秒数', '平板支撑按秒计', 'repsMax', e.repsMax || 45, '秒', 15, 120) :
+        sheetStep('次数下限', '区间的最小次数', 'repsMin', e.repsMin, '次', 1, 30) +
+        sheetStep('次数上限', '区间的最大次数', 'repsMax', e.repsMax, '次', 1, 30)) +
+      sheetStep('组间休息', '勾选完成组后自动开始', 'rest', e.rest, '秒', 15, 300);
+    foot = '<div class="sheet__foot"><button class="btn btn--primary" data-action="sheet-close">完成</button></div>';
+    danger = '<button class="sheet__danger" data-action="sheet-del-ex">' + icon('trash') + '从训练日移除</button>';
+  }else if(k === 'ex-info'){
+    const name = SHEET.ctx.name;
+    const info = exInfo(name);
+    const pr = bestWeightOf(name);
+    const last = lastLift(name);
+    title = name;
+    sub = info.muscle + ' · ' + info.equip + (info.unilateral ? ' · 单侧' : '');
+    body = '<div class="chips" style="margin-top:10px">' +
+        '<span class="tag tag--acid">' + info.pattern + '</span>' +
+        '<span class="tag">' + info.group + '</span>' +
+        '<span class="tag">' + info.equip + '</span>' +
+        (info.bw ? '<span class="tag">自重</span>' : '') +
+        (info.custom ? '<span class="tag tag--acid">自定义</span>' : '') +
+      '</div>' +
+      '<div class="panel" style="margin-top:12px"><div class="panel__label">TECHNIQUE / 要点</div><div class="panel__sub" style="margin-top:7px;color:var(--sub)">' + esc(info.cue) + '</div></div>' +
+      '<div class="stat-grid" style="margin-top:8px">' +
+        '<div><span>最好重量</span><b>' + (info.bw ? '—' : fmtNum(pr)) + '<small>' + (info.bw ? '自重' : 'kg') + '</small></b></div>' +
+        '<div><span>预估 1RM</span><b>' + (last && e1rm(last.weight, last.reps) ? fmtNum(e1rm(last.weight, last.reps)) : '—') + '<small>kg</small></b></div>' +
+        '<div><span>上次</span><b>' + (last ? last.reps : '—') + '<small>' + (last ? '次' : '') + '</small></b></div>' +
+      '</div>' +
+      (last ? '<p class="form-tip">上次记录：' + (last.weight > 0 ? fmtNum(last.weight) + ' kg × ' : '自重 × ') + last.reps + '</p>' : '');
+    foot = '<div class="sheet__foot"><button class="btn btn--primary" data-action="sheet-close">知道了</button></div>';
+  }else if(k === 'add-weight'){
+    const ws = weightsAsc();
+    const last = ws.length ? ws[ws.length - 1] : null;
+    title = '记录体重';
+    sub = '建议固定在早晨、空腹、同一台秤上记录';
+    body = '<div class="form-row"><label class="form-label">日期</label>' +
+        '<input class="form-input" id="sheet-date" type="date" value="' + todayISO() + '" max="' + todayISO() + '"></div>' +
+      '<div class="form-row"><label class="form-label">体重 <span>kg</span></label>' +
+        '<input class="form-input" id="sheet-kg" type="number" step="0.1" min="20" max="300" inputmode="decimal" placeholder="例如 72.4" value="' + (last ? fmtNum(last.kg) : '') + '"></div>' +
+      '<p class="form-tip">同一天重复记录会覆盖当天数值；曲线里的绿色线是 7 日移动平均。</p>';
+    foot = '<div class="sheet__foot"><button class="btn btn--ghost" data-action="sheet-close">取消</button><button class="btn btn--primary" data-action="sheet-save">保存记录</button></div>';
+  }else if(k === 'add-measure'){
+    const m = measuresAsc().length ? measuresAsc()[measuresAsc().length - 1] : {};
+    title = '记录围度';
+    sub = '同一部位保持相同测量位置，可只填其中几项';
+    body = '<div class="form-row"><label class="form-label">日期</label>' +
+        '<input class="form-input" id="sheet-date" type="date" value="' + todayISO() + '" max="' + todayISO() + '"></div>' +
+      '<div class="form-split" style="margin-top:12px">' + MEASURES.map(x =>
+        '<div class="form-row" style="margin-top:0"><label class="form-label">' + x.name + ' <span>cm</span></label>' +
+          '<input class="form-input" id="sheet-' + x.key + '" type="number" step="0.1" min="10" max="200" inputmode="decimal" placeholder="—" value="' + (typeof m[x.key] === 'number' ? fmtNum(m[x.key]) : '') + '"></div>'
+      ).join('') + '</div>' +
+      '<p class="form-tip">围度变化会和上一次记录对比；同一天重复填写会合并到同一条记录。</p>';
+    foot = '<div class="sheet__foot"><button class="btn btn--ghost" data-action="sheet-close">取消</button><button class="btn btn--primary" data-action="sheet-save">保存记录</button></div>';
+  }else if(k === 'add-cardio'){
+    const type = SHEET.data.type || CARDIO_TYPES[0];
+    title = '记录有氧';
+    sub = '项目、时长、坡度、速度四个字段';
+    const optional = CARDIO_NO_INCLINE.indexOf(type) >= 0;
+    body = '<div class="form-row"><label class="form-label">日期</label>' +
+        '<input class="form-input" id="sheet-date" type="date" value="' + todayISO() + '" max="' + todayISO() + '"></div>' +
+      '<div class="form-row"><label class="form-label">项目</label><div class="chip-group">' +
+        CARDIO_TYPES.map(t => '<button class="chip ' + (t === type ? 'is-on' : '') + '" data-action="sheet-type" data-value="' + t + '">' + t + '</button>').join('') +
+      '</div></div>' +
+      '<div class="form-split" style="margin-top:12px">' +
+        '<div class="form-row" style="margin-top:0"><label class="form-label">时长 <span>分钟</span></label>' +
+          '<input class="form-input" id="sheet-minutes" type="number" step="1" min="1" max="300" inputmode="numeric" placeholder="30"></div>' +
+        '<div class="form-row" style="margin-top:0"><label class="form-label">坡度 <span>%</span></label>' +
+          '<input class="form-input" id="sheet-incline" type="number" step="0.5" min="0" max="40" inputmode="decimal" placeholder="' + (optional ? '可留空' : '6') + '"></div>' +
+      '</div>' +
+      '<div class="form-row"><label class="form-label">速度 <span>km/h</span></label>' +
+        '<input class="form-input" id="sheet-speed" type="number" step="0.1" min="0" max="40" inputmode="decimal" placeholder="' + (type === '划船机' ? '可留空' : '5.5') + '"></div>' +
+      '<p class="form-tip">跑步和单车的坡度可以留空；速度按器械显示填写，不填也能保存。</p>';
+    foot = '<div class="sheet__foot"><button class="btn btn--ghost" data-action="sheet-close">取消</button><button class="btn btn--primary" data-action="sheet-save">保存记录</button></div>';
+  }
+
+  return '<div class="sheet-backdrop" data-action="sheet-close"></div>' +
+    '<div class="sheet">' +
+      '<div class="sheet__grip"></div>' +
+      '<div class="sheet__head"><div><div class="sheet__title">' + esc(title) + '</div><div class="sheet__sub">' + esc(sub) + '</div></div>' +
+        '<button class="sheet__close" data-action="sheet-close" aria-label="关闭">' + icon('x') + '</button></div>' +
+      '<div class="sheet__body">' + body + '</div>' +
+      foot + danger +
+    '</div>';
+}
+
+function renderSheet(){
+  const root = $('#sheet-root');
+  if(!root) return;
+  if(!SHEET){ root.classList.remove('is-open'); root.innerHTML = ''; return; }
+  root.classList.add('is-open');
+  root.innerHTML = sheetHtml();
+}
+
+/* ---------- 导航与渲染 ---------- */
+function topOfStack(){ return NAV.stack.length ? NAV.stack[NAV.stack.length - 1] : null; }
+function goTab(tab){
+  S.view = 'main';
+  S.ui.tab = tab;
+  NAV = {tab, stack:[]};
+  save();
+  render();
+}
+function push(name, data){
+  NAV.stack.push(Object.assign({name}, data || {}));
+  render();
+}
+function pop(){
+  NAV.stack.pop();
+  render({keep:true});
+}
+function getScroll(){
+  const b = $('.screen__body');
+  return b ? b.scrollTop : 0;
+}
+function render(opts){
+  const keep = !!(opts && opts.keep);
+  const prev = keep ? getScroll() : 0;
+  const app = $('#app');
+  if(!app) return;
+  let html;
+  if(!S.plan) html = viewOnboarding();
+  else if(S.view === 'onboarding') html = viewOnboarding();
+  else if(S.view === 'workout') html = viewWorkout();
+  else if(S.view === 'summary') html = viewSummary();
+  else html = currentMain();
+  app.innerHTML = html;
+  if(keep){
+    requestAnimationFrame(() => {
+      const b = $('.screen__body');
+      if(b) b.scrollTop = prev;
+    });
+  }
+  renderSheet();
+  const mr = $('#modal-root');
+  if(mr && !MODAL){ mr.classList.remove('is-open'); mr.innerHTML = ''; }
+}
+
+function currentMain(){
+  const sub = topOfStack();
+  if(sub){
+    if(sub.name === 'planDay') return viewPlanDay(sub.dayId);
+    if(sub.name === 'planEdit') return viewPlanEdit(sub.dayId);
+    if(sub.name === 'picker') return viewPicker(sub.dayId);
+    if(sub.name === 'library') return viewLibrary();
+    if(sub.name === 'customEx') return viewCustomEx();
+    if(sub.name === 'templates') return viewTemplates();
+    if(sub.name === 'template') return viewTemplateDetail(sub.id);
+  }
+  if(S.ui.tab === 'plan') return viewPlan();
+  if(S.ui.tab === 'progress') return viewProgress();
+  if(S.ui.tab === 'body') return viewBody();
+  if(S.ui.tab === 'me') return viewMe();
+  return viewToday();
+}
+
+function finishNow(){
   if(!S.session) return;
   const sum = buildSummary();
   S.history.unshift(sum);
   S.lastSummary = sum;
   S.session = null;
-  S.view = 'summary';
   S.selectedDay = 0;
-  modal = null;
+  S.view = 'summary';
   save();
-  render('top');
-  renderModal();
+  render();
 }
 
-function render(scrollMode){
-  const app = document.getElementById('app');
-  if(!app) return;
-  const oldBody = document.querySelector('.screen__body');
-  lastScroll = oldBody ? oldBody.scrollTop : 0;
-  const prevView = renderedView;
-
-  let html;
-  if(S.view === 'onboarding') html = viewOnboarding();
-  else if(S.view === 'today') html = viewToday();
-  else if(S.view === 'workout') html = viewWorkout();
-  else html = viewSummary();
-
-  app.innerHTML = html;
-  const newBody = document.querySelector('.screen__body');
-  if(newBody){
-    if(scrollMode === 'top' || prevView !== S.view) newBody.scrollTop = 0;
-    else newBody.scrollTop = lastScroll;
-  }
-  renderedView = S.view;
+function requestFinish(){
+  if(!S.session) return;
+  const done = S.session.sets.filter(x => x.done).length;
+  if(!done){ toast('还没有勾选完成的组'); return; }
+  openConfirm({
+    title: '完成本次训练？',
+    desc: '已勾选 <b style="color:var(--text)">' + done + '</b> 组，将写入本机训练历史并结算 PR。热身不计入容量。',
+    okText: '完成训练',
+    onOk: finishNow
+  });
 }
 
-/* ============================================================
-   9. 事件绑定
-   ============================================================ */
+function startRest(row){
+  const s = S.session;
+  const idx = s.sets.indexOf(row);
+  const next = s.sets.slice(idx + 1).find(x => !x.done);
+  const ex = s.exercises[row.exIdx];
+  s.rest = {
+    until: Date.now() + ex.rest * 1000,
+    total: ex.rest * 1000,
+    next: next ? (next.ex === row.ex ? '第 ' + (next.setIdx + 1) + ' 组 · ' + next.ex : next.ex) : '最后一个动作完成'
+  };
+}
 
-document.addEventListener('click', function(e){
-  const el = e.target.closest('[data-action]');
-  if(!el) return;
-  const action = el.dataset.action;
+function refreshResults(){
+  const box = $('#lib-results');
+  const top = topOfStack();
+  if(!box || !top) return;
+  const mode = top.name === 'picker' ? 'pick' : 'browse';
+  box.innerHTML = libResultsHtml(mode, top.dayId);
+}
 
-  switch(action){
-    case 'ob-goal':
-      S.onboard.goal = el.dataset.value;
-      save(); render();
-      break;
-    case 'ob-freq':
-      S.onboard.freq = Number(el.dataset.value);
-      save(); render();
-      break;
-    case 'ob-template':
-      S.onboard.template = el.dataset.value;
-      save(); render();
-      break;
-    case 'ob-back':
-      S.onboard.step = Math.max(1, S.onboard.step - 1);
-      save(); render('top');
-      break;
-    case 'ob-next':
-      if(S.onboard.step < 3){
-        S.onboard.step++;
-        save(); render('top');
-      }else{
-        generatePlan();
-      }
-      break;
-    case 'select-day':
-      S.selectedDay = Number(el.dataset.day);
-      save(); render();
-      break;
+function addExercise(dayId, name){
+  const day = getDayById(S.plan, dayId);
+  if(!day) return false;
+  if(day.exercises.some(e => e.ex === name)){ toast('这个动作已经在训练日里'); return false; }
+  const info = exInfo(name);
+  let cfg;
+  if(info.hold) cfg = {ex:name, sets:3, repsMin:45, repsMax:45, rest:60};
+  else if(info.pattern === '核心') cfg = {ex:name, sets:3, repsMin:12, repsMax:15, rest:60};
+  else cfg = {ex:name, sets:3, repsMin:8, repsMax:12, rest:90};
+  day.exercises.push(cfg);
+  save();
+  return true;
+}
+
+function doCopyTemplate(id){
+  const tpl = templateById(id);
+  const goal = S.plan ? S.plan.goal : (S.onboard.goal || 'muscle');
+  const freq = S.plan ? S.plan.freq : (S.onboard.freq || 3);
+  const start = S.plan ? S.plan.startDate : todayISO();
+  S.plan = buildPlan(id, goal, freq, start);
+  S.session = null;
+  S.selectedDay = 0;
+  S.view = 'main';
+  S.ui.tab = 'plan';
+  NAV = {tab:'plan', stack:[{name:'planDay', dayId:S.plan.days[0].id}]};
+  save();
+  render();
+  toast('已复制「' + tpl.name + '」，可以开始调整');
+}
+
+function syncCustomDraft(){
+  const el = $('#custom-name');
+  if(el) CUSTOM_DRAFT.name = el.value;
+}
+
+/* ---------- 动作分发 ---------- */
+function handleAction(a, el){
+  const ds = el.dataset;
+  switch(a){
+    case 'go-tab': goTab(ds.tab); break;
+    case 'back': pop(); break;
+
+    /* 引导 */
+    case 'ob-goal': S.onboard.goal = ds.value; save(); render({keep:true}); break;
+    case 'ob-freq': S.onboard.freq = +ds.value; save(); render({keep:true}); break;
+    case 'ob-template': S.onboard.template = ds.value; save(); render({keep:true}); break;
+    case 'ob-back': S.onboard.step = Math.max(1, (S.onboard.step || 1) - 1); save(); render(); break;
+    case 'ob-next': S.onboard.step = Math.min(3, (S.onboard.step || 1) + 1); save(); render(); break;
+    case 'ob-generate': startGenerate(); break;
+
+    /* 今天 / 训练 */
+    case 'select-day': S.selectedDay = Math.min(6, +ds.day || 0); save(); render({keep:true}); break;
     case 'start': {
-      const entry = S.plan && S.plan.schedule[0];
+      const entry = S.plan.schedule[0];
       if(!entry || entry.type !== 'train') return;
       S.session = makeSession(entry);
       S.view = 'workout';
-      S.selectedDay = 0;
       calcFor = -1;
-      calcFlat = null;
-      save(); render('top');
+      save();
+      render();
       break;
     }
     case 'resume':
       if(!S.session) return;
-      if(S.session.rest && S.session.rest.endAt <= Date.now()) S.session.rest = null;
       S.view = 'workout';
+      save();
+      render();
+      break;
+    case 'exit-workout':
+      openConfirm({
+        title: '退出训练？',
+        desc: '已勾选的组会保留为草稿，回到「今天」可以继续。',
+        okText: '保存并退出',
+        onOk: () => {
+          S.view = 'main'; S.ui.tab = 'today'; NAV = {tab:'today', stack:[]};
+          save(); render();
+        }
+      });
+      break;
+    case 'finish-workout': requestFinish(); break;
+    case 'warm-toggle': {
+      const i = +ds.idx;
+      if(!S.session) return;
+      const at = S.session.warmupDone.indexOf(i);
+      if(at >= 0) S.session.warmupDone.splice(at, 1);
+      else S.session.warmupDone.push(i);
+      save();
+      render({keep:true});
+      break;
+    }
+    case 'start-training':
+    case 'skip-warm':
+      if(!S.session) return;
+      S.session.phase = 'train';
+      S.session.currentEx = 0;
+      S.session.rest = null;
       calcFor = -1;
-      calcFlat = null;
-      save(); render('top');
+      save();
+      render();
       break;
-    case 'exit':
-      modal = 'exit';
-      renderModal();
-      break;
-    case 'finish':
-      modal = 'finish';
-      renderModal();
-      break;
-    case 'modal-close':
-      modal = null;
-      renderModal();
-      break;
-    case 'do-exit':
-      if(S.session) S.session.rest = null;
-      modal = null;
-      renderModal();
-      S.view = 'today';
-      S.selectedDay = 0;
-      save(); render('top');
-      toast('草稿已保存 · 回到今天可继续');
-      break;
-    case 'do-finish':
-      finishSession();
-      break;
-    case 'do-reset':
-      try{ localStorage.removeItem(KEY); }catch(err){}
-      S = defaultState();
-      modal = null;
-      renderedView = null;
-      renderModal();
-      render('top');
-      toast('演示数据已重置');
-      break;
-    case 'reset':
-      modal = 'reset';
-      renderModal();
-      break;
-    case 'toggle-set':
-      toggleSet(Number(el.dataset.flat));
-      break;
-    case 'copy-set':
-      copySet();
-      break;
-    case 'toggle-calc':
-      calcFor = (calcFor === S.session.currentEx) ? -1 : S.session.currentEx;
+    case 'goto-warmup':
+      if(!S.session) return;
+      S.session.phase = 'warmup';
+      S.session.rest = null;
+      save();
       render();
       break;
     case 'goto-ex':
       if(!S.session) return;
-      S.session.currentEx = Number(el.dataset.ex);
+      S.session.phase = 'train';
+      S.session.currentEx = +ds.idx;
+      S.session.rest = null;
       calcFor = -1;
-      calcFlat = null;
-      save(); render('top');
+      save();
+      render();
       break;
+    case 'toggle-calc': calcFor = calcFor === +ds.idx ? -1 : +ds.idx; render({keep:true}); break;
+    case 'toggle-set': {
+      const s = S.session;
+      if(!s) return;
+      const row = s.sets[+ds.row];
+      if(!row) return;
+      const info = exInfo(row.ex);
+      const w = parseFloat(row.weight), reps = parseFloat(row.reps);
+      if(!(reps > 0)){ toast(info.hold ? '请填写保持秒数' : '请填写次数'); return; }
+      if(!info.bw && !(w > 0)){ toast('请填写重量'); return; }
+      row.done = !row.done;
+      row.weight = String(w > 0 ? w : 0);
+      row.reps = String(reps);
+      if(row.done) startRest(row);
+      save();
+      render({keep:true});
+      break;
+    }
+    case 'copy-first': {
+      const s = S.session;
+      if(!s) return;
+      const rows = s.sets.filter(x => x.exIdx === +ds.idx);
+      if(!rows.length) return;
+      rows.filter(x => !x.done).forEach(x => { x.weight = rows[0].weight; x.reps = rows[0].reps; });
+      save();
+      render({keep:true});
+      toast('已复制首组的重量与次数');
+      break;
+    }
     case 'prev-ex':
       if(!S.session) return;
       S.session.currentEx = Math.max(0, S.session.currentEx - 1);
+      S.session.rest = null;
       calcFor = -1;
-      calcFlat = null;
-      save(); render('top');
+      save();
+      render();
       break;
     case 'next-ex': {
-      if(!S.session) return;
-      const w = WORKOUTS[S.session.workoutId];
-      if(S.session.currentEx >= w.exercises.length - 1){
-        modal = 'finish';
-        renderModal();
-      }else{
-        S.session.currentEx++;
-        calcFor = -1;
-        calcFlat = null;
-        save(); render('top');
+      const s = S.session;
+      if(!s) return;
+      if(s.currentEx >= s.exercises.length - 1){ requestFinish(); return; }
+      s.currentEx++;
+      s.rest = null;
+      calcFor = -1;
+      save();
+      render();
+      break;
+    }
+    case 'rest-skip':
+      if(S.session){ S.session.rest = null; save(); render({keep:true}); }
+      break;
+    case 'rest-minus':
+    case 'rest-plus': {
+      const s = S.session;
+      if(!s || !s.rest) return;
+      const delta = a === 'rest-plus' ? 15000 : -15000;
+      s.rest.until += delta;
+      s.rest.total = Math.max(5000, s.rest.total + delta);
+      if(s.rest.until <= Date.now()) s.rest = null;
+      save();
+      render({keep:true});
+      break;
+    }
+    case 'view-summary': {
+      const h = S.history.find(x => x.date === todayISO()) || S.history[0];
+      if(!h) return;
+      S.lastSummary = h;
+      S.view = 'summary';
+      save();
+      render();
+      break;
+    }
+    case 'go-home':
+      S.view = 'main';
+      S.ui.tab = 'today';
+      NAV = {tab:'today', stack:[]};
+      S.selectedDay = 0;
+      save();
+      render();
+      break;
+
+    /* 计划 */
+    case 'open-plan-day': push('planDay', {dayId:ds.dayId}); break;
+    case 'select-plan-day': {
+      const top = topOfStack();
+      if(top) top.dayId = ds.dayId;
+      render({keep:true});
+      break;
+    }
+    case 'edit-day': push('planEdit', {dayId:ds.dayId}); break;
+    case 'plan-edit-done': {
+      const top = topOfStack();
+      if(top && (top.name === 'picker' || top.name === 'planEdit')) NAV.stack.pop();
+      else { NAV.stack = []; S.ui.tab = 'plan'; }
+      render({keep:true});
+      break;
+    }
+    case 'open-picker': libQuery = ''; push('picker', {dayId:ds.dayId}); break;
+    case 'move-ex': {
+      const top = topOfStack();
+      const day = top && getDayById(S.plan, top.dayId);
+      if(!day) return;
+      const i = +ds.idx, j = i + (+ds.dir);
+      if(j < 0 || j >= day.exercises.length) return;
+      const tmp = day.exercises[i];
+      day.exercises[i] = day.exercises[j];
+      day.exercises[j] = tmp;
+      save();
+      render({keep:true});
+      break;
+    }
+    case 'config-ex': {
+      const top = topOfStack();
+      if(top) openSheet('ex-config', {dayId:top.dayId, idx:+ds.idx});
+      break;
+    }
+    case 'picker-add':
+      if(addExercise(ds.dayId, ds.ex)){ refreshResults(); toast('已加入训练日'); }
+      break;
+
+    /* 动作库 / 自定义 */
+    case 'open-library': libQuery = ''; push('library'); break;
+    case 'lib-group': S.ui.libGroup = ds.value; save(); render({keep:true}); break;
+    case 'lib-equip': S.ui.libEquip = ds.value; save(); render({keep:true}); break;
+    case 'lib-info': openSheet('ex-info', {name:ds.ex}); break;
+    case 'new-custom':
+      CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
+      push('customEx');
+      break;
+    case 'custom-group': syncCustomDraft(); CUSTOM_DRAFT.group = ds.value; save(); render({keep:true}); break;
+    case 'custom-equip': syncCustomDraft(); CUSTOM_DRAFT.equip = ds.value; save(); render({keep:true}); break;
+    case 'custom-unilateral':
+      syncCustomDraft();
+      CUSTOM_DRAFT.unilateral = !CUSTOM_DRAFT.unilateral;
+      save();
+      render({keep:true});
+      break;
+    case 'custom-save': {
+      syncCustomDraft();
+      const name = (CUSTOM_DRAFT.name || '').trim();
+      if(!name){ toast('请填写动作名称'); return; }
+      if(name.length > 20){ toast('动作名称最多 20 个字'); return; }
+      if(allExNames().some(n => n.toLowerCase() === name.toLowerCase())){ toast('动作库里已经有同名动作'); return; }
+      S.customEx.push({name, group:CUSTOM_DRAFT.group, equip:CUSTOM_DRAFT.equip, unilateral:CUSTOM_DRAFT.unilateral});
+      save();
+      NAV.stack.pop();
+      CUSTOM_DRAFT = {name:'', group:'胸', equip:'哑铃', unilateral:false};
+      toast('自定义动作已保存');
+      render({keep:true});
+      break;
+    }
+
+    /* 模板 */
+    case 'open-templates': push('templates'); break;
+    case 'open-template': push('template', {id:ds.id}); break;
+    case 'copy-template': {
+      const t = TEMPLATES.find(x => x.id === ds.id);
+      if(!t) return;
+      openConfirm({
+        title: '复制「' + t.name + '」？',
+        desc: '当前训练日安排会被模板替换，训练历史、PR 和身体数据都会保留。' + (S.session ? '<br><b style="color:#FFB18F">未完成的训练草稿会被放弃。</b>' : ''),
+        okText: '复制模板',
+        onOk: () => doCopyTemplate(ds.id)
+      });
+      break;
+    }
+
+    /* 进步 */
+    case 'range': S.ui.progressRange = ds.value; save(); render({keep:true}); break;
+    case 'progress-ex': S.ui.progressEx = ds.ex; save(); render({keep:true}); break;
+    case 'pr-all': S.ui.prAll = !S.ui.prAll; save(); render({keep:true}); break;
+
+    /* 身体 */
+    case 'add-weight': openSheet('add-weight'); break;
+    case 'add-measure': openSheet('add-measure'); break;
+    case 'add-cardio': openSheet('add-cardio'); break;
+    case 'del-weight':
+      S.body.weights = S.body.weights.filter(w => w.id !== ds.id);
+      save();
+      render({keep:true});
+      toast('体重记录已删除');
+      break;
+    case 'del-cardio':
+      S.body.cardio = S.body.cardio.filter(c => c.id !== ds.id);
+      save();
+      render({keep:true});
+      toast('有氧记录已删除');
+      break;
+
+    /* 我的 */
+    case 'clear-demo':
+      openConfirm({
+        title: '清空示例数据？',
+        desc: '会移除生成的训练历史、体重、围度和有氧记录，保留你的计划与自定义动作。',
+        okText: '清空示例',
+        onOk: () => { clearDemo(); toast('示例数据已清空'); render({keep:true}); }
+      });
+      break;
+    case 'reset':
+      openConfirm({
+        title: '重置全部数据？',
+        desc: '计划、训练历史、PR、身体记录和自定义动作都会被清除，回到初次引导。该操作不可撤销。',
+        okText: '确认重置',
+        danger: true,
+        onOk: () => {
+          try{ localStorage.removeItem(KEY); localStorage.removeItem(LEGACY_KEY); }catch(e){}
+          S = defaultState();
+          NAV = {tab:'today', stack:[]};
+          SHEET = null;
+          closeModal();
+          render();
+          toast('已恢复初始状态');
+        }
+      });
+      break;
+
+    /* 面板与弹窗 */
+    case 'sheet-close':
+      closeSheet();
+      render({keep:true});
+      break;
+    case 'sheet-step': {
+      if(!SHEET || SHEET.kind !== 'ex-config') return;
+      const day = getDayById(S.plan, SHEET.ctx.dayId);
+      const e = day && day.exercises[SHEET.ctx.idx];
+      if(!e) return;
+      const f = ds.field, d = +ds.dir;
+      const hold = isHold(e.ex);
+      if(f === 'sets') e.sets = Math.max(1, Math.min(10, e.sets + d));
+      else if(f === 'repsMin') e.repsMin = Math.max(1, Math.min(e.repsMax, e.repsMin + d));
+      else if(f === 'repsMax'){
+        if(hold){
+          const v = Math.max(15, Math.min(120, (e.repsMax || 45) + d * 5));
+          e.repsMin = v; e.repsMax = v;
+        }else{
+          e.repsMax = Math.max(e.repsMin, Math.min(30, e.repsMax + d));
+        }
+      }else if(f === 'rest') e.rest = Math.max(15, Math.min(300, e.rest + d * 15));
+      save();
+      renderSheet();
+      break;
+    }
+    case 'sheet-del-ex': {
+      if(!SHEET) return;
+      const day = getDayById(S.plan, SHEET.ctx.dayId);
+      if(!day) return;
+      if(day.exercises.length <= 1){ toast('每个训练日至少保留一个动作'); return; }
+      day.exercises.splice(SHEET.ctx.idx, 1);
+      save();
+      closeSheet();
+      render({keep:true});
+      toast('动作已从训练日移除');
+      break;
+    }
+    case 'sheet-type': {
+      if(!SHEET) return;
+      SHEET.data.type = ds.value;
+      $$('[data-action="sheet-type"]').forEach(b => b.classList.toggle('is-on', b.dataset.value === ds.value));
+      const inc = $('#sheet-incline');
+      if(inc) inc.placeholder = CARDIO_NO_INCLINE.indexOf(ds.value) >= 0 ? '可留空' : '6';
+      break;
+    }
+    case 'sheet-save': {
+      if(!SHEET) return;
+      const kind = SHEET.kind;
+      if(kind === 'add-weight'){
+        const date = ($('#sheet-date') || {}).value || todayISO();
+        const kg = parseFloat(($('#sheet-kg') || {}).value);
+        if(!(kg >= 20 && kg <= 300)){ toast('请输入 20-300 kg 之间的体重'); return; }
+        const same = S.body.weights.find(w => w.date === date);
+        if(same) same.kg = Math.round(kg * 10) / 10;
+        else S.body.weights.push({id:uid('w'), date, kg:Math.round(kg * 10) / 10});
+        save();
+        closeSheet();
+        render({keep:true});
+        toast(same ? '当天体重已更新' : '体重已记录');
+      }else if(kind === 'add-measure'){
+        const date = ($('#sheet-date') || {}).value || todayISO();
+        const vals = {};
+        let any = false;
+        MEASURES.forEach(m => {
+          const v = parseFloat(($('#sheet-' + m.key) || {}).value);
+          if(v >= 10 && v <= 200){ vals[m.key] = Math.round(v * 10) / 10; any = true; }
+        });
+        if(!any){ toast('至少填写一项围度'); return; }
+        const same = S.body.measures.find(m => m.date === date);
+        if(same) Object.assign(same, vals);
+        else S.body.measures.push(Object.assign({id:uid('m'), date}, vals));
+        save();
+        closeSheet();
+        render({keep:true});
+        toast(same ? '当天围度已合并' : '围度已记录');
+      }else if(kind === 'add-cardio'){
+        const date = ($('#sheet-date') || {}).value || todayISO();
+        const minutes = parseFloat(($('#sheet-minutes') || {}).value);
+        if(!(minutes > 0)){ toast('请填写有氧时长'); return; }
+        if(minutes > 300){ toast('单次时长请不超过 300 分钟'); return; }
+        const inclineRaw = ($('#sheet-incline') || {}).value;
+        const speedRaw = ($('#sheet-speed') || {}).value;
+        const type = SHEET.data.type || CARDIO_TYPES[0];
+        const incline = inclineRaw === '' ? null : Math.max(0, Math.min(40, parseFloat(inclineRaw)));
+        const speed = speedRaw === '' ? null : Math.max(0, Math.min(40, parseFloat(speedRaw)));
+        S.body.cardio.push({id:uid('c'), date, type, minutes, incline, speed});
+        save();
+        closeSheet();
+        render({keep:true});
+        toast('有氧已记录');
       }
       break;
     }
-    case 'rest-minus':
-      if(S.session && S.session.rest){
-        S.session.rest.endAt -= 15000;
-        saveSoon();
-        updateRestUI();
-      }
+    case 'modal-close': closeModal(); break;
+    case 'modal-ok': {
+      const fn = MODAL && MODAL.onOk;
+      closeModal();
+      if(typeof fn === 'function') fn();
       break;
-    case 'rest-plus':
-      if(S.session && S.session.rest){
-        S.session.rest.endAt += 15000;
-        S.session.rest.total = Math.max(S.session.rest.total, S.session.rest.endAt - Date.now());
-        saveSoon();
-        updateRestUI();
-      }
-      break;
-    case 'rest-skip':
-      if(S.session){
-        S.session.rest = null;
-        save(); render();
-      }
-      break;
-    case 'view-summary':
-      if(S.history.length){
-        S.lastSummary = S.history[0];
-        S.view = 'summary';
-        save(); render('top');
-      }
-      break;
-    case 'go-home':
-      S.view = 'today';
-      S.selectedDay = 0;
-      save(); render('top');
-      break;
-  }
-});
-
-document.addEventListener('input', function(e){
-  const inp = e.target.closest('.set-input');
-  if(!inp || !S.session) return;
-  const flat = Number(inp.dataset.flat);
-  const field = inp.dataset.field;
-  let v = inp.value.replace(/[^\d.]/g, '');
-  if(v !== inp.value) inp.value = v;
-  if(!S.session.sets[flat]) return;
-  S.session.sets[flat][field] = v;
-  calcFlat = flat;
-  saveSoon();
-  if(field === 'weight') refreshCalc();
-});
-
-document.addEventListener('keydown', function(e){
-  if(e.key === 'Escape' && modal){
-    modal = null;
-    renderModal();
-  }
-});
-
-/* ============================================================
-   10. 启动
-   ============================================================ */
-
-S = loadState();
-if(!S.plan){
-  S.view = 'onboarding';
-}else{
-  ensurePlanFresh();
-  if(S.view === 'onboarding') S.view = 'today';
-  if(Object.keys(S.prs).length === 0){
-    Object.keys(EX).forEach(k => { S.prs[k] = EX[k].pr; });
+    }
   }
 }
-if(S.session && S.session.rest && S.session.rest.endAt <= Date.now()) S.session.rest = null;
-if(S.view === 'workout' && !S.session) S.view = 'today';
-if(S.view === 'summary' && !S.lastSummary) S.view = 'today';
-if(S.selectedDay > 6) S.selectedDay = 0;
-save();
-render('top');
 
-setInterval(function(){
-  if(S.view !== 'workout' || !S.session || document.hidden) return;
-  S.session.elapsed++;
-  const el = document.getElementById('elapsed');
-  if(el) el.textContent = fmtClock(S.session.elapsed);
-  if(S.session.elapsed % 5 === 0) save();
-}, 1000);
+/* ---------- 输入 ---------- */
+function onInput(e){
+  const t = e.target;
+  if(t.classList && t.classList.contains('set-input')){
+    if(!S.session) return;
+    const row = S.session.sets[+t.dataset.set];
+    if(row){ row[t.dataset.field] = t.value; saveSoon(); }
+    return;
+  }
+  if(t.id === 'lib-search'){
+    libQuery = t.value;
+    refreshResults();
+    return;
+  }
+  if(t.id === 'custom-name'){ CUSTOM_DRAFT.name = t.value; }
+}
 
-setInterval(function(){
-  if(S.view !== 'workout' || !S.session || !S.session.rest) return;
-  updateRestUI();
-}, 220);
+/* ---------- 定时器 ---------- */
+let lastTick = Date.now();
+let saveTick = 0;
+function tick(){
+  const now = Date.now();
+  const dt = Math.min(2, (now - lastTick) / 1000);
+  lastTick = now;
+  if(S.view === 'workout' && S.session){
+    S.session.elapsed = (S.session.elapsed || 0) + dt;
+    saveTick += dt;
+    const meta = $('.wk-head__meta');
+    if(meta && S.session.phase !== 'warmup'){
+      meta.textContent = 'EX ' + pad(S.session.currentEx + 1) + ' / ' + pad(S.session.exercises.length) + ' · ' + fmtClock(S.session.elapsed);
+    }
+    if(S.session.rest){
+      const left = S.session.rest.until - now;
+      if(left <= 0){
+        S.session.rest = null;
+        save();
+        render({keep:true});
+      }else{
+        const t = $('#rest-time'), bar = $('#rest-bar');
+        if(t) t.textContent = fmtMs(left);
+        if(bar) bar.style.width = Math.min(100, left / S.session.rest.total * 100) + '%';
+      }
+    }
+    if(saveTick > 4){ saveTick = 0; save(); }
+  }
+}
 
-})();
+/* ---------- 启动 ---------- */
+function boot(){
+  S = loadState();
+  ensurePlanFresh();
+  if(S.plan && S.view === 'onboarding') S.view = 'main';
+  if(!S.plan) S.view = 'onboarding';
+  if(S.view === 'workout' && !S.session) S.view = 'main';
+  if(S.view === 'summary' && !S.lastSummary) S.view = 'main';
+  const validTabs = TABS.map(t => t.id);
+  if(validTabs.indexOf(S.ui.tab) < 0) S.ui.tab = 'today';
+  if(S.session && S.session.date !== todayISO()) S.session = null;
+  if(S.view === 'main' && !S.plan) S.view = 'onboarding';
+  NAV = {tab:S.ui.tab, stack:[]};
+  document.addEventListener('click', e => {
+    const el = e.target.closest('[data-action]');
+    if(!el) return;
+    if(el.tagName !== 'INPUT') e.preventDefault();
+    handleAction(el.dataset.action, el);
+  });
+  document.addEventListener('input', onInput);
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      if(SHEET){ closeSheet(); render({keep:true}); }
+      else if(MODAL) closeModal();
+    }
+  });
+  render();
+  setInterval(tick, 500);
+}
+
+boot();
 </script>
 </body>
 </html>
